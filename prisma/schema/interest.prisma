@@ -1,0 +1,20 @@
+model TravelInterest {
+    id        String   @id @default(uuid())
+    interest  String
+    createdAt DateTime @default(now())
+
+    userTravelInterests UserTravelInterest[]
+
+    @@map("travel_interests")
+}
+
+model UserTravelInterest {
+    travelInterestId String
+    travelInterest   TravelInterest? @relation(fields: [travelInterestId], references: [id])
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    @@id([travelInterestId, userId])
+    @@map("user_travel_interests")
+}

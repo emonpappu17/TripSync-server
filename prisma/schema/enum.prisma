@@ -1,22 +1,3 @@
-// enum Provider {
-//   google
-//   credentials
-//   facebook
-// }
-
-// enum UserRole {
-//   SUPER_ADMIN
-//   ADMIN
-//   USER
-//   GUEST
-//   SUBSCRIBER
-// }
-
-// enum UserStatus {
-//   ACTIVE
-//   INACTIVE
-//   BLOCKED
-// }
 
 enum Role {
   SUPER_ADMIN
@@ -58,4 +39,18 @@ enum PaymentStatus {
   PENDING
   COMPLETED
   FAILED
+}
+
+enum TripStatus {
+  PLANNING
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }

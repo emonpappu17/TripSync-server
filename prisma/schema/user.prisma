@@ -1,162 +1,3 @@
-// // model User {
-// //   id         String         @id @default(uuid())
-// //   email      String         @unique
-// //   name       String?
-// //   role       UserRole       @default(GUEST)
-// //   status     UserStatus     @default(ACTIVE)
-// //   isDeleted  Boolean        @default(false)
-// //   phone      String?
-// //   photo      String?
-// //   password   String?
-// //   address    String?
-// //   isVerified Boolean        @default(false)
-// //   createdAt  DateTime       @default(now())
-// //   updateAt   DateTime       @updatedAt
-// //   auths      AuthProvider[]
-
-// //   @@map("users")
-// // }
-
-// // model AuthProvider {
-// //   id         String   @id @default(uuid())
-// //   provider   Provider
-// //   providerId String
-// //   userId     String
-// //   user       User     @relation(fields: [userId], references: [id])
-
-// //   @@unique([provider])
-// //   @@map("auth_providers")
-// // }
-
-// // -----------------------------
-// // ENUMS
-// // -----------------------------
-
-// // -----------------------------
-// // MODELS
-// // -----------------------------
-
-// model User {
-//   id               String     @id @default(uuid())
-//   name             String?
-//   email            String     @unique
-//   password         String
-//   bio              String?
-//   photo            String?
-//   interests        String[] // ["hiking", "food", "photography"]
-//   visitedCountries String[] // ["Japan", "Thailand"]
-//   location         String? // Current location
-//   role             Role       @default(USER)
-//   status           UserStatus @default(ACTIVE)
-
-//   isVerified Boolean  @default(false)
-//   createdAt  DateTime @default(now())
-//   updatedAt  DateTime @updatedAt
-
-//   // Relations
-//   travelPlans     TravelPlan[]
-//   reviewsGiven    Review[]       @relation("reviewsGiven")
-//   reviewsReceived Review[]       @relation("reviewsReceived")
-//   subscriptions   Subscription[]
-//   payments        Payment[]
-
-//   // Soft delete
-//   isDeleted    Boolean       @default(false)
-//   joinRequests JoinRequest[]
-// }
-
-// // -----------------------------
-// model TravelPlan {
-//   id          String     @id @default(uuid())
-//   userId      String
-//   destination String // City or Country
-//   country     String
-//   // city        String
-//   startDate   DateTime
-//   endDate     DateTime
-//   budgetMin   Int?
-//   budgetMax   Int?
-//   travelType  TravelType
-//   description String?
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   user         User          @relation(fields: [userId], references: [id])
-//   joinRequests JoinRequest[]
-
-//   // For search & matching
-//   // @@index([destination])
-//   @@index([startDate, endDate])
-//   @@index([travelType])
-// }
-
-// // -----------------------------
-// model Review {
-//   id         String   @id @default(uuid())
-//   reviewerId String
-//   reviewedId String
-//   rating     Int // 1–5
-//   comment    String?
-//   createdAt  DateTime @default(now())
-//   updatedAt  DateTime @updatedAt
-
-//   reviewer User @relation("reviewsGiven", fields: [reviewerId], references: [id])
-//   reviewed User @relation("reviewsReceived", fields: [reviewedId], references: [id])
-
-//   @@index([reviewedId])
-// }
-
-// // -----------------------------
-// model Subscription {
-//   id              String             @id @default(uuid())
-//   userId          String
-//   status          SubscriptionStatus @default(PENDING)
-//   planType        SubscriptionPlan // monthly / yearly
-//   startDate       DateTime
-//   endDate         DateTime
-//   isVerifiedBadge Boolean            @default(false)
-
-//   createdAt DateTime @default(now())
-
-//   user User @relation(fields: [userId], references: [id])
-
-//   @@index([status])
-// }
-
-// // -----------------------------
-// model Payment {
-//   id             String   @id @default(uuid())
-//   amount         Float
-//   currency       String   @default("USD")
-//   paymentStatus  String // success / failed / pending
-//   transactionId  String?  @unique
-//   paymentGateway String
-//   createdAt      DateTime @default(now())
-
-//   userId String
-//   user   User   @relation(fields: [userId], references: [id])
-
-//   @@index([paymentStatus])
-// }
-
-// // -----------------------------
-// // For Join Requests (Optional)
-// // -----------------------------
-// model JoinRequest {
-//   id           String   @id @default(uuid())
-//   userId       String
-//   travelPlanId String
-//   status       String   @default("PENDING") // ACCEPTED / REJECTED / CANCELED
-//   createdAt    DateTime @default(now())
-
-//   user       User       @relation(fields: [userId], references: [id])
-//   travelPlan TravelPlan @relation(fields: [travelPlanId], references: [id])
-
-//   @@index([userId])
-//   @@index([travelPlanId])
-// }
-
 model User {
   id       String  @id @default(uuid())
   email    String  @unique
@@ -178,16 +19,16 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  // travelPlans      TravelPlan[]
-  // reviewsGiven     Review[]        @relation("ReviewsGiven")
-  // reviewsReceived  Review[]        @relation("ReviewsReceived")
-  // payments         Payment[]
-  // subscriptions    Subscription[]
-  // sentRequests     TravelRequest[] @relation("SentRequests")
-  // receivedRequests TravelRequest[] @relation("ReceivedRequests")
+  payments            Payment[]
+  sentRequests        TravelRequest[]      @relation("SentRequests")
+  receivedRequests    TravelRequest[]      @relation("ReceivedRequests")
   // notifications    Notification[]
   // activities       ActivityLog[]
-  travelInterests TravelInterest[]
+  userTravelInterests UserTravelInterest[]
+  travelPlans         TravelPlan[]
+  reviewsGiven        Review[]             @relation("ReviewsGiven")
+  reviewsReceived     Review[]             @relation("ReviewsReceived")
+  subscriptions       Subscription[]
 
   @@index([email])
   @@index([role])
@@ -195,15 +36,22 @@ model User {
   @@map("users")
 }
 
-model TravelInterest {
-  id        String   @id @default(uuid())
-  userId    String
-  interest  String
-  createdAt DateTime @default(now())
+model Review {
+  id             String   @id @default(uuid())
+  fromReviewerId String
+  toReviewerId   String
+  tourPlanId     String
+  rating         Int // 1-5 stars
+  comment        String?  @db.Text
+  isPublic       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  formReviewer   User       @relation("ReviewsGiven", fields: [fromReviewerId], references: [id], onDelete: Cascade)
+  tourPlanReview TravelPlan @relation(fields: [tourPlanId], references: [id], onDelete: Cascade)
+  toReviewer     User       @relation("ReviewsReceived", fields: [toReviewerId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, interest])
-  @@index([userId])
-  @@map("travel_interests")
+  @@unique([fromReviewerId, toReviewerId])
+  @@index([rating])
+  @@map("reviews")
 }
