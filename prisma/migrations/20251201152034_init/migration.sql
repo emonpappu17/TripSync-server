@@ -213,4 +213,7 @@ ALTER TABLE "travel_requests" ADD CONSTRAINT "travel_requests_receiverId_fkey" F
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_fromReviewerId_fkey" FOREIGN KEY ("fromReviewerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "reviews" ADD CONSTRAINT "reviews_tourPlanId_fkey" FOREIGN KEY ("tourPlanId") REFERENCES "travel_plans"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_toReviewerId_fkey" FOREIGN KEY ("toReviewerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
