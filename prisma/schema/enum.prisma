@@ -1,0 +1,61 @@
+// enum Provider {
+//   google
+//   credentials
+//   facebook
+// }
+
+// enum UserRole {
+//   SUPER_ADMIN
+//   ADMIN
+//   USER
+//   GUEST
+//   SUBSCRIBER
+// }
+
+// enum UserStatus {
+//   ACTIVE
+//   INACTIVE
+//   BLOCKED
+// }
+
+enum Role {
+  SUPER_ADMIN
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum UserStatus {
+  ACTIVE
+  BANNED
+  SUSPENDED
+}
+
+enum TravelType {
+  SOLO
+  FAMILY
+  COUPLE
+  FRIENDS
+}
+
+enum SubscriptionPlan {
+  FREE
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  PENDING
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
