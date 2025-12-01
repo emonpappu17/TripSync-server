@@ -5,6 +5,7 @@ import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcryptjs"
 import envVars from "app/config/env";
+import { generateToken } from "app/utils/jwt/jwt";
 
 class AuthService {
     async register(registerData: Partial<User>): Promise<any> {
@@ -34,7 +35,53 @@ class AuthService {
         };
     }
 
+    async login(credentials: { email: string, password: string }): Promise<any> {
+        // Find user
+        const user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+        });
 
+        if (!user) {
+            throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid email');
+        }
+
+        // Check if user is active
+        if (!user.isActive) {
+            throw new ApiError(
+                StatusCodes.FORBIDDEN,
+                'Your account has been deactivated. Please contact support.'
+            );
+        }
+
+        // Compare password
+        const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.password
+        );
+
+        if (!isPasswordValid) {
+            throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid password');
+        }
+
+        // Generate tokens
+        const accessToken = generateToken({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+        }, envVars.JWT_SECRET, envVars.JWT_EXPIRES_IN);
+
+        const refreshToken = generateToken({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+        }, envVars.JWT_REFRESH_SECRET, envVars.JWT_REFRESH_EXPIRES_IN);
+
+        return {
+            // user,
+            accessToken,
+            refreshToken
+        };
+    }
 }
 
 export default new AuthService();

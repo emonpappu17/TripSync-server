@@ -22,8 +22,6 @@ model User {
   payments            Payment[]
   sentRequests        TravelRequest[]      @relation("SentRequests")
   receivedRequests    TravelRequest[]      @relation("ReceivedRequests")
-  // notifications    Notification[]
-  // activities       ActivityLog[]
   userTravelInterests UserTravelInterest[]
   travelPlans         TravelPlan[]
   reviewsGiven        Review[]             @relation("ReviewsGiven")

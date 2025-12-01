@@ -3,8 +3,6 @@ import bcrypt from 'bcryptjs';
 
 import { prisma } from "app/lib/prisma";
 
-// const prisma = new PrismaClient();
-
 export async function seedAdmin() {
     console.log('🌱 Seeding admin user...');
 
