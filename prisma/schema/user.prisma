@@ -1,9 +1,10 @@
 model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  password String
-  role     Role    @default(USER)
-  isActive Boolean @default(true)
+  id        String  @id @default(uuid())
+  email     String  @unique
+  password  String
+  role      Role    @default(USER)
+  isActive  Boolean @default(true)
+  isDeleted Boolean @default(false)
 
   // Profile
   fullName         String
