@@ -46,6 +46,18 @@ class UserController {
         });
     });
 
+    deleteUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        await userService.deleteUser(id);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'User deleted successfully',
+            data: null,
+        });
+    });
+
 }
 
 export default new UserController();

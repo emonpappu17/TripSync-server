@@ -10,6 +10,8 @@ import { userValidation } from "./user.validation";
 
 const router = Router();
 
+
+
 router.get(
     '/me',
     CheckAuth(Role.USER, Role.ADMIN),
@@ -23,6 +25,12 @@ router.patch(
     fileUploader.upload.single("file"),
     validationRequest(userValidation),
     userController.updateUser
+);
+
+router.delete(
+    '/:id',
+    CheckAuth(Role.ADMIN),
+    userController.deleteUser
 );
 
 

@@ -47,6 +47,24 @@ class UserService {
     return user
   }
 
+  async deleteUser(id: string): Promise<void> {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+    }
+
+    // Soft delete - just deactivate
+    await prisma.user.update({
+      where: { id },
+      data: { isDeleted: true },
+    });
+
+    // For hard delete, use:
+    // await prisma.user.delete({ where: { id } });
+  }
 }
 
 export default new UserService();
