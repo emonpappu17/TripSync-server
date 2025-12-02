@@ -50,6 +50,17 @@ class AuthController {
             data: result,
         });
     });
+
+    // logout = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    //     // In JWT, logout is handled on client side by removing token
+    //     // If using refresh tokens, you would invalidate them here
+    //     sendResponse(res, {
+    //         statusCode: StatusCodes.OK,
+    //         success: true,
+    //         message: 'Logout successful',
+    //         data: null,
+    //     });
+    // });
 }
 
 export default new AuthController();

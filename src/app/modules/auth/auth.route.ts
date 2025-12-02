@@ -1,7 +1,7 @@
 import { validationRequest } from "app/middlewares/validationRequest";
 import { Router } from "express";
-import { loginValidation, registerValidation } from "./auth.validation";
 import authController from "./auth.controller";
+import { loginValidation, registerValidation } from "./auth.validation";
 
 const router = Router();
 
@@ -16,6 +16,13 @@ router.post(
     validationRequest(loginValidation),
     authController.login
 );
+
+// router.post(
+//     '/logout',
+//     CheckAuth(Role.USER, Role.ADMIN),
+//     authController.logout
+// );
+
 
 
 export const authRoutes = router;

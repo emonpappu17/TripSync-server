@@ -7,6 +7,7 @@ import envVars from "./app/config/env";
 import globalErrorHandler from "./app/errors/globalErrorHandler";
 import NotFoundError from "./app/errors/notFoundError";
 import { router } from "./app/routes";
+import cookieParser from "cookie-parser";
 
 const app: Application = express();
 // Security middleware
@@ -31,6 +32,7 @@ app.use(
 
 // Body parser
 app.use(express.json({ limit: "10mb" }));
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 
 // Health check route

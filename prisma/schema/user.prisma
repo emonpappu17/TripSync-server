@@ -14,20 +14,21 @@ model User {
   currentLocation  String?
   gender           Gender?
   isVerified       Boolean  @default(false)
-  visitedCountries String[]
+  interests        String[] @default([])
+  visitedCountries String[] @default([])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relations
-  payments            Payment[]
-  sentRequests        TravelRequest[]      @relation("SentRequests")
-  receivedRequests    TravelRequest[]      @relation("ReceivedRequests")
-  userTravelInterests UserTravelInterest[]
-  travelPlans         TravelPlan[]
-  reviewsGiven        Review[]             @relation("ReviewsGiven")
-  reviewsReceived     Review[]             @relation("ReviewsReceived")
-  subscriptions       Subscription[]
+  payments         Payment[]
+  sentRequests     TravelRequest[] @relation("SentRequests")
+  receivedRequests TravelRequest[] @relation("ReceivedRequests")
+  // userTravelInterests UserTravelInterest[]
+  travelPlans      TravelPlan[]
+  reviewsGiven     Review[]        @relation("ReviewsGiven")
+  reviewsReceived  Review[]        @relation("ReviewsReceived")
+  subscriptions    Subscription[]
 
   @@index([email])
   @@index([role])

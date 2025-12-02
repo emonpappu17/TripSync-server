@@ -1,30 +1,18 @@
-import { prisma } from "app/lib/prisma";
-import sendResponse from "app/utils/sendResponse";
-import { Request, Response, Router } from "express";
-import { StatusCodes } from "http-status-codes";
+import { validationRequest } from "app/middlewares/validationRequest";
+import { Router } from "express";
+import { userValidation } from "./user.validation";
+import userController from "./user.controller";
+import { CheckAuth } from "app/middlewares/checkAuth";
+import { Role } from "@prisma/enums";
 
 const router = Router();
 
-router.post('/create-user', async (req: Request, res: Response) => {
-    const data = req.body;
-    const user = await prisma.user.create({
-        data
-    })
+router.patch(
+    '/updateUser',
+    CheckAuth(Role.ADMIN, Role.USER),
+    validationRequest(userValidation),
+    userController.updateUser
+);
 
-    await prisma.authProvider.create({
-        data: {
-            provider: "google",
-            providerId: "google-123456",
-            userId: "a7250b6c-1266-4d05-bde2-e98d2c15d7f3",
-        }
-    })
 
-    sendResponse(res, {
-        statusCode: StatusCodes.OK,
-        success: true,
-        message: 'User created successfully',
-        data: user
-    })
-})
-
-export const UserRoutes = router;
+export const userRoutes = router;
