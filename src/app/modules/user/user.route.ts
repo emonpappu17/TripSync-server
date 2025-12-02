@@ -9,6 +9,7 @@ const router = Router();
 
 router.patch(
     '/updateUser',
+    // image upload ++
     CheckAuth(Role.ADMIN, Role.USER),
     validationRequest(userValidation),
     userController.updateUser

@@ -12,7 +12,9 @@ const envSchema = z.object({
   CORS_ORIGIN: z.string().default("*"),
   JWT_REFRESH_SECRET: z.string().min(1),
   JWT_REFRESH_EXPIRES_IN: z.string().default("30d"),
-  JWT_SALT_ROUND: z.string().default("12"),
+  CLOUDINARY_CLOUD_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
 
 const env = envSchema.safeParse(process.env);
