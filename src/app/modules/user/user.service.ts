@@ -24,6 +24,29 @@ class UserService {
     return updatedUser as any;
   }
 
+  async getUserById(id: string): Promise<any> {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        fullName: true,
+        profileImage: true,
+        bio: true,
+        phone: true,
+        currentLocation: true,
+        gender: true,
+        interests: true,
+        visitedCountries: true,
+        email: true
+      }
+    });
+
+    if (!user) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+    }
+
+    return user
+  }
+
 }
 
 export default new UserService();
