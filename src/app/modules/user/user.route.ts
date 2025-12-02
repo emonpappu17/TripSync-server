@@ -10,7 +10,12 @@ import { userValidation } from "./user.validation";
 
 const router = Router();
 
-
+router.get(
+    '/',
+    CheckAuth(Role.ADMIN),
+    // validateRequest(getUsersQueryValidation),
+    userController.getAllUsers
+);
 
 router.get(
     '/me',

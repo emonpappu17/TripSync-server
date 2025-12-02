@@ -6,6 +6,7 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import userService from "./user.service";
 import { fileUploader } from "app/helper/fileUploader";
+import pick from "app/helper/pick";
 
 class UserController {
     updateUser = catchAsync(async (req: Request, res: Response) => {
@@ -30,6 +31,21 @@ class UserController {
             success: true,
             message: 'User updated successfully',
             data: result,
+        });
+    });
+
+    getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const filters = pick(req.query, ["search", "role", "isActive",])
+        const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"])
+
+        const result = await userService.getAllUsers(filters, options);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Users retrieved successfully',
+            data: result.data,
+            meta: result.meta,
         });
     });
 
