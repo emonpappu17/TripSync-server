@@ -117,25 +117,25 @@ class ReviewService {
         };
     }
 
-    // async updateReview(reviewId: string, fromReviewerId: string, updateData: IReviewUpdate) {
-    //     const review = await prisma.review.findFirst({
-    //         where: {
-    //             id: reviewId,
-    //             reviewerId,
-    //         },
-    //     });
+    async updateReview(reviewId: string, reviewerId: string, updateData: any) {
+        const review = await prisma.review.findFirst({
+            where: {
+                id: reviewId,
+                fromReviewerId: reviewerId,
+            },
+        });
 
-    //     if (!review) {
-    //         throw new ApiError(httpStatus.NOT_FOUND, 'Review not found');
-    //     }
+        if (!review) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Review not found');
+        }
 
-    //     const updated = await prisma.review.update({
-    //         where: { id: reviewId },
-    //         data: updateData,
-    //     });
+        const updated = await prisma.review.update({
+            where: { id: reviewId },
+            data: updateData,
+        });
 
-    //     return updated;
-    // }
+        return updated;
+    }
 
     // async deleteReview(reviewId: string, reviewerId: string) {
     //     const review = await prisma.review.findFirst({

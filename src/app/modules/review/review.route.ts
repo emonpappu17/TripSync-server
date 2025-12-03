@@ -3,7 +3,7 @@ import { CheckAuth } from "app/middlewares/checkAuth";
 import { validationRequest } from "app/middlewares/validationRequest";
 import { Router } from "express";
 import reviewController from "./review.controller";
-import { createReviewValidation } from "./review.validation";
+import { createReviewValidation, updateReviewValidation } from "./review.validation";
 
 const router = Router();
 
@@ -16,12 +16,12 @@ router.post(
     reviewController.createReview
 );
 
-// router.patch(
-//     '/:id',
-//     CheckAuth(Role.USER, Role.ADMIN),
-//     validationRequest(updateReviewValidation),
-//     reviewController.updateReview
-// );
+router.patch(
+    '/:id',
+    CheckAuth(Role.USER, Role.ADMIN),
+    validationRequest(updateReviewValidation),
+    reviewController.updateReview
+);
 
 // router.delete(
 //     '/:id',

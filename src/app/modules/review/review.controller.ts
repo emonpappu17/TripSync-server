@@ -31,18 +31,18 @@ class ReviewController {
         });
     });
 
-    // updateReview = catchAsync(async (req: Request, res: Response) => {
-    //     const { id } = req.params;
-    //     const reviewerId = (req as any).user.id;
-    //     const result = await reviewService.updateReview(id, reviewerId, req.body);
+    updateReview = catchAsync(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const reviewerId = (req as any).user.id;
+        const result = await reviewService.updateReview(id, reviewerId, req.body);
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Review updated successfully',
-    //         data: result,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Review updated successfully',
+            data: result,
+        });
+    });
 
     // deleteReview = catchAsync(async (req: Request, res: Response) => {
     //     const { id } = req.params;
