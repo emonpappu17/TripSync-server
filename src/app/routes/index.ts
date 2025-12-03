@@ -1,6 +1,7 @@
 import { authRoutes } from "app/modules/auth/auth.route";
 import { reviewRoutes } from "app/modules/review/review.route";
 import { travelPlanRoutes } from "app/modules/travelPlan/travelPlan.route";
+import { travelRequestRouters } from "app/modules/travelRequest/travelRequest.route";
 import { userRoutes } from "app/modules/user/user.route";
 
 import { Router } from "express";
@@ -23,6 +24,10 @@ const moduleRoutes = [
     {
         path: "/review",
         route: reviewRoutes
+    },
+    {
+        path: "/travelRequest",
+        route: travelRequestRouters
     },
 ];
 
