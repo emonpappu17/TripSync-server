@@ -137,22 +137,22 @@ class ReviewService {
         return updated;
     }
 
-    // async deleteReview(reviewId: string, reviewerId: string) {
-    //     const review = await prisma.review.findFirst({
-    //         where: {
-    //             id: reviewId,
-    //             reviewerId,
-    //         },
-    //     });
+    async deleteReview(reviewId: string, reviewerId: string) {
+        const review = await prisma.review.findFirst({
+            where: {
+                id: reviewId,
+                fromReviewerId: reviewerId,
+            },
+        });
 
-    //     if (!review) {
-    //         throw new ApiError(httpStatus.NOT_FOUND, 'Review not found');
-    //     }
+        if (!review) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Review not found');
+        }
 
-    //     await prisma.review.delete({
-    //         where: { id: reviewId },
-    //     });
-    // }
+        await prisma.review.delete({
+            where: { id: reviewId },
+        });
+    }
 }
 
 export default new ReviewService();

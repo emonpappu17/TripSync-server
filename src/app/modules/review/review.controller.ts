@@ -44,18 +44,18 @@ class ReviewController {
         });
     });
 
-    // deleteReview = catchAsync(async (req: Request, res: Response) => {
-    //     const { id } = req.params;
-    //     const reviewerId = (req as any).user.id;
-    //     await reviewService.deleteReview(id, reviewerId);
+    deleteReview = catchAsync(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const reviewerId = (req as any).user.id;
+        await reviewService.deleteReview(id, reviewerId);
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Review deleted successfully',
-    //         data: null,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Review deleted successfully',
+            data: null,
+        });
+    });
 }
 
 export default new ReviewController();
