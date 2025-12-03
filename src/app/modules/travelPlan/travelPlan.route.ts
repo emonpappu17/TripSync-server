@@ -23,11 +23,11 @@ router.post(
     travelPlanController.createTravelPlan
 );
 
-// router.get(
-//     '/my/plans',
-//     CheckAuth(Role.USER, Role.ADMIN),
-//     travelPlanController.getMyTravelPlans
-// );
+router.get(
+    '/my/plans',
+    CheckAuth(Role.USER, Role.ADMIN),
+    travelPlanController.getMyTravelPlans
+);
 
 // router.patch(
 //     '/:id',

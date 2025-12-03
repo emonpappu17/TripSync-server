@@ -46,6 +46,19 @@ class TravelPlanController {
         });
     });
 
+    getMyTravelPlans = catchAsync(async (req: Request, res: Response) => {
+        const userId = (req as any).user.id;
+        const result = await travelPlanService.getMyTravelPlans(userId, req.query);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Your travel plans retrieved successfully',
+            data: result.data,
+            meta: result.meta,
+        });
+    });
+
     // updateTravelPlan = catchAsync(async (req: Request, res: Response) => {
     //     const { id } = req.params;
     //     const userId = (req as any).user.id;
@@ -72,18 +85,7 @@ class TravelPlanController {
     //     });
     // });
 
-    // getMyTravelPlans = catchAsync(async (req: Request, res: Response) => {
-    //     const userId = (req as any).user.id;
-    //     const result = await travelPlanService.getMyTravelPlans(userId, req.query);
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Your travel plans retrieved successfully',
-    //         data: result.data,
-    //         meta: result.meta,
-    //     });
-    // });
 }
 
 export default new TravelPlanController();

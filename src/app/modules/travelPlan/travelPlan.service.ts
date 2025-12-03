@@ -147,6 +147,51 @@ class TravelPlanService {
         return travelPlan;
     }
 
+    async getMyTravelPlans(userId: string, query: any) {
+        const { page = 1, limit = 10, status } = query;
+        const convertedPage = Number(page);
+        const convertedLimit = Number(limit);
+        const skip = (convertedPage - 1) * convertedLimit;
+
+        const where: any = {
+            userId,
+            isDeleted: false,
+        };
+
+        if (status) {
+            where.status = status;
+        }
+
+        const [total, travelPlans] = await Promise.all([
+            prisma.travelPlan.count({ where }),
+            prisma.travelPlan.findMany({
+                where,
+                skip,
+                take: convertedLimit,
+                orderBy: { createdAt: 'desc' },
+                include: {
+                    // activities: true,
+                    _count: {
+                        select: {
+                            requests: true,
+                            // matches: true,
+                        },
+                    },
+                },
+            }),
+        ]);
+
+        return {
+            data: travelPlans,
+            meta: {
+                page: convertedPage,
+                limit: convertedLimit,
+                total,
+                totalPages: Math.ceil(total / convertedLimit),
+            },
+        };
+    }
+
     // async updateTravelPlan(id: string, userId: string, updateData: ITravelPlanUpdate) {
     //     const travelPlan = await prisma.travelPlan.findFirst({
     //         where: {
@@ -197,48 +242,7 @@ class TravelPlanService {
     //     });
     // }
 
-    // async getMyTravelPlans(userId: string, query: any) {
-    //     const { page = 1, limit = 10, status } = query;
-    //     const skip = (page - 1) * limit;
 
-    //     const where: any = {
-    //         userId,
-    //         deletedAt: null,
-    //     };
-
-    //     if (status) {
-    //         where.status = status;
-    //     }
-
-    //     const [total, travelPlans] = await Promise.all([
-    //         prisma.travelPlan.count({ where }),
-    //         prisma.travelPlan.findMany({
-    //             where,
-    //             skip,
-    //             take: limit,
-    //             orderBy: { createdAt: 'desc' },
-    //             include: {
-    //                 activities: true,
-    //                 _count: {
-    //                     select: {
-    //                         requests: true,
-    //                         matches: true,
-    //                     },
-    //                 },
-    //             },
-    //         }),
-    //     ]);
-
-    //     return {
-    //         data: travelPlans,
-    //         meta: {
-    //             page,
-    //             limit,
-    //             total,
-    //             totalPages: Math.ceil(total / limit),
-    //         },
-    //     };
-    // }
 }
 
 export default new TravelPlanService();
