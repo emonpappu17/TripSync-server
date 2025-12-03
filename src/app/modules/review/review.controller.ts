@@ -3,11 +3,12 @@ import catchAsync from "app/utils/catchAsync";
 import sendResponse from "app/utils/sendResponse";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import reviewService from "./review.service";
 
 class ReviewController {
     createReview = catchAsync(async (req: Request, res: Response) => {
-        const reviewerId = (req as any).user.id;
-        const result = await reviewService.createReview(reviewerId, req.body);
+        const fromReviewerId = (req as any).user.id;
+        const result = await reviewService.createReview(fromReviewerId, req.body);
 
         sendResponse(res, {
             statusCode: StatusCodes.CREATED,

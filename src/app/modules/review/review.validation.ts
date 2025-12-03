@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const createReviewValidation = z.object({
-    fromReviewerId: z
-        .string({ error: "fromReviewerId is required" })
-        .uuid("Invalid UUID format"),
+    // fromReviewerId: z
+    //     .string({ error: "fromReviewerId is required" })
+    //     .uuid("Invalid UUID format"),
 
     toReviewerId: z
         .string({ error: "toReviewerId is required" })
