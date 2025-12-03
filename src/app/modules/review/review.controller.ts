@@ -18,18 +18,18 @@ class ReviewController {
         });
     });
 
-    // getUserReviews = catchAsync(async (req: Request, res: Response) => {
-    //     const { userId } = req.params;
-    //     const result = await reviewService.getUserReviews(userId, req.query);
+    getUserReviews = catchAsync(async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const result = await reviewService.getUserReviews(userId, req.query);
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Reviews retrieved successfully',
-    //         data: result.data,
-    //         meta: result.meta,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Reviews retrieved successfully',
+            data: result.data,
+            meta: result.meta,
+        });
+    });
 
     // updateReview = catchAsync(async (req: Request, res: Response) => {
     //     const { id } = req.params;

@@ -7,7 +7,7 @@ import { createReviewValidation } from "./review.validation";
 
 const router = Router();
 
-// router.get('/user/:userId', reviewController.getUserReviews);
+router.get('/user/:userId', reviewController.getUserReviews);
 
 router.post(
     '/',

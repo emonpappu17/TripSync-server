@@ -49,73 +49,73 @@ class ReviewService {
                         profileImage: true,
                     }
                 }
-                // formReviewer: {
-                //     include: {
-                //         profile: {
-                //             select: {
-                //                 fullName: true,
-                //                 profileImage: true,
-                //             },
-                //         },
-                //     },
-                // },
             },
         });
 
         return review;
     }
 
-    // async getUserReviews(userId: string, query: any) {
-    //     const { page = 1, limit = 10 } = query;
-    //     const skip = (page - 1) * limit;
+    async getUserReviews(userId: string, query: any) {
+        const { page = 1, limit = 10 } = query;
+        const convertedPage = Number(page);
+        const convertedLimit = Number(limit);
 
-    //     const [total, reviews] = await Promise.all([
-    //         prisma.review.count({
-    //             where: {
-    //                 revieweeId: userId,
-    //                 isPublic: true,
-    //             },
-    //         }),
-    //         prisma.review.findMany({
-    //             where: {
-    //                 revieweeId: userId,
-    //                 isPublic: true,
-    //             },
-    //             skip,
-    //             take: limit,
-    //             orderBy: { createdAt: 'desc' },
-    //             include: {
-    //                 reviewer: {
-    //                     include: {
-    //                         profile: {
-    //                             select: {
-    //                                 fullName: true,
-    //                                 profileImage: true,
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //             },
-    //         }),
-    //     ]);
+        const skip = (convertedPage - 1) * convertedLimit;
 
-    //     // Calculate average rating
-    //     const avgRating = await prisma.review.aggregate({
-    //         where: { revieweeId: userId },
-    //         _avg: { rating: true },
-    //     });
+        const [total, reviews] = await Promise.all([
+            prisma.review.count({
+                where: {
+                    toReviewerId: userId,
+                    isPublic: true,
+                },
+            }),
+            prisma.review.findMany({
+                where: {
+                    toReviewerId: userId,
+                    isPublic: true,
+                },
+                skip,
+                take: convertedLimit,
+                orderBy: { createdAt: 'desc' },
+                include: {
+                    // formReviewer: {
+                    //     include: {
+                    //         profile: {
+                    //             select: {
+                    //                 fullName: true,
+                    //                 profileImage: true,
+                    //             },
+                    //         },
+                    //     },
+                    // },
 
-    //     return {
-    //         data: reviews,
-    //         meta: {
-    //             page,
-    //             limit,
-    //             total,
-    //             totalPages: Math.ceil(total / limit),
-    //             averageRating: avgRating._avg.rating || 0,
-    //         },
-    //     };
-    // }
+                    formReviewer: {
+                        select: {
+                            fullName: true,
+                            profileImage: true,
+                        }
+                    }
+                },
+            }),
+        ]);
+
+        // Calculate average rating
+        const avgRating = await prisma.review.aggregate({
+            where: { toReviewerId: userId },
+            _avg: { rating: true },
+        });
+
+        return {
+            data: reviews,
+            meta: {
+                page: convertedPage,
+                limit: convertedLimit,
+                total,
+                totalPages: Math.ceil(total / convertedLimit),
+                averageRating: avgRating._avg.rating || 0,
+            },
+        };
+    }
 
     // async updateReview(reviewId: string, fromReviewerId: string, updateData: IReviewUpdate) {
     //     const review = await prisma.review.findFirst({
