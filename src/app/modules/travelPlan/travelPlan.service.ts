@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { TravelPlan } from "@prisma/client";
+import ApiError from "app/errors/ApiError";
 import { calculatePagination, IOptions } from "app/helper/paginationHelper";
 import { prisma } from "app/lib/prisma";
+import { StatusCodes } from "http-status-codes";
 
 class TravelPlanService {
     async createTravelPlan(userId: string, planData: any) {
@@ -100,53 +102,50 @@ class TravelPlanService {
         };
     }
 
-    // async getTravelPlanById(id: string) {
-    //     const travelPlan = await prisma.travelPlan.findFirst({
-    //         where: {
-    //             id,
-    //             deletedAt: null,
-    //         },
-    //         include: {
-    //             activities: true,
-    //             user: {
-    //                 include: {
-    //                     profile: {
-    //                         include: {
-    //                             interests: true,
-    //                         },
-    //                     },
-    //                 },
-    //             },
-    //             requests: {
-    //                 where: { status: 'ACCEPTED' },
-    //                 include: {
-    //                     requester: {
-    //                         include: {
-    //                             profile: {
-    //                                 select: {
-    //                                     fullName: true,
-    //                                     profileImage: true,
-    //                                 },
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //             },
-    //             _count: {
-    //                 select: {
-    //                     requests: true,
-    //                     matches: true,
-    //                 },
-    //             },
-    //         },
-    //     });
+    async getTravelPlanById(id: string) {
+        const travelPlan = await prisma.travelPlan.findFirst({
+            where: {
+                id,
+                isDeleted: false,
+                isPublic: true,
+            },
+            include: {
+                user: {
+                    select: {
+                        fullName: true,
+                        profileImage: true,
+                        bio: true,
+                        gender: true,
+                        interests: true,
 
-    //     if (!travelPlan) {
-    //         throw new ApiError(httpStatus.NOT_FOUND, 'Travel plan not found');
-    //     }
+                    }
+                },
+                requests: {
+                    where: { status: 'ACCEPTED' },
+                    include: {
+                        requester: {
+                            select: {
+                                fullName: true,
+                                profileImage: true,
+                            },
+                        },
+                    },
+                },
+                _count: {
+                    select: {
+                        requests: true,
+                        // matches: true,
+                    },
+                },
+            },
+        });
 
-    //     return travelPlan;
-    // }
+        if (!travelPlan) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Travel plan not found');
+        }
+
+        return travelPlan;
+    }
 
     // async updateTravelPlan(id: string, userId: string, updateData: ITravelPlanUpdate) {
     //     const travelPlan = await prisma.travelPlan.findFirst({

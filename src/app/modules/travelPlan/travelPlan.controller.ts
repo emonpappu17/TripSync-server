@@ -34,17 +34,17 @@ class TravelPlanController {
         });
     });
 
-    // getTravelPlanById = catchAsync(async (req: Request, res: Response) => {
-    //     const { id } = req.params;
-    //     const result = await travelPlanService.getTravelPlanById(id);
+    getTravelPlanById = catchAsync(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const result = await travelPlanService.getTravelPlanById(id);
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Travel plan retrieved successfully',
-    //         data: result,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Travel plan retrieved successfully',
+            data: result,
+        });
+    });
 
     // updateTravelPlan = catchAsync(async (req: Request, res: Response) => {
     //     const { id } = req.params;

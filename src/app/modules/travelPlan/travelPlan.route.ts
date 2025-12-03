@@ -13,7 +13,7 @@ router.get(
     travelPlanController.getTravelPlans
 );
 
-// router.get('/:id', travelPlanController.getTravelPlanById);
+router.get('/:id', travelPlanController.getTravelPlanById);
 
 // Protected routes
 router.post(
