@@ -1,0 +1,32 @@
+import { Role } from "@prisma/enums";
+import { CheckAuth } from "app/middlewares/checkAuth";
+import { validationRequest } from "app/middlewares/validationRequest";
+import { Router } from "express";
+import reviewController from "./review.controller";
+import { createReviewValidation } from "./review.validation";
+
+const router = Router();
+
+// router.get('/user/:userId', reviewController.getUserReviews);
+
+router.post(
+    '/',
+    CheckAuth(Role.USER, Role.ADMIN),
+    validationRequest(createReviewValidation),
+    reviewController.createReview
+);
+
+// router.patch(
+//     '/:id',
+//     CheckAuth(Role.USER, Role.ADMIN),
+//     validationRequest(updateReviewValidation),
+//     reviewController.updateReview
+// );
+
+// router.delete(
+//     '/:id',
+//     CheckAuth(Role.USER, Role.ADMIN),
+//     reviewController.deleteReview
+// );
+
+export const reviewRoutes = router;

@@ -1,4 +1,5 @@
 import { authRoutes } from "app/modules/auth/auth.route";
+import { reviewRoutes } from "app/modules/review/review.route";
 import { travelPlanRoutes } from "app/modules/travelPlan/travelPlan.route";
 import { userRoutes } from "app/modules/user/user.route";
 
@@ -18,6 +19,10 @@ const moduleRoutes = [
     {
         path: "/travelPlan",
         route: travelPlanRoutes
+    },
+    {
+        path: "/review",
+        route: reviewRoutes
     },
 ];
 
