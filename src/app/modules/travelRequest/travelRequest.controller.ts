@@ -58,18 +58,18 @@ class TravelRequestController {
         });
     });
 
-    // cancelRequest = catchAsync(async (req: Request, res: Response) => {
-    //     const { id } = req.params;
-    //     const requesterId = (req as any).user.id;
-    //     await travelRequestService.cancelRequest(id, requesterId);
+    cancelRequest = catchAsync(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const requesterId = (req as any).user.id;
+        await travelRequestService.cancelRequest(id, requesterId);
 
-    //     sendResponse(res, {
-    //         statusCode: StatusCodes.OK,
-    //         success: true,
-    //         message: 'Request cancelled successfully',
-    //         data: null,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Request cancelled successfully',
+            data: null,
+        });
+    });
 }
 
 export default new TravelRequestController();

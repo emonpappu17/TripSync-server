@@ -33,10 +33,10 @@ router.patch(
     travelRequestController.updateRequestStatus
 );
 
-// router.patch(
-//     '/:id/cancel',
-//     CheckAuth(Role.USER, Role.ADMIN),
-//     travelRequestController.cancelRequest
-// );
+router.patch(
+    '/:id/cancel',
+    CheckAuth(Role.USER, Role.ADMIN),
+    travelRequestController.cancelRequest
+);
 
 export const travelRequestRouters = router;

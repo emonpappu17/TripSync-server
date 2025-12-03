@@ -234,24 +234,24 @@ class TravelRequestService {
         return updated;
     }
 
-    // async cancelRequest(requestId: string, requesterId: string) {
-    //     const request = await prisma.travelRequest.findFirst({
-    //         where: {
-    //             id: requestId,
-    //             requesterId,
-    //             status: RequestStatus.PENDING,
-    //         },
-    //     });
+    async cancelRequest(requestId: string, requesterId: string) {
+        const request = await prisma.travelRequest.findFirst({
+            where: {
+                id: requestId,
+                requesterId,
+                status: RequestStatus.PENDING,
+            },
+        });
 
-    //     if (!request) {
-    //         throw new ApiError(httpStatus.NOT_FOUND, 'Request not found or cannot be cancelled');
-    //     }
+        if (!request) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Request not found or cannot be cancelled');
+        }
 
-    //     await prisma.travelRequest.update({
-    //         where: { id: requestId },
-    //         data: { status: RequestStatus.CANCELLED },
-    //     });
-    // }
+        await prisma.travelRequest.update({
+            where: { id: requestId },
+            data: { status: RequestStatus.CANCELLED },
+        });
+    }
 }
 
 export default new TravelRequestService();
