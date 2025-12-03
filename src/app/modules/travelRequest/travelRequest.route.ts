@@ -14,11 +14,11 @@ router.post(
     travelRequestController.createRequest
 );
 
-// router.get(
-//     '/sent',
-//     CheckAuth(Role.USER, Role.ADMIN),
-//     travelRequestController.getSentRequests
-// );
+router.get(
+    '/sent',
+    CheckAuth(Role.USER, Role.ADMIN),
+    travelRequestController.getSentRequests
+);
 
 // router.get(
 //     '/received',

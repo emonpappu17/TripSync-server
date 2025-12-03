@@ -18,18 +18,18 @@ class TravelRequestController {
         });
     });
 
-    // getSentRequests = catchAsync(async (req: Request, res: Response) => {
-    //     const userId = (req as any).user.id;
-    //     const result = await travelRequestService.getMyRequests(userId, 'sent', req.query);
+    getSentRequests = catchAsync(async (req: Request, res: Response) => {
+        const userId = (req as any).user.id;
+        const result = await travelRequestService.getMyRequests(userId, 'sent', req.query);
 
-    //     sendResponse(res, {
-    //         statusCode: StatusCodes.OK,
-    //         success: true,
-    //         message: 'Sent requests retrieved successfully',
-    //         data: result.data,
-    //         meta: result.meta,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Sent requests retrieved successfully',
+            data: result.data,
+            meta: result.meta,
+        });
+    });
 
     // getReceivedRequests = catchAsync(async (req: Request, res: Response) => {
     //     const userId = (req as any).user.id;

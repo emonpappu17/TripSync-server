@@ -92,70 +92,82 @@ class TravelRequestService {
         return request;
     }
 
-    // async getMyRequests(userId: string, type: 'sent' | 'received', query: any) {
-    //     const { page = 1, limit = 10, status } = query;
-    //     const skip = (page - 1) * limit;
+    async getMyRequests(userId: string, type: 'sent' | 'received', query: any) {
+        const { page = 1, limit = 10, status } = query;
+        const convertedPage = Number(page);
+        const convertedLimit = Number(limit);
 
-    //     const where: any = {
-    //         ...(type === 'sent' ? { requesterId: userId } : { receiverId: userId }),
-    //     };
+        const skip = (convertedPage - 1) * convertedLimit;
 
-    //     if (status) {
-    //         where.status = status;
-    //     }
+        const where: any = {
+            ...(type === 'sent' ? { requesterId: userId } : { receiverId: userId }),
+        };
 
-    //     const [total, requests] = await Promise.all([
-    //         prisma.travelRequest.count({ where }),
-    //         prisma.travelRequest.findMany({
-    //             where,
-    //             skip,
-    //             take: limit,
-    //             orderBy: { createdAt: 'desc' },
-    //             include: {
-    //                 requester: {
-    //                     include: {
-    //                         profile: {
-    //                             select: {
-    //                                 fullName: true,
-    //                                 profileImage: true,
-    //                                 isVerified: true,
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //                 receiver: {
-    //                     include: {
-    //                         profile: {
-    //                             select: {
-    //                                 fullName: true,
-    //                                 profileImage: true,
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //                 travelPlan: {
-    //                     select: {
-    //                         id: true,
-    //                         title: true,
-    //                         destination: true,
-    //                         startDate: true,
-    //                         endDate: true,
-    //                     },
-    //                 },
-    //             },
-    //         }),
-    //     ]);
+        if (status) {
+            where.status = status;
+        }
 
-    //     return {
-    //         data: requests,
-    //         meta: {
-    //             page,
-    //             limit,
-    //             total,
-    //             totalPages: Math.ceil(total / limit),
-    //         },
-    //     };
-    // }
+        const [total, requests] = await Promise.all([
+            prisma.travelRequest.count({ where }),
+            prisma.travelRequest.findMany({
+                where,
+                skip,
+                take: convertedLimit,
+                orderBy: { createdAt: 'desc' },
+                include: {
+                    requester: {
+                        select: {
+                            fullName: true,
+                            profileImage: true,
+                            isVerified: true,
+                        },
+                        // include: {
+                        //     profile: {
+                        //         select: {
+                        //             fullName: true,
+                        //             profileImage: true,
+                        //             isVerified: true,
+                        //         },
+                        //     },
+                        // },
+                    },
+                    receiver: {
+                        select: {
+                            fullName: true,
+                            profileImage: true,
+                        },
+                        // include: {
+                        //     profile: {
+                        //         select: {
+                        //             fullName: true,
+                        //             profileImage: true,
+                        //         },
+                        //     },
+                        // },
+                    },
+                    travelPlan: {
+                        select: {
+                            id: true,
+                            title: true,
+                            destination: true,
+                            startDate: true,
+                            endDate: true,
+                        },
+                    },
+                },
+            }),
+        ]);
+
+        return {
+            data: requests,
+            meta: {
+                page: convertedPage,
+                limit: convertedLimit,
+                total,
+                totalPages: Math.ceil(total / convertedLimit),
+            },
+        };
+    }
 
     // async updateRequestStatus(
     //     requestId: string,
