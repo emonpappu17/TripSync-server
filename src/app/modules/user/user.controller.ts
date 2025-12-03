@@ -9,7 +9,7 @@ import { fileUploader } from "app/helper/fileUploader";
 import pick from "app/helper/pick";
 
 class UserController {
-    updateUser = catchAsync(async (req: Request, res: Response) => {
+    updateMyProfile = catchAsync(async (req: Request, res: Response) => {
         // req.body = JSON.parse(req.body.data);
 
         const file = req.file;
@@ -69,6 +69,19 @@ class UserController {
             statusCode: StatusCodes.OK,
             success: true,
             message: 'Profile retrieved successfully',
+            data: result,
+        });
+    });
+
+    changeUserStatus = catchAsync(async (req: Request, res: Response) => {
+        const { id } = req.params;
+
+        const result = await userService.changeUserStatus(id, req.body);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Status updated successfully',
             data: result,
         });
     });

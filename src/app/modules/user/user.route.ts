@@ -22,7 +22,6 @@ router.get(
     userController.getMyProfile
 );
 
-
 router.get(
     '/:id',
     CheckAuth(Role.ADMIN),
@@ -30,18 +29,17 @@ router.get(
 );
 
 router.patch(
-    '/:id',
-    CheckAuth(Role.ADMIN),
-    // validateRequest(updateUserValidation),
-    userController.updateUser
-);
-
-router.patch(
     '/update-my-profile',
     CheckAuth(Role.ADMIN, Role.USER),
     fileUploader.upload.single("file"),
     validationRequest(userValidation),
-    userController.updateUser
+    userController.updateMyProfile
+);
+
+router.patch(
+    '/:id/status',
+    CheckAuth(Role.ADMIN),
+    userController.changeUserStatus
 );
 
 router.delete(

@@ -20,6 +20,12 @@ class UserService {
       data: {
         ...updateData,
       },
+      select: {
+        fullName: true,
+        profileImage: true,
+        bio: true,
+        email: true,
+      }
     });
 
     return updatedUser as any;
@@ -114,6 +120,32 @@ class UserService {
 
     // For hard delete, use:
     // await prisma.user.delete({ where: { id } });
+  }
+
+  async changeUserStatus(id: string, updateData: Partial<User>): Promise<any> {
+    const user = await prisma.user.findUnique({
+      where: { id: id },
+    });
+
+    if (!user) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: id },
+      data: {
+        ...updateData,
+      },
+      select: {
+        fullName: true,
+        profileImage: true,
+        bio: true,
+        email: true,
+        isActive: true,
+      }
+    });
+
+    return updatedUser as any;
   }
 }
 
