@@ -49,6 +49,17 @@ class UserController {
         });
     });
 
+    getUserById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        const result = await userService.getUserById(id);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'User retrieved successfully',
+            data: result,
+        });
+    });
 
     getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const userId = (req as any).user.id;

@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import ApiError from "app/errors/ApiError";
-import { IOptions, paginationHelper } from "app/helper/paginationHelper";
+import { calculatePagination, IOptions } from "app/helper/paginationHelper";
 import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
 
@@ -32,7 +32,7 @@ class UserService {
       isActive,
     } = query;
 
-    const { page, limit, skip, sortBy, sortOrder } = paginationHelper.calculatePagination(options)
+    const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
 
     // Build where clause
     const where: any = {};
