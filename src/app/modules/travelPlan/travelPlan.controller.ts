@@ -72,20 +72,18 @@ class TravelPlanController {
         });
     });
 
-    // deleteTravelPlan = catchAsync(async (req: Request, res: Response) => {
-    //     const { id } = req.params;
-    //     const userId = (req as any).user.id;
-    //     await travelPlanService.deleteTravelPlan(id, userId);
+    deleteTravelPlan = catchAsync(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const userId = (req as any).user.id;
+        await travelPlanService.deleteTravelPlan(id, userId);
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Travel plan deleted successfully',
-    //         data: null,
-    //     });
-    // });
-
-
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Travel plan deleted successfully',
+            data: null,
+        });
+    });
 }
 
 export default new TravelPlanController();

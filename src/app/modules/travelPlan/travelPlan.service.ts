@@ -220,28 +220,28 @@ class TravelPlanService {
         return updated;
     }
 
-    // async deleteTravelPlan(id: string, userId: string) {
-    //     const travelPlan = await prisma.travelPlan.findFirst({
-    //         where: {
-    //             id,
-    //             userId,
-    //             deletedAt: null,
-    //         },
-    //     });
+    async deleteTravelPlan(id: string, userId: string) {
+        const travelPlan = await prisma.travelPlan.findFirst({
+            where: {
+                id,
+                userId,
+                isDeleted: false,
+            },
+        });
 
-    //     if (!travelPlan) {
-    //         throw new ApiError(
-    //             httpStatus.NOT_FOUND,
-    //             'Travel plan not found or you do not have permission to delete it'
-    //         );
-    //     }
+        if (!travelPlan) {
+            throw new ApiError(
+                StatusCodes.NOT_FOUND,
+                'Travel plan not found or you do not have permission to delete it'
+            );
+        }
 
-    //     // Soft delete
-    //     await prisma.travelPlan.update({
-    //         where: { id },
-    //         data: { deletedAt: new Date() },
-    //     });
-    // }
+        // Soft delete
+        await prisma.travelPlan.update({
+            where: { id },
+            data: { isDeleted: true },
+        });
+    }
 
 
 }

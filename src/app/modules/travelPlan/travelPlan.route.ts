@@ -36,11 +36,11 @@ router.patch(
     travelPlanController.updateTravelPlan
 );
 
-// router.delete(
-//     '/:id',
-//     CheckAuth(Role.USER, Role.ADMIN),
-//     travelPlanController.deleteTravelPlan
-// );
+router.delete(
+    '/:id',
+    CheckAuth(Role.USER, Role.ADMIN),
+    travelPlanController.deleteTravelPlan
+);
 
 
 export const travelPlanRoutes = router;
