@@ -1,6 +1,9 @@
 import { Role } from "@prisma/enums";
 import { CheckAuth } from "app/middlewares/checkAuth";
+import { validationRequest } from "app/middlewares/validationRequest";
 import { Router } from "express";
+import { createTravelPlanValidation } from "./travelPlan.validation";
+import travelPlanController from "./travelPlan.controller";
 
 const router = Router();
 
@@ -17,7 +20,7 @@ const router = Router();
 router.post(
     '/',
     CheckAuth(Role.USER, Role.ADMIN),
-    validateRequest(createTravelPlanValidation),
+    validationRequest(createTravelPlanValidation),
     travelPlanController.createTravelPlan
 );
 

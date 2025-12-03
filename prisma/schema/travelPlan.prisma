@@ -7,8 +7,10 @@ model TravelPlan {
     country      String?
     startDate    DateTime
     endDate      DateTime
-    budgetMin    Decimal?   @db.Decimal(10, 2)
-    budgetMax    Decimal?   @db.Decimal(10, 2)
+    budgetMin    Int?
+    budgetMax    Int?
+    // budgetMin    Decimal?   @db.Decimal(10, 2)
+    // budgetMax    Decimal?   @db.Decimal(10, 2)
     travelType   TravelType @default(SOLO)
     maxTravelers Int?
     status       TripStatus @default(PLANNING)
@@ -24,7 +26,7 @@ model TravelPlan {
     // Relations
     user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
     requests TravelRequest[]
-    reviews  Review[]       
+    reviews  Review[]
     // reviews  Review[]
 
     @@map("travel_plans")
