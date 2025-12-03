@@ -31,32 +31,32 @@ class TravelRequestController {
         });
     });
 
-    // getReceivedRequests = catchAsync(async (req: Request, res: Response) => {
-    //     const userId = (req as any).user.id;
-    //     const result = await travelRequestService.getMyRequests(userId, 'received', req.query);
+    getReceivedRequests = catchAsync(async (req: Request, res: Response) => {
+        const userId = (req as any).user.id;
+        const result = await travelRequestService.getMyRequests(userId, 'received', req.query);
 
-    //     sendResponse(res, {
-    //         statusCode: StatusCodes.OK,
-    //         success: true,
-    //         message: 'Received requests retrieved successfully',
-    //         data: result.data,
-    //         meta: result.meta,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Received requests retrieved successfully',
+            data: result.data,
+            meta: result.meta,
+        });
+    });
 
-    // updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
-    //     const { id } = req.params;
-    //     const receiverId = (req as any).user.id;
-    //     const { status } = req.body;
-    //     const result = await travelRequestService.updateRequestStatus(id, receiverId, status);
+    updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const receiverId = (req as any).user.id;
+        const { status } = req.body;
+        const result = await travelRequestService.updateRequestStatus(id, receiverId, status);
 
-    //     sendResponse(res, {
-    //         statusCode: StatusCodes.OK,
-    //         success: true,
-    //         message: 'Request status updated successfully',
-    //         data: result,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Request status updated successfully',
+            data: result,
+        });
+    });
 
     // cancelRequest = catchAsync(async (req: Request, res: Response) => {
     //     const { id } = req.params;

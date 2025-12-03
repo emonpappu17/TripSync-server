@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { RequestStatus } from "@prisma/enums";
 import ApiError from "app/errors/ApiError";
 import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
@@ -169,69 +170,69 @@ class TravelRequestService {
         };
     }
 
-    // async updateRequestStatus(
-    //     requestId: string,
-    //     receiverId: string,
-    //     status: RequestStatus
-    // ) {
-    //     const request = await prisma.travelRequest.findFirst({
-    //         where: {
-    //             id: requestId,
-    //             receiverId,
-    //         },
-    //         include: {
-    //             travelPlan: true,
-    //         },
-    //     });
+    async updateRequestStatus(
+        requestId: string,
+        receiverId: string,
+        status: RequestStatus
+    ) {
+        const request = await prisma.travelRequest.findFirst({
+            where: {
+                id: requestId,
+                receiverId,
+            },
+            include: {
+                travelPlan: true,
+            },
+        });
 
-    //     if (!request) {
-    //         throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
-    //     }
+        if (!request) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Request not found');
+        }
 
-    //     if (request.status !== RequestStatus.PENDING) {
-    //         throw new ApiError(
-    //             httpStatus.BAD_REQUEST,
-    //             'This request has already been processed'
-    //         );
-    //     }
+        if (request.status !== RequestStatus.PENDING) {
+            throw new ApiError(
+                StatusCodes.BAD_REQUEST,
+                'This request has already been processed'
+            );
+        }
 
-    //     const updated = await prisma.$transaction(async (tx) => {
-    //         const updatedRequest = await tx.travelRequest.update({
-    //             where: { id: requestId },
-    //             data: {
-    //                 status,
-    //                 respondedAt: new Date(),
-    //             },
-    //         });
+        const updated = await prisma.$transaction(async (tx) => {
+            const updatedRequest = await tx.travelRequest.update({
+                where: { id: requestId },
+                data: {
+                    status,
+                    // respondedAt: new Date(),
+                },
+            });
 
-    //         // If accepted, create travel match
-    //         if (status === RequestStatus.ACCEPTED) {
-    //             await tx.travelMatch.create({
-    //                 data: {
-    //                     travelPlanId: request.travelPlanId,
-    //                     user1Id: request.receiverId,
-    //                     user2Id: request.requesterId,
-    //                     isActive: true,
-    //                 },
-    //             });
-    //         }
+            // If accepted, create travel match
+            // if (status === RequestStatus.ACCEPTED) {
+            //     await tx.travelMatch.create({
+            //         data: {
+            //             travelPlanId: request.travelPlanId,
+            //             user1Id: request.receiverId,
+            //             user2Id: request.requesterId,
+            //             isActive: true,
+            //         },
+            //     });
+            // }
 
-    //         // Create notification
-    //         await tx.notification.create({
-    //             data: {
-    //                 userId: request.requesterId,
-    //                 title: `Request ${status.toLowerCase()}`,
-    //                 message: `Your request to join "${request.travelPlan.title}" has been ${status.toLowerCase()}`,
-    //                 type: 'request_update',
-    //                 link: `/travel-plans/${request.travelPlanId}`,
-    //             },
-    //         });
+            // Create notification
+            // await tx.notification.create({
+            //     data: {
+            //         userId: request.requesterId,
+            //         title: `Request ${status.toLowerCase()}`,
+            //         message: `Your request to join "${request.travelPlan.title}" has been ${status.toLowerCase()}`,
+            //         type: 'request_update',
+            //         link: `/travel-plans/${request.travelPlanId}`,
+            //     },
+            // });
 
-    //         return updatedRequest;
-    //     });
+            return updatedRequest;
+        });
 
-    //     return updated;
-    // }
+        return updated;
+    }
 
     // async cancelRequest(requestId: string, requesterId: string) {
     //     const request = await prisma.travelRequest.findFirst({
