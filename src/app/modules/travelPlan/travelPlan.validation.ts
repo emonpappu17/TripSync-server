@@ -57,7 +57,7 @@ export const createTravelPlanValidation = z
         }
     );
 
-export const updateTravelPlanZodSchema = z
+export const updateTravelPlanValidation = z
     .object({
         title: z.string().optional(),
         description: z.string().optional(),

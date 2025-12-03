@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { TravelPlan } from "@prisma/client";
+import { TravelPlan } from "@prisma/client";
 import ApiError from "app/errors/ApiError";
 import { calculatePagination, IOptions } from "app/helper/paginationHelper";
 import { prisma } from "app/lib/prisma";
@@ -192,32 +193,32 @@ class TravelPlanService {
         };
     }
 
-    // async updateTravelPlan(id: string, userId: string, updateData: ITravelPlanUpdate) {
-    //     const travelPlan = await prisma.travelPlan.findFirst({
-    //         where: {
-    //             id,
-    //             userId,
-    //             deletedAt: null,
-    //         },
-    //     });
+    async updateTravelPlan(id: string, userId: string, updateData: Partial<TravelPlan>) {
+        const travelPlan = await prisma.travelPlan.findFirst({
+            where: {
+                id,
+                userId,
+                isDeleted: false,
+            },
+        });
 
-    //     if (!travelPlan) {
-    //         throw new ApiError(
-    //             httpStatus.NOT_FOUND,
-    //             'Travel plan not found or you do not have permission to update it'
-    //         );
-    //     }
+        if (!travelPlan) {
+            throw new ApiError(
+                StatusCodes.NOT_FOUND,
+                'Travel plan not found or you do not have permission to update it'
+            );
+        }
 
-    //     const updated = await prisma.travelPlan.update({
-    //         where: { id },
-    //         data: updateData,
-    //         include: {
-    //             activities: true,
-    //         },
-    //     });
+        const updated = await prisma.travelPlan.update({
+            where: { id },
+            data: updateData,
+            // include: {
+            //     activities: true,
+            // },
+        });
 
-    //     return updated;
-    // }
+        return updated;
+    }
 
     // async deleteTravelPlan(id: string, userId: string) {
     //     const travelPlan = await prisma.travelPlan.findFirst({

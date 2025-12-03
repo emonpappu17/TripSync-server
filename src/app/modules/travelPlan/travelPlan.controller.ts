@@ -59,18 +59,18 @@ class TravelPlanController {
         });
     });
 
-    // updateTravelPlan = catchAsync(async (req: Request, res: Response) => {
-    //     const { id } = req.params;
-    //     const userId = (req as any).user.id;
-    //     const result = await travelPlanService.updateTravelPlan(id, userId, req.body);
+    updateTravelPlan = catchAsync(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const userId = (req as any).user.id;
+        const result = await travelPlanService.updateTravelPlan(id, userId, req.body);
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Travel plan updated successfully',
-    //         data: result,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Travel plan updated successfully',
+            data: result,
+        });
+    });
 
     // deleteTravelPlan = catchAsync(async (req: Request, res: Response) => {
     //     const { id } = req.params;
