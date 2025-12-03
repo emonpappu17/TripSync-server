@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { TravelPlan } from "@prisma/client";
+import { calculatePagination, IOptions } from "app/helper/paginationHelper";
 import { prisma } from "app/lib/prisma";
 
 class TravelPlanService {
@@ -14,97 +15,90 @@ class TravelPlanService {
         return travelPlan;
     }
 
-    // async getTravelPlans(query: ITravelPlanQuery) {
-    //     const {
-    //         page = 1,
-    //         limit = 10,
-    //         destination,
-    //         startDate,
-    //         endDate,
-    //         budgetMin,
-    //         budgetMax,
-    //         travelType,
-    //         status,
-    //         userId,
-    //         sortBy = 'createdAt',
-    //         sortOrder = 'desc',
-    //     } = query;
+    async getTravelPlans(query: any, options: IOptions) {
+        const {
+            search,
+            country,
+            destination,
+            startDate,
+            endDate,
+            budgetMin,
+            budgetMax,
+            travelType,
+            status,
+            userId,
+        } = query;
+        const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
 
-    //     const skip = (page - 1) * limit;
+        const where: any = {
+            isDeleted: false,
+            isPublic: true,
+        };
 
-    //     const where: any = {
-    //         deletedAt: null,
-    //         isPublic: true,
-    //     };
+        if (destination) {
+            where.destination = { contains: destination, mode: 'insensitive' };
+        }
 
-    //     if (destination) {
-    //         where.destination = { contains: destination, mode: 'insensitive' };
-    //     }
+        if (search) {
+            where.title = { contains: search, mode: 'insensitive' };
+        }
 
-    //     if (startDate && endDate) {
-    //         where.startDate = { gte: startDate };
-    //         where.endDate = { lte: endDate };
-    //     }
+        if (country) {
+            where.country = { contains: country, mode: 'insensitive' };
+        }
 
-    //     if (budgetMin !== undefined) {
-    //         where.budgetMin = { gte: budgetMin };
-    //     }
+        if (startDate && endDate) {
+            where.startDate = { gte: startDate };
+            where.endDate = { lte: endDate };
+        }
 
-    //     if (budgetMax !== undefined) {
-    //         where.budgetMax = { lte: budgetMax };
-    //     }
+        if (budgetMin !== undefined) {
+            where.budgetMin = { gte: Number(budgetMin) };
+        }
 
-    //     if (travelType) {
-    //         where.travelType = travelType;
-    //     }
+        if (budgetMax !== undefined) {
+            where.budgetMax = { lte: Number(budgetMax) };
+        }
 
-    //     if (status) {
-    //         where.status = status;
-    //     }
+        if (travelType) {
+            where.travelType = travelType;
+        }
 
-    //     if (userId) {
-    //         where.userId = userId;
-    //     }
+        if (status) {
+            where.status = status;
+        }
 
-    //     const [total, travelPlans] = await Promise.all([
-    //         prisma.travelPlan.count({ where }),
-    //         prisma.travelPlan.findMany({
-    //             where,
-    //             skip,
-    //             take: limit,
-    //             orderBy: { [sortBy]: sortOrder },
-    //             include: {
-    //                 activities: true,
-    //                 user: {
-    //                     include: {
-    //                         profile: {
-    //                             select: {
-    //                                 fullName: true,
-    //                                 profileImage: true,
-    //                                 isVerified: true,
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //                 _count: {
-    //                     select: {
-    //                         requests: true,
-    //                     },
-    //                 },
-    //             },
-    //         }),
-    //     ]);
+        if (userId) {
+            where.userId = userId;
+        }
 
-    //     return {
-    //         data: travelPlans,
-    //         meta: {
-    //             page,
-    //             limit,
-    //             total,
-    //             totalPages: Math.ceil(total / limit),
-    //         },
-    //     };
-    // }
+        const [total, travelPlans] = await Promise.all([
+            prisma.travelPlan.count({ where }),
+            prisma.travelPlan.findMany({
+                where,
+                skip,
+                take: limit,
+                orderBy: { [sortBy]: sortOrder },
+                include: {
+                    _count: {
+                        select: {
+                            requests: true,
+                        },
+                    },
+                },
+            }),
+        ]);
+
+        return {
+            data: travelPlans,
+            meta: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+            },
+        };
+    }
 
     // async getTravelPlanById(id: string) {
     //     const travelPlan = await prisma.travelPlan.findFirst({

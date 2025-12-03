@@ -4,6 +4,7 @@ import sendResponse from "app/utils/sendResponse";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import travelPlanService from "./travelPlan.service";
+import pick from "app/helper/pick";
 
 class TravelPlanController {
     createTravelPlan = catchAsync(async (req: Request, res: Response) => {
@@ -18,17 +19,20 @@ class TravelPlanController {
         });
     });
 
-    // getTravelPlans = catchAsync(async (req: Request, res: Response) => {
-    //     const result = await travelPlanService.getTravelPlans(req.query);
+    getTravelPlans = catchAsync(async (req: Request, res: Response) => {
+        const filters = pick(req.query, ["search", "destination", "country", "startDate", "endDate", "budgetMin", "budgetMax", "travelType", "status", "userId"])
+        const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"])
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Travel plans retrieved successfully',
-    //         data: result.data,
-    //         meta: result.meta,
-    //     });
-    // });
+        const result = await travelPlanService.getTravelPlans(filters, options);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Travel plans retrieved successfully',
+            data: result.data,
+            meta: result.meta,
+        });
+    });
 
     // getTravelPlanById = catchAsync(async (req: Request, res: Response) => {
     //     const { id } = req.params;

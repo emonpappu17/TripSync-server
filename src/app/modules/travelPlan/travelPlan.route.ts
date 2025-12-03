@@ -8,11 +8,10 @@ import travelPlanController from "./travelPlan.controller";
 const router = Router();
 
 // Public routes
-// router.get(
-//   '/',
-//   validateRequest(searchTravelPlansValidation),
-//   travelPlanController.getTravelPlans
-// );
+router.get(
+    '/',
+    travelPlanController.getTravelPlans
+);
 
 // router.get('/:id', travelPlanController.getTravelPlanById);
 
