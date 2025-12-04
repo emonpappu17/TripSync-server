@@ -31,17 +31,20 @@ class AdminController {
     });
 
 
-    // getAllUsers = catchAsync(async (req: Request, res: Response) => {
-    //     const result = await adminService.getAllUsers(req.query);
+    getAllUsers = catchAsync(async (req: Request, res: Response) => {
+        const filters = pick(req.query, ["search", "role", "isActive", "isVerified"])
+        const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"])
 
-    //     sendResponse(res, {
-    //         statusCode: statuscodes.OK,
-    //         success: true,
-    //         message: 'Users retrieved successfully',
-    //         data: result.data,
-    //         meta: result.meta,
-    //     });
-    // });
+        const result = await adminService.getAllUsers(filters, options);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Users retrieved successfully',
+            data: result.data,
+            meta: result.meta,
+        });
+    });
 
     // manageUser = catchAsync(async (req: Request, res: Response) => {
     //     const adminId = (req as any).user.id;

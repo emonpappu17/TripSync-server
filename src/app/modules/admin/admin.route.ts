@@ -18,7 +18,7 @@ router.get(
 );
 
 // // User Management
-// router.get('/users', adminController.getAllUsers);
+router.get('/users', adminController.getAllUsers);
 // router.post('/users/action', validationRequest(userActionValidation), adminController.manageUser);
 
 // // Content Moderation
