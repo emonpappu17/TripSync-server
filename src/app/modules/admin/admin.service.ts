@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RequestStatus, SubscriptionStatus, TripStatus } from "@prisma/enums";
 import ApiError from "app/errors/ApiError";
@@ -237,88 +238,88 @@ class AdminService {
         };
     }
 
-    // async manageUser(adminId: string, actionData: IUserManagement) {
-    //     const { userId, action, reason } = actionData;
+    async manageUser(adminId: string, actionData: any) {
+        const { userId, action, reason } = actionData;
 
-    //     const user = await prisma.user.findUnique({
-    //         where: { id: userId },
-    //         include: { profile: true },
-    //     });
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            // include: { profile: true },
+        });
 
-    //     if (!user) {
-    //         throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-    //     }
+        if (!user) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+        }
 
-    //     // Cannot perform action on yourself
-    //     if (userId === adminId) {
-    //         throw new ApiError(httpStatus.BAD_REQUEST, 'Cannot perform action on yourself');
-    //     }
+        // Cannot perform action on yourself
+        if (userId === adminId) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot perform action on yourself');
+        }
 
-    //     // Cannot manage other admins
-    //     if (user.role === 'ADMIN') {
-    //         throw new ApiError(httpStatus.FORBIDDEN, 'Cannot manage admin users');
-    //     }
+        // Cannot manage other admins
+        if (user.role === 'ADMIN') {
+            throw new ApiError(StatusCodes.FORBIDDEN, 'Cannot manage admin users');
+        }
 
-    //     let result;
+        let result;
 
-    //     switch (action) {
-    //         case 'BLOCK':
-    //             result = await prisma.user.update({
-    //                 where: { id: userId },
-    //                 data: { isActive: false },
-    //             });
-    //             break;
+        switch (action) {
+            case 'BLOCK':
+                result = await prisma.user.update({
+                    where: { id: userId },
+                    data: { isActive: false },
+                });
+                break;
 
-    //         case 'UNBLOCK':
-    //             result = await prisma.user.update({
-    //                 where: { id: userId },
-    //                 data: { isActive: true },
-    //             });
-    //             break;
+            case 'UNBLOCK':
+                result = await prisma.user.update({
+                    where: { id: userId },
+                    data: { isActive: true },
+                });
+                break;
 
-    //         case 'DELETE':
-    //             // Soft delete by deactivating
-    //             result = await prisma.user.update({
-    //                 where: { id: userId },
-    //                 data: { isActive: false },
-    //             });
-    //             break;
+            case 'DELETE':
+                // Soft delete by deactivating
+                result = await prisma.user.update({
+                    where: { id: userId },
+                    data: { isDeleted: false },
+                });
+                break;
 
-    //         case 'VERIFY':
-    //             await prisma.profile.update({
-    //                 where: { userId },
-    //                 data: { isVerified: true },
-    //             });
-    //             result = await prisma.user.findUnique({
-    //                 where: { id: userId },
-    //                 include: { profile: true },
-    //             });
-    //             break;
-    //     }
+            case 'VERIFY':
+                await prisma.user.update({
+                    where: { id: userId },
+                    data: { isVerified: true },
+                });
+                result = await prisma.user.findUnique({
+                    where: { id: userId },
+                    // include: { profile: true },
+                });
+                break;
+        }
 
-    //     // Log the action
-    //     await prisma.activityLog.create({
-    //         data: {
-    //             userId: adminId,
-    //             action: `USER_${action}`,
-    //             entityType: 'user',
-    //             entityId: userId,
-    //             description: reason || `Admin ${action.toLowerCase()}ed user ${user.email}`,
-    //         },
-    //     });
+        // Log the action
+        // await prisma.activityLog.create({
+        //     data: {
+        //         userId: adminId,
+        //         action: `USER_${action}`,
+        //         entityType: 'user',
+        //         entityId: userId,
+        //         description: reason || `Admin ${action.toLowerCase()}ed user ${user.email}`,
+        //     },
+        // });
 
-    //     // Notify user
-    //     await prisma.notification.create({
-    //         data: {
-    //             userId,
-    //             title: `Account ${action.toLowerCase()}`,
-    //             message: reason || `Your account has been ${action.toLowerCase()}ed by admin`,
-    //             type: 'admin_action',
-    //         },
-    //     });
+        // Notify user
+        // await prisma.notification.create({
+        //     data: {
+        //         userId,
+        //         title: `Account ${action.toLowerCase()}`,
+        //         message: reason || `Your account has been ${action.toLowerCase()}ed by admin`,
+        //         type: 'admin_action',
+        //     },
+        // });
 
-    //     return result;
-    // }
+        return result;
+    }
 
     // async moderateContent(adminId: string, moderationData: IContentModeration) {
     //     const { entityType, entityId, action, reason } = moderationData;

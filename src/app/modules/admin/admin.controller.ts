@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import catchAsync from "app/utils/catchAsync";
 import sendResponse from "app/utils/sendResponse";
 import { Request, Response } from "express";
@@ -46,17 +47,17 @@ class AdminController {
         });
     });
 
-    // manageUser = catchAsync(async (req: Request, res: Response) => {
-    //     const adminId = (req as any).user.id;
-    //     const result = await adminService.manageUser(adminId, req.body);
+    manageUser = catchAsync(async (req: Request, res: Response) => {
+        const adminId = (req as any).user.id;
+        const result = await adminService.manageUser(adminId, req.body);
 
-    //     sendResponse(res, {
-    //         statusCode: statuscodes.OK,
-    //         success: true,
-    //         message: 'User action completed successfully',
-    //         data: result,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'User action completed successfully',
+            data: result,
+        });
+    });
 
     // moderateContent = catchAsync(async (req: Request, res: Response) => {
     //     const adminId = (req as any).user.id;

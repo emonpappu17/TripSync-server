@@ -2,6 +2,8 @@ import { Role } from "@prisma/enums";
 import { CheckAuth } from "app/middlewares/checkAuth";
 import { Router } from "express";
 import adminController from "./admin.controller";
+import { validationRequest } from "app/middlewares/validationRequest";
+import { userActionValidation } from "./admin.validation";
 
 const router = Router();
 
@@ -18,8 +20,15 @@ router.get(
 );
 
 // // User Management
-router.get('/users', adminController.getAllUsers);
-// router.post('/users/action', validationRequest(userActionValidation), adminController.manageUser);
+router.get(
+    '/users',
+    adminController.getAllUsers
+);
+router.post(
+    '/users/action',
+    validationRequest(userActionValidation),
+    adminController.manageUser
+);
 
 // // Content Moderation
 // router.get('/travel-plans', adminController.getAllTravelPlans);
