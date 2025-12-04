@@ -586,66 +586,71 @@ class AdminService {
     //     };
     // }
 
-    // async getAllTravelPlans(query: any) {
-    //     const {
-    //         page = 1,
-    //         limit = 20,
-    //         search,
-    //         status,
-    //         sortBy = 'createdAt',
-    //         sortOrder = 'desc',
-    //     } = query;
+    async getAllTravelPlans(query: any, options: any) {
+        const {
+            // page = 1,
+            // limit = 20,
+            search,
+            status,
+            // sortBy = 'createdAt',
+            // sortOrder = 'desc',
+        } = query;
 
-    //     const skip = (page - 1) * limit;
-    //     const where: any = { deletedAt: null };
+        // const skip = (page - 1) * limit;
+        const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
+        const where: any = { isDeleted: false };
 
-    //     if (search) {
-    //         where.OR = [
-    //             { title: { contains: search, mode: 'insensitive' } },
-    //             { destination: { contains: search, mode: 'insensitive' } },
-    //         ];
-    //     }
+        if (search) {
+            where.OR = [
+                { title: { contains: search, mode: 'insensitive' } },
+                { destination: { contains: search, mode: 'insensitive' } },
+            ];
+        }
 
-    //     if (status) where.status = status;
+        if (status) where.status = status;
 
-    //     const [total, plans] = await Promise.all([
-    //         prisma.travelPlan.count({ where }),
-    //         prisma.travelPlan.findMany({
-    //             where,
-    //             skip,
-    //             take: limit,
-    //             orderBy: { [sortBy]: sortOrder },
-    //             include: {
-    //                 user: {
-    //                     include: {
-    //                         profile: {
-    //                             select: {
-    //                                 fullName: true,
-    //                                 profileImage: true,
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //                 _count: {
-    //                     select: {
-    //                         requests: true,
-    //                         activities: true,
-    //                     },
-    //                 },
-    //             },
-    //         }),
-    //     ]);
+        const [total, plans] = await Promise.all([
+            prisma.travelPlan.count({ where }),
+            prisma.travelPlan.findMany({
+                where,
+                skip,
+                take: limit,
+                orderBy: { [sortBy]: sortOrder },
+                include: {
+                    user: {
+                        select: {
+                            fullName: true,
+                            profileImage: true,
+                        },
+                        // include: {
+                        //     profile: {
+                        //         select: {
+                        //             fullName: true,
+                        //             profileImage: true,
+                        //         },
+                        //     },
+                        // },
+                    },
+                    _count: {
+                        select: {
+                            requests: true,
+                            // activities: true,
+                        },
+                    },
+                },
+            }),
+        ]);
 
-    //     return {
-    //         data: plans,
-    //         meta: {
-    //             page,
-    //             limit,
-    //             total,
-    //             totalPages: Math.ceil(total / limit),
-    //         },
-    //     };
-    // }
+        return {
+            data: plans,
+            meta: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+            },
+        };
+    }
 }
 
 export default new AdminService();

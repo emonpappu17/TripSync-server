@@ -31,7 +31,7 @@ router.post(
 );
 
 // // Content Moderation
-// router.get('/travel-plans', adminController.getAllTravelPlans);
+router.get('/travel-plans', adminController.getAllTravelPlans);
 // router.post('/moderate', validationRequest(contentModerationValidation), adminController.moderateContent);
 
 // // Activity Logs

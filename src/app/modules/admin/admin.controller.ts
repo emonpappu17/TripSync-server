@@ -84,17 +84,20 @@ class AdminController {
     //     });
     // });
 
-    // getAllTravelPlans = catchAsync(async (req: Request, res: Response) => {
-    //     const result = await adminService.getAllTravelPlans(req.query);
+    getAllTravelPlans = catchAsync(async (req: Request, res: Response) => {
+        const filters = pick(req.query, ["search", "status"])
+        const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"])
 
-    //     sendResponse(res, {
-    //         statusCode: statuscodes.OK,
-    //         success: true,
-    //         message: 'Travel plans retrieved successfully',
-    //         data: result.data,
-    //         meta: result.meta,
-    //     });
-    // });
+        const result = await adminService.getAllTravelPlans(filters, options);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Travel plans retrieved successfully',
+            data: result.data,
+            meta: result.meta,
+        });
+    });
 }
 
 export default new AdminController();
