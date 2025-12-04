@@ -11,7 +11,11 @@ router.use(CheckAuth(Role.ADMIN));
 // Dashboard
 router.get('/dashboard/stats', adminController.getDashboardStats);
 
-// router.get('/analytics', validationRequest(analyticsQueryValidation), adminController.getAnalytics);
+router.get(
+    '/analytics',
+    // validationRequest(analyticsQueryValidation),
+    adminController.getAnalytics
+);
 
 // // User Management
 // router.get('/users', adminController.getAllUsers);

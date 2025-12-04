@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RequestStatus, SubscriptionStatus, TripStatus } from "@prisma/enums";
+import ApiError from "app/errors/ApiError";
 import { prisma } from "app/lib/prisma";
+import { StatusCodes } from "http-status-codes";
 
 class AdminService {
     async getDashboardStats() {
@@ -387,42 +390,42 @@ class AdminService {
     //     return review;
     // }
 
-    // async getAnalytics(query: IAnalyticsQuery) {
-    //     const { startDate, endDate, type, groupBy = 'DAY' } = query;
+    async getAnalytics(query: any) {
+        const { startDate, endDate, type, groupBy = 'DAY' } = query;
 
-    //     const start = startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    //     const end = endDate || new Date();
+        const start = startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const end = endDate || new Date();
 
-    //     switch (type) {
-    //         case 'USERS':
-    //             return this.getUserAnalytics(start, end, groupBy);
-    //         case 'REVENUE':
-    //             return this.getRevenueAnalytics(start, end, groupBy);
-    //         case 'TRAVEL_PLANS':
-    //             return this.getTravelPlanAnalytics(start, end, groupBy);
-    //         case 'REVIEWS':
-    //             return this.getReviewAnalytics(start, end, groupBy);
-    //         default:
-    //             throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid analytics type');
-    //     }
-    // }
+        switch (type) {
+            case 'USERS':
+                return this.getUserAnalytics(start, end, groupBy);
+            // case 'REVENUE':
+            //     return this.getRevenueAnalytics(start, end, groupBy);
+            case 'TRAVEL_PLANS':
+                return this.getTravelPlanAnalytics(start, end, groupBy);
+            case 'REVIEWS':
+                return this.getReviewAnalytics(start, end, groupBy);
+            default:
+                throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid analytics type');
+        }
+    }
 
-    // private async getUserAnalytics(startDate: Date, endDate: Date, groupBy: string) {
-    //     const users = await prisma.user.findMany({
-    //         where: {
-    //             createdAt: {
-    //                 gte: startDate,
-    //                 lte: endDate,
-    //             },
-    //         },
-    //         select: {
-    //             createdAt: true,
-    //             role: true,
-    //         },
-    //     });
+    private async getUserAnalytics(startDate: Date, endDate: Date, groupBy: string) {
+        const users = await prisma.user.findMany({
+            where: {
+                createdAt: {
+                    gte: startDate,
+                    lte: endDate,
+                },
+            },
+            select: {
+                createdAt: true,
+                role: true,
+            },
+        });
 
-    //     return this.groupByDate(users, 'createdAt', groupBy);
-    // }
+        return this.groupByDate(users, 'createdAt', groupBy);
+    }
 
     // private async getRevenueAnalytics(startDate: Date, endDate: Date, groupBy: string) {
     //     const payments = await prisma.payment.findMany({
@@ -442,76 +445,76 @@ class AdminService {
     //     return this.groupByDate(payments, 'paidAt', groupBy, true);
     // }
 
-    // private async getTravelPlanAnalytics(startDate: Date, endDate: Date, groupBy: string) {
-    //     const plans = await prisma.travelPlan.findMany({
-    //         where: {
-    //             createdAt: {
-    //                 gte: startDate,
-    //                 lte: endDate,
-    //             },
-    //             deletedAt: null,
-    //         },
-    //         select: {
-    //             createdAt: true,
-    //             status: true,
-    //         },
-    //     });
+    private async getTravelPlanAnalytics(startDate: Date, endDate: Date, groupBy: string) {
+        const plans = await prisma.travelPlan.findMany({
+            where: {
+                createdAt: {
+                    gte: startDate,
+                    lte: endDate,
+                },
+                isDeleted: false,
+            },
+            select: {
+                createdAt: true,
+                status: true,
+            },
+        });
 
-    //     return this.groupByDate(plans, 'createdAt', groupBy);
-    // }
+        return this.groupByDate(plans, 'createdAt', groupBy);
+    }
 
-    // private async getReviewAnalytics(startDate: Date, endDate: Date, groupBy: string) {
-    //     const reviews = await prisma.review.findMany({
-    //         where: {
-    //             createdAt: {
-    //                 gte: startDate,
-    //                 lte: endDate,
-    //             },
-    //         },
-    //         select: {
-    //             createdAt: true,
-    //             rating: true,
-    //         },
-    //     });
+    private async getReviewAnalytics(startDate: Date, endDate: Date, groupBy: string) {
+        const reviews = await prisma.review.findMany({
+            where: {
+                createdAt: {
+                    gte: startDate,
+                    lte: endDate,
+                },
+            },
+            select: {
+                createdAt: true,
+                rating: true,
+            },
+        });
 
-    //     return this.groupByDate(reviews, 'createdAt', groupBy);
-    // }
+        return this.groupByDate(reviews, 'createdAt', groupBy);
+    }
 
-    // private groupByDate(data: any[], dateField: string, groupBy: string, sumAmount = false) {
-    //     const grouped: any = {};
+    private groupByDate(data: any[], dateField: string, groupBy: string, sumAmount = false) {
+        const grouped: any = {};
 
-    //     data.forEach((item) => {
-    //         const date = new Date(item[dateField]);
-    //         let key: string;
+        data.forEach((item) => {
+            const date = new Date(item[dateField]);
+            let key: string;
 
-    //         if (groupBy === 'DAY') {
-    //             key = date.toISOString().split('T')[0];
-    //         } else if (groupBy === 'WEEK') {
-    //             const weekStart = new Date(date);
-    //             weekStart.setDate(date.getDate() - date.getDay());
-    //             key = weekStart.toISOString().split('T')[0];
-    //         } else {
-    //             key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-    //         }
+            if (groupBy === 'DAY') {
+                key = date.toISOString().split('T')[0];
+            } else if (groupBy === 'WEEK') {
+                const weekStart = new Date(date);
+                weekStart.setDate(date.getDate() - date.getDay());
+                key = weekStart.toISOString().split('T')[0];
+            } else {
+                key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+            }
 
-    //         if (!grouped[key]) {
-    //             grouped[key] = sumAmount ? 0 : 0;
-    //         }
+            if (!grouped[key]) {
+                grouped[key] = sumAmount ? 0 : 0;
+            }
 
-    //         if (sumAmount) {
-    //             grouped[key] += Number(item.amount);
-    //         } else {
-    //             grouped[key]++;
-    //         }
-    //     });
+            if (sumAmount) {
+                grouped[key] += Number(item.amount);
+            } else {
+                grouped[key]++;
+            }
+        });
 
-    //     return Object.keys(grouped)
-    //         .sort()
-    //         .map((date) => ({
-    //             date,
-    //             value: grouped[date],
-    //         }));
-    // }
+        return Object.keys(grouped)
+            .sort()
+            .map((date) => ({
+                date,
+                value: grouped[date],
+            }));
+    }
 
     // async getActivityLogs(query: any) {
     //     const { page = 1, limit = 50, action, userId, startDate, endDate } = query;

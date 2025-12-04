@@ -3,6 +3,7 @@ import sendResponse from "app/utils/sendResponse";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import adminService from "./admin.service";
+import pick from "app/helper/pick";
 
 class AdminController {
     getDashboardStats = catchAsync(async (req: Request, res: Response) => {
@@ -15,6 +16,20 @@ class AdminController {
             data: result,
         });
     });
+
+    getAnalytics = catchAsync(async (req: Request, res: Response) => {
+        const filters = pick(req.query, ["startDate", "endDate", "type", "groupBy"])
+
+        const result = await adminService.getAnalytics(filters);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Analytics data retrieved successfully',
+            data: result,
+        });
+    });
+
 
     // getAllUsers = catchAsync(async (req: Request, res: Response) => {
     //     const result = await adminService.getAllUsers(req.query);
@@ -52,16 +67,6 @@ class AdminController {
     //     });
     // });
 
-    // getAnalytics = catchAsync(async (req: Request, res: Response) => {
-    //     const result = await adminService.getAnalytics(req.query);
-
-    //     sendResponse(res, {
-    //         statusCode: StatusCodes.OK,
-    //         success: true,
-    //         message: 'Analytics data retrieved successfully',
-    //         data: result,
-    //     });
-    // });
 
     // getActivityLogs = catchAsync(async (req: Request, res: Response) => {
     //     const result = await adminService.getActivityLogs(req.query);
