@@ -1,4 +1,6 @@
+import { adminRoutes } from "app/modules/admin/admin.route";
 import { authRoutes } from "app/modules/auth/auth.route";
+import { paymentRoutes } from "app/modules/payment/payment.route";
 import { reviewRoutes } from "app/modules/review/review.route";
 import { travelPlanRoutes } from "app/modules/travelPlan/travelPlan.route";
 import { travelRequestRouters } from "app/modules/travelRequest/travelRequest.route";
@@ -28,6 +30,14 @@ const moduleRoutes = [
     {
         path: "/travelRequest",
         route: travelRequestRouters
+    },
+    {
+        path: "/payment",
+        route: paymentRoutes
+    },
+    {
+        path: "/admin",
+        route: adminRoutes
     },
 ];
 
