@@ -18,6 +18,20 @@ class ReviewController {
         });
     });
 
+    getMyReviews = catchAsync(async (req: Request, res: Response) => {
+        const userId = req.user?.id;
+
+        const result = await reviewService.getUserReviews(userId, req.query);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Reviews retrieved successfully',
+            data: result.data,
+            meta: result.meta,
+        });
+    });
+
     getUserReviews = catchAsync(async (req: Request, res: Response) => {
         const { userId } = req.params;
         const result = await reviewService.getUserReviews(userId, req.query);

@@ -7,7 +7,14 @@ import { createReviewValidation, updateReviewValidation } from "./review.validat
 
 const router = Router();
 
+router.get(
+    '/my-reviews',
+    CheckAuth(Role.USER, Role.ADMIN),
+    reviewController.getMyReviews);
+
+
 router.get('/user/:userId', reviewController.getUserReviews);
+
 
 router.post(
     '/',

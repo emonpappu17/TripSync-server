@@ -49,6 +49,20 @@ class UserController {
         });
     });
 
+    getUserStats = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        // const id = req.params.id || (req as any).user.id;
+
+        const result = await userService.getUserStats(id);
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'User statistics retrieved successfully',
+            data: result,
+        });
+    });
+
     getUserById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const result = await userService.getUserById(id);

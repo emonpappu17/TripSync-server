@@ -62,6 +62,9 @@ class ReviewService {
 
         const skip = (convertedPage - 1) * convertedLimit;
 
+        console.log({ userId });
+
+
         const [total, reviews] = await Promise.all([
             prisma.review.count({
                 where: {
@@ -88,7 +91,12 @@ class ReviewService {
                     //         },
                     //     },
                     // },
-
+                    tourPlanReview: {
+                        select: {
+                            destination: true,
+                            country: true
+                        }
+                    },
                     formReviewer: {
                         select: {
                             fullName: true,

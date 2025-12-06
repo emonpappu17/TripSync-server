@@ -25,6 +25,17 @@ router.get(
     CheckAuth(Role.ADMIN),
     userController.getUserById
 );
+router.get(
+    '/:id',
+    CheckAuth(Role.ADMIN),
+    userController.getUserById
+);
+
+router.get(
+    '/stats/:id',
+    CheckAuth(Role.USER, Role.ADMIN),
+    userController.getUserStats
+);
 
 router.patch(
     '/update-my-profile',

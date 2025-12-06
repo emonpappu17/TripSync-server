@@ -80,6 +80,31 @@ class UserService {
     };
   }
 
+  // async getUserById(id: string): Promise<any> {
+  //   const user = await prisma.user.findUnique({
+  //     where: { id },
+  //     select: {
+  //       fullName: true,
+  //       profileImage: true,
+  //       bio: true,
+  //       phone: true,
+  //       role: true,
+  //       isVerified: true,
+  //       currentLocation: true,
+  //       gender: true,
+  //       interests: true,
+  //       visitedCountries: true,
+  //       email: true
+  //     }
+  //   });
+
+  //   if (!user) {
+  //     throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+  //   }
+
+  //   return user
+  // }
+
   async getUserById(id: string): Promise<any> {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -88,19 +113,94 @@ class UserService {
         profileImage: true,
         bio: true,
         phone: true,
+        role: true,
+        isVerified: true,
         currentLocation: true,
         gender: true,
         interests: true,
         visitedCountries: true,
-        email: true
-      }
+        email: true,
+
+        // Stats
+        _count: {
+          select: {
+            travelPlans: {
+              where: {
+                status: "COMPLETED",
+              },
+            },
+            reviewsGiven: true,
+            reviewsReceived: true,
+            sentRequests: true,
+          },
+        },
+
+        reviewsReceived: {
+          select: { rating: true },
+        },
+      },
     });
 
     if (!user) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+    }
+
+    // Calculate average rating
+    const avgRating =
+      user.reviewsReceived.length > 0
+        ? user.reviewsReceived.reduce((sum, r) => sum + r.rating, 0) /
+        user.reviewsReceived.length
+        : 0;
+
+    return {
+      ...user,
+      stats: {
+        travelPlansCount: user._count.travelPlans,
+        reviewsGivenCount: user._count.reviewsGiven,
+        reviewsReceivedCount: user._count.reviewsReceived,
+        requestsSentCount: user._count.sentRequests,
+        averageRating: Math.round(avgRating * 10) / 10,
+      },
+    };
+  }
+
+
+  async getUserStats(userId: string) {
+    const stats = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        _count: {
+          select: {
+            travelPlans: true,
+            reviewsGiven: true,
+            reviewsReceived: true,
+            sentRequests: true,
+          },
+        },
+        reviewsReceived: {
+          select: { rating: true },
+        },
+      },
+    });
+
+    if (!stats) {
       throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
     }
 
-    return user
+    // Calculate average rating
+    const avgRating =
+      stats.reviewsReceived.length > 0
+        ? stats.reviewsReceived.reduce((sum, r) => sum + r.rating, 0) /
+        stats.reviewsReceived.length
+        : 0;
+
+    return {
+      travelPlansCount: stats._count.travelPlans,
+      reviewsGivenCount: stats._count.reviewsGiven,
+      reviewsReceivedCount: stats._count.reviewsReceived,
+      requestsSentCount: stats._count.sentRequests,
+      averageRating: Math.round(avgRating * 10) / 10,
+    };
   }
 
   async deleteUser(id: string): Promise<void> {
