@@ -62,7 +62,7 @@ class ReviewService {
 
         const skip = (convertedPage - 1) * convertedLimit;
 
-        console.log({ userId });
+        // console.log({ userId });
 
 
         const [total, reviews] = await Promise.all([

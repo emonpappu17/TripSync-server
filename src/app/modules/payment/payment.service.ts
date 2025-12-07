@@ -61,7 +61,7 @@ class PaymentService {
             },
         });
 
-        console.log({ paymentIntent });
+        // console.log({ paymentIntent });
 
         // Create pending payment record
         const payment = await prisma.payment.create({
