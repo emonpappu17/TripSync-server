@@ -109,6 +109,7 @@ class UserService {
     const user = await prisma.user.findUnique({
       where: { id },
       select: {
+        id: true,
         fullName: true,
         profileImage: true,
         bio: true,

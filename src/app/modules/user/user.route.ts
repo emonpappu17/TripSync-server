@@ -2,11 +2,18 @@ import { Router } from "express";
 import userController from "./user.controller";
 import { CheckAuth } from "app/middlewares/checkAuth";
 import { Role } from "@prisma/enums";
-import { fileUploader } from "app/helper/fileUploader";
+// import { fileUploader } from "app/helper/fileUploader";
 import { validationRequest } from "app/middlewares/validationRequest";
 import { userValidation } from "./user.validation";
+import { fileUploader } from "app/helper/fileUploader";
 
 const router = Router();
+
+// router.get(
+//     '/:id',
+//     // CheckAuth(Role.ADMIN),
+//     userController.getUserById
+// );
 
 router.get(
     '/',
@@ -22,20 +29,18 @@ router.get(
 
 router.get(
     '/:id',
-    CheckAuth(Role.ADMIN),
+    // CheckAuth(Role.ADMIN),
     userController.getUserById
 );
-router.get(
-    '/:id',
-    CheckAuth(Role.ADMIN),
-    userController.getUserById
-);
+
 
 router.get(
     '/stats/:id',
     CheckAuth(Role.USER, Role.ADMIN),
     userController.getUserStats
 );
+
+
 
 router.patch(
     '/update-my-profile',
@@ -50,6 +55,8 @@ router.patch(
     CheckAuth(Role.ADMIN),
     userController.changeUserStatus
 );
+
+
 
 router.delete(
     '/:id',

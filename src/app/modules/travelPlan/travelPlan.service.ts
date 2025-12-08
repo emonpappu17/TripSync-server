@@ -11,7 +11,9 @@ class TravelPlanService {
         const travelPlan = await prisma.travelPlan.create({
             data: {
                 userId,
-                ...planData
+                ...planData,
+                startDate: planData.startDate ? new Date(planData.startDate) : undefined,
+                endDate: planData.endDate ? new Date(planData.endDate) : undefined,
             },
         });
 
@@ -113,12 +115,56 @@ class TravelPlanService {
             include: {
                 user: {
                     select: {
+                        isVerified: true,
                         fullName: true,
                         profileImage: true,
                         bio: true,
                         gender: true,
                         interests: true,
+                    }
+                },
+                requests: {
+                    where: { status: 'ACCEPTED' },
+                    include: {
+                        requester: {
+                            select: {
+                                fullName: true,
+                                profileImage: true,
+                            },
+                        },
+                    },
+                },
+                _count: {
+                    select: {
+                        requests: true,
+                        // matches: true,
+                    },
+                },
+            },
+        });
 
+        if (!travelPlan) {
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Travel plan not found');
+        }
+
+        return travelPlan;
+    }
+    async getTravelPlanByUserId(id: string) {
+        const travelPlan = await prisma.travelPlan.findFirst({
+            where: {
+                userId: id,
+                isDeleted: false,
+                isPublic: true,
+            },
+            include: {
+                user: {
+                    select: {
+                        isVerified: true,
+                        fullName: true,
+                        profileImage: true,
+                        bio: true,
+                        gender: true,
+                        interests: true,
                     }
                 },
                 requests: {

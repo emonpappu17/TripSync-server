@@ -5,7 +5,7 @@ import sendResponse from "app/utils/sendResponse";
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import userService from "./user.service";
-import { fileUploader } from "app/helper/fileUploader";
+// import { fileUploader } from "app/helper/fileUploader";
 import pick from "app/helper/pick";
 
 class UserController {
@@ -16,8 +16,9 @@ class UserController {
         // console.log({ file });
 
         if (file) {
-            const updatedImage = await fileUploader.uploadToCloudinary(file);
-            req.body.profileImage = updatedImage?.secure_url;
+            req.body.profileImage =  req?.file?.path;;
+            // const updatedImage = await fileUploader.uploadToCloudinary(file);
+            // req.body.profileImage = updatedImage?.secure_url;
         }
 
         // console.log('req.body==>', req.body);
