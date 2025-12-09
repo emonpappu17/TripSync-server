@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { TravelPlan } from "@prisma/client";
-import { TravelPlan } from "@prisma/client";
+import { TravelPlan, TripStatus } from "@prisma/client";
 import ApiError from "app/errors/ApiError";
 import { calculatePagination, IOptions } from "app/helper/paginationHelper";
 import { prisma } from "app/lib/prisma";
@@ -35,6 +35,8 @@ class TravelPlanService {
         } = query;
         const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
 
+        // console.log({ query });
+
         const where: any = {
             isDeleted: false,
             isPublic: true,
@@ -53,8 +55,10 @@ class TravelPlanService {
         }
 
         if (startDate && endDate) {
-            where.startDate = { gte: startDate };
-            where.endDate = { lte: endDate };
+            where.startDate = { gte: startDate ? new Date(startDate) : undefined };
+            // where.startDate = { gte: startDate };
+            where.endDate = { lte: endDate ? new Date(endDate) : undefined, };
+            // where.endDate = { lte: endDate };
         }
 
         if (budgetMin !== undefined) {
@@ -90,6 +94,16 @@ class TravelPlanService {
                             requests: true,
                         },
                     },
+                    // user:{
+                    //     select:{
+                    //         fullName:true,
+                    //         profileImage:true,
+                    //         bio:true,
+                    //         gender:true,
+                    //         interests:true,
+
+                    //     }
+                    // }
                 },
             }),
         ]);
@@ -124,8 +138,19 @@ class TravelPlanService {
                     }
                 },
                 requests: {
-                    where: { status: 'ACCEPTED' },
-                    include: {
+                    // where: { status: 'ACCEPTED' },
+                    // include: {
+                    //     requester: {
+                    //         select: {
+                    //             fullName: true,
+                    //             profileImage: true,
+                    //         },
+                    //     },
+                    // },
+
+                    select: {
+                        requesterId: true,
+                        status: true,
                         requester: {
                             select: {
                                 fullName: true,
@@ -149,8 +174,9 @@ class TravelPlanService {
 
         return travelPlan;
     }
+
     async getTravelPlanByUserId(id: string) {
-        const travelPlan = await prisma.travelPlan.findFirst({
+        const travelPlan = await prisma.travelPlan.findMany({
             where: {
                 userId: id,
                 isDeleted: false,
@@ -289,7 +315,86 @@ class TravelPlanService {
         });
     }
 
+    async updateTravelPlanStatuses() {
+        try {
+            const now = new Date();
+            const sevenDaysFromNow = new Date();
+            sevenDaysFromNow.setDate(now.getDate() + 7);
 
+            console.log(`[${now.toISOString()}] Running travel plan status update job...`);
+
+            // Update PLANNING -> UPCOMING (within 7 days of start date)
+            const upcomingPlans = await prisma.travelPlan.updateMany({
+                where: {
+                    status: TripStatus.PLANNING,
+                    startDate: {
+                        gte: now,
+                        lte: sevenDaysFromNow,
+                    },
+                    isDeleted: false,
+                },
+                data: {
+                    status: TripStatus.UPCOMING,
+                },
+            });
+
+            console.log(`✅ Updated ${upcomingPlans.count} plans to UPCOMING`);
+
+            // Update UPCOMING/PLANNING -> ONGOING (start date has passed)
+            const ongoingPlans = await prisma.travelPlan.updateMany({
+                where: {
+                    status: {
+                        in: [TripStatus.PLANNING, TripStatus.UPCOMING],
+                    },
+                    startDate: {
+                        lte: now,
+                    },
+                    endDate: {
+                        gte: now,
+                    },
+                    isDeleted: false,
+                },
+                data: {
+                    status: TripStatus.ONGOING,
+                },
+            });
+
+            console.log(`✅ Updated ${ongoingPlans.count} plans to ONGOING`);
+
+            // Update ONGOING -> COMPLETED (end date has passed)
+            const completedPlans = await prisma.travelPlan.updateMany({
+                where: {
+                    status: TripStatus.ONGOING,
+                    endDate: {
+                        lt: now,
+                    },
+                    isDeleted: false,
+                },
+                data: {
+                    status: TripStatus.COMPLETED,
+                },
+            });
+
+            console.log(`✅ Updated ${completedPlans.count} plans to COMPLETED`);
+
+            console.log(`[${now.toISOString()}] Travel plan status update completed successfully`);
+
+            return {
+                success: true,
+                updated: {
+                    upcoming: upcomingPlans.count,
+                    ongoing: ongoingPlans.count,
+                    completed: completedPlans.count,
+                },
+            };
+        } catch (error) {
+            console.error('❌ Error updating travel plan statuses:', error);
+            return {
+                success: false,
+                error: error instanceof Error ? error.message : 'Unknown error',
+            };
+        }
+    }
 }
 
 export default new TravelPlanService();

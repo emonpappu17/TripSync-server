@@ -33,6 +33,9 @@ class TravelRequestService {
                     travelPlanId: requestData.travelPlanId,
                     requesterId,
                 },
+                // NOT: {
+                //     status: RequestStatus.CANCELLED,
+                // } 
             },
         });
 
@@ -206,16 +209,16 @@ class TravelRequestService {
             });
 
             // If accepted, create travel match
-            // if (status === RequestStatus.ACCEPTED) {
-            //     await tx.travelMatch.create({
-            //         data: {
-            //             travelPlanId: request.travelPlanId,
-            //             user1Id: request.receiverId,
-            //             user2Id: request.requesterId,
-            //             isActive: true,
-            //         },
-            //     });
-            // }
+            if (status === RequestStatus.ACCEPTED) {
+                await tx.travelMatch.create({
+                    data: {
+                        travelPlanId: request.travelPlanId,
+                        user1Id: request.receiverId,
+                        user2Id: request.requesterId,
+                        isActive: true,
+                    },
+                });
+            }
 
             // Create notification
             // await tx.notification.create({

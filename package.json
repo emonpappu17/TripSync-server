@@ -33,6 +33,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
+    "node-cron": "^4.2.1",
     "prisma": "^7.0.1",
     "stripe": "^20.0.0",
     "typescript": "^5.9.3",

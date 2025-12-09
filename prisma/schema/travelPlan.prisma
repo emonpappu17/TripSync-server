@@ -24,10 +24,11 @@ model TravelPlan {
     updatedAt DateTime @updatedAt
 
     // Relations
-    user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-    requests TravelRequest[]
-    reviews  Review[]
+    user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+    requests      TravelRequest[]
+    reviews       Review[]
     // reviews  Review[]
+    travelMatches TravelMatch[]
 
     @@map("travel_plans")
 }
@@ -48,4 +49,21 @@ model TravelRequest {
 
     @@unique([travelPlanId, requesterId])
     @@map("travel_requests")
+}
+
+model TravelMatch {
+    id           String   @id @default(uuid())
+    travelPlanId String
+    user1Id      String
+    user2Id      String
+    // matchScore   Int? // 0-100 compatibility score
+    isActive     Boolean  @default(true)
+    createdAt    DateTime @default(now())
+
+    travelPlan TravelPlan @relation(fields: [travelPlanId], references: [id], onDelete: Cascade)
+
+    @@unique([travelPlanId, user1Id, user2Id])
+    // @@index([user1Id])
+    // @@index([user2Id])
+    @@map("travel_matches")
 }

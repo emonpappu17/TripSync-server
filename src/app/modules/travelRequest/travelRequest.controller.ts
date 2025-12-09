@@ -8,6 +8,8 @@ import travelRequestService from "./travelRequest.service";
 class TravelRequestController {
     createRequest = catchAsync(async (req: Request, res: Response) => {
         const requesterId = (req as any).user.id;
+
+        // console.log('created//');
         const result = await travelRequestService.createRequest(requesterId, req.body);
 
         sendResponse(res, {
