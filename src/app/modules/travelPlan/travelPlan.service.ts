@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { TravelPlan } from "@prisma/client";
 import { TravelPlan, TripStatus } from "@prisma/client";
@@ -7,18 +8,54 @@ import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
 
 class TravelPlanService {
+    // async createTravelPlan(userId: string, planData: any) {
+    //     const travelPlan = await prisma.travelPlan.create({
+    //         data: {
+    //             userId,
+    //             ...planData,
+    //             startDate: planData.startDate ? new Date(planData.startDate) : undefined,
+    //             endDate: planData.endDate ? new Date(planData.endDate) : undefined,
+    //         },
+    //     });
+
+    //     return travelPlan;
+    // }
+
     async createTravelPlan(userId: string, planData: any) {
+        // Convert dates
+        const startDate = planData.startDate ? new Date(planData.startDate) : undefined;
+        const endDate = planData.endDate ? new Date(planData.endDate) : undefined;
+
+        // ✅ Check if user already has a plan overlapping with this date range
+        const existingPlan = await prisma.travelPlan.findFirst({
+            where: {
+                userId,
+                isDeleted: false,
+                // Overlap condition:
+                AND: [
+                    { startDate: { lte: endDate } },   // existing plan starts before new plan ends
+                    { endDate: { gte: startDate } },   // existing plan ends after new plan starts
+                ],
+            },
+        });
+
+        if (existingPlan) {
+            throw new Error("You already have a planned trip during these dates.");
+        }
+
+        // ✅ If no conflict, create the plan
         const travelPlan = await prisma.travelPlan.create({
             data: {
                 userId,
                 ...planData,
-                startDate: planData.startDate ? new Date(planData.startDate) : undefined,
-                endDate: planData.endDate ? new Date(planData.endDate) : undefined,
+                startDate,
+                endDate,
             },
         });
 
         return travelPlan;
     }
+
 
     async getTravelPlans(query: any, options: IOptions) {
         const {
