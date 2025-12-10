@@ -285,6 +285,7 @@ class TravelPlanService {
                         select: {
                             requests: true,
                             // matches: true,
+                            travelMatches: true
                         },
                     },
                 },
@@ -302,6 +303,33 @@ class TravelPlanService {
         };
     }
 
+    // async updateTravelPlan(id: string, userId: string, updateData: Partial<TravelPlan>) {
+    //     const travelPlan = await prisma.travelPlan.findFirst({
+    //         where: {
+    //             id,
+    //             userId,
+    //             isDeleted: false,
+    //         },
+    //     });
+
+    //     if (!travelPlan) {
+    //         throw new ApiError(
+    //             StatusCodes.NOT_FOUND,
+    //             'Travel plan not found or you do not have permission to update it'
+    //         );
+    //     }
+
+    //     const updated = await prisma.travelPlan.update({
+    //         where: { id },
+    //         data: updateData,
+    //         // include: {
+    //         //     activities: true,
+    //         // },
+    //     });
+
+    //     return updated;
+    // }
+
     async updateTravelPlan(id: string, userId: string, updateData: Partial<TravelPlan>) {
         const travelPlan = await prisma.travelPlan.findFirst({
             where: {
@@ -318,16 +346,42 @@ class TravelPlanService {
             );
         }
 
+        // Convert dates if provided in updateData
+        const startDate = updateData.startDate ? new Date(updateData.startDate) : travelPlan.startDate;
+        const endDate = updateData.endDate ? new Date(updateData.endDate) : travelPlan.endDate;
+
+        // ✅ Check for overlapping plans (excluding the current plan itself)
+        const conflictingPlan = await prisma.travelPlan.findFirst({
+            where: {
+                userId,
+                isDeleted: false,
+                NOT: { id }, // exclude the plan being updated
+                AND: [
+                    { startDate: { lte: endDate } },
+                    { endDate: { gte: startDate } },
+                ],
+            },
+        });
+
+        if (conflictingPlan) {
+            throw new ApiError(
+                StatusCodes.BAD_REQUEST,
+                'You already have another trip planned during these dates'
+            );
+        }
+
         const updated = await prisma.travelPlan.update({
             where: { id },
-            data: updateData,
-            // include: {
-            //     activities: true,
-            // },
+            data: {
+                ...updateData,
+                startDate,
+                endDate,
+            },
         });
 
         return updated;
     }
+
 
     async deleteTravelPlan(id: string, userId: string) {
         const travelPlan = await prisma.travelPlan.findFirst({
