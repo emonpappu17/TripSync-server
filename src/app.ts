@@ -10,6 +10,7 @@ import { router } from "./app/routes";
 import cookieParser from "cookie-parser";
 import cron from 'node-cron';
 import travelPlanService from "app/modules/travelPlan/travelPlan.service";
+import paymentController from "app/modules/payment/payment.controller";
 
 const app: Application = express();
 // Security middleware
@@ -23,6 +24,12 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+
+app.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  paymentController.stripeWebhook
+)
 
 // CORS
 app.use(

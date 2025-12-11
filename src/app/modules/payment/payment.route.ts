@@ -11,10 +11,16 @@ router.post(
     '/create-intent',
     CheckAuth(Role.USER, Role.ADMIN),
     validationRequest(createPaymentValidation),
-    paymentController.createPaymentIntent
+    paymentController.createCheckoutSession
 );
+// router.post(
+//     '/create-intent',
+//     CheckAuth(Role.USER, Role.ADMIN),
+//     validationRequest(createPaymentValidation),
+//     paymentController.createPaymentIntent
+// );
 
-router.post('/webhook', paymentController.handleWebhook);
+// router.post('/webhook', paymentController.handleWebhook);
 
 // router.get(
 //     '/subscription',

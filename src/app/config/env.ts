@@ -17,6 +17,9 @@ const envSchema = z.object({
   CLOUDINARY_API_SECRET: z.string(),
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
+  STRIPE_PRICE_MONTHLY: z.string(),
+  STRIPE_PRICE_YEARLY: z.string(),
+  FRONTEND_URL: z.string(),
 });
 
 const env = envSchema.safeParse(process.env);

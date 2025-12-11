@@ -160,7 +160,7 @@ class AdminService {
         const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
         const where: any = {};
 
-        console.log({ query });
+        // console.log({ query });
 
         if (search) {
             where.OR = [
@@ -325,7 +325,7 @@ class AdminService {
         return result;
     }
 
-    // async moderateContent(adminId: string, moderationData: IContentModeration) {
+    // async moderateContent(adminId: string, moderationData: any) {
     //     const { entityType, entityId, action, reason } = moderationData;
 
     //     switch (entityType) {
@@ -355,26 +355,26 @@ class AdminService {
     //         });
 
     //         // Notify creator
-    //         await prisma.notification.create({
-    //             data: {
-    //                 userId: plan.userId,
-    //                 title: 'Travel Plan Removed',
-    //                 message: reason || 'Your travel plan has been removed by admin',
-    //                 type: 'admin_action',
-    //             },
-    //         });
+    //         // await prisma.notification.create({
+    //         //     data: {
+    //         //         userId: plan.userId,
+    //         //         title: 'Travel Plan Removed',
+    //         //         message: reason || 'Your travel plan has been removed by admin',
+    //         //         type: 'admin_action',
+    //         //     },
+    //         // });
     //     }
 
     //     // Log action
-    //     await prisma.activityLog.create({
-    //         data: {
-    //             userId: adminId,
-    //             action: `TRAVEL_PLAN_${action}`,
-    //             entityType: 'travel_plan',
-    //             entityId: planId,
-    //             description: reason || `Admin ${action.toLowerCase()}ed travel plan`,
-    //         },
-    //     });
+    //     // await prisma.activityLog.create({
+    //     //     data: {
+    //     //         userId: adminId,
+    //     //         action: `TRAVEL_PLAN_${action}`,
+    //     //         entityType: 'travel_plan',
+    //     //         entityId: planId,
+    //     //         description: reason || `Admin ${action.toLowerCase()}ed travel plan`,
+    //     //     },
+    //     // });
 
     //     return plan;
     // }

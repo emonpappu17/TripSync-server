@@ -15,7 +15,6 @@ router.get('/dashboard/stats', adminController.getDashboardStats);
 
 router.get(
     '/analytics',
-    // validationRequest(analyticsQueryValidation),
     adminController.getAnalytics
 );
 
@@ -32,6 +31,7 @@ router.post(
 
 // // Content Moderation
 router.get('/travel-plans', adminController.getAllTravelPlans);
+
 // router.post('/moderate', validationRequest(contentModerationValidation), adminController.moderateContent);
 
 // // Activity Logs

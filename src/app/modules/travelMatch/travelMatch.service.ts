@@ -143,6 +143,7 @@ class TravelMatchService {
                             id: true,
                             fullName: true,
                             profileImage: true,
+                            isVerified: true,
                             bio: true,
                             gender: true,
                             interests: true,
