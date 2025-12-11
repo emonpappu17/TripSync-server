@@ -169,6 +169,8 @@ class TravelMatchService {
             })
         );
 
+        // console.log({ enhancedMatches });
+
         return enhancedMatches;
     }
 

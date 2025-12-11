@@ -160,6 +160,8 @@ class AdminService {
         const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
         const where: any = {};
 
+        console.log({ query });
+
         if (search) {
             where.OR = [
                 { email: { contains: search, mode: 'insensitive' } },
@@ -170,13 +172,15 @@ class AdminService {
 
         if (role) where.role = role;
         if (isActive !== undefined) where.isActive = isActive === 'true';
+        if (isVerified !== undefined) where.isVerified = isVerified === 'true';
 
-        if (isVerified !== undefined) {
-            where.profile = {
-                ...where.profile,
-                isVerified: isVerified === 'true',
-            };
-        }
+        // if (isVerified !== undefined) {
+
+        //     // where.profile = {
+        //     //     ...where.profile,
+        //     //     isVerified: isVerified === 'true',
+        //     // };
+        // }
 
         const [total, users] = await Promise.all([
             prisma.user.count({ where }),
