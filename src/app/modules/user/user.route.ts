@@ -9,11 +9,6 @@ import { fileUploader } from "app/helper/fileUploader";
 
 const router = Router();
 
-// router.get(
-//     '/:id',
-//     // CheckAuth(Role.ADMIN),
-//     userController.getUserById
-// );
 
 router.get(
     '/',

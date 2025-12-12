@@ -7,10 +7,7 @@ import travelMatchService from "./travelMatch.service";
 import pick from "app/helper/pick";
 
 class TravelMatchController {
-    /**
-     * Get all matches for the authenticated user
-     * GET /api/v1/travel-matches/my-matches
-     */
+  
     getMyMatches = catchAsync(async (req: Request, res: Response) => {
         const userId = (req as any).user.id;
         const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);
@@ -26,10 +23,6 @@ class TravelMatchController {
         });
     });
 
-    /**
-     * Get all matches for a specific travel plan
-     * GET /api/v1/travel-matches/plan/:planId
-     */
     getMatchesByPlanId = catchAsync(async (req: Request, res: Response) => {
         const { planId } = req.params;
         const userId = (req as any).user.id;
@@ -44,10 +37,7 @@ class TravelMatchController {
         });
     });
 
-    /**
-     * Get a specific match by ID
-     * GET /api/v1/travel-matches/:matchId
-     */
+  
     getMatchById = catchAsync(async (req: Request, res: Response) => {
         const { matchId } = req.params;
         const userId = (req as any).user.id;
@@ -62,10 +52,7 @@ class TravelMatchController {
         });
     });
 
-    /**
-     * Deactivate a match
-     * DELETE /api/v1/travel-matches/:matchId
-     */
+ 
     deactivateMatch = catchAsync(async (req: Request, res: Response) => {
         const { matchId } = req.params;
         const userId = (req as any).user.id;
@@ -80,10 +67,7 @@ class TravelMatchController {
         });
     });
 
-    /**
-     * Check if matched with another user for a specific plan
-     * GET /api/v1/travel-matches/check/:planId/:otherUserId
-     */
+ 
     checkMatch = catchAsync(async (req: Request, res: Response) => {
         const { planId, otherUserId } = req.params;
         const userId = (req as any).user.id;
@@ -98,10 +82,7 @@ class TravelMatchController {
         });
     });
 
-    /**
-     * Get match statistics for the authenticated user
-     * GET /api/v1/travel-matches/statistics
-     */
+ 
     getMatchStatistics = catchAsync(async (req: Request, res: Response) => {
         const userId = (req as any).user.id;
 

@@ -13,7 +13,7 @@ class TravelPlanService {
         const startDate = planData.startDate ? new Date(planData.startDate) : undefined;
         const endDate = planData.endDate ? new Date(planData.endDate) : undefined;
 
-        // ✅ Check if user already has a plan overlapping with this date range
+        // Check if user already has a plan overlapping with this date range
         const existingPlan = await prisma.travelPlan.findFirst({
             where: {
                 userId,
@@ -30,7 +30,7 @@ class TravelPlanService {
             throw new Error("You already have a planned trip during these dates.");
         }
 
-        // ✅ If no conflict, create the plan
+        // If no conflict, create the plan
         const travelPlan = await prisma.travelPlan.create({
             data: {
                 userId,
@@ -58,7 +58,6 @@ class TravelPlanService {
         } = query;
         const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
 
-        // console.log({ query });
 
         const where: any = {
             isDeleted: false,
@@ -117,16 +116,6 @@ class TravelPlanService {
                             requests: true,
                         },
                     },
-                    // user:{
-                    //     select:{
-                    //         fullName:true,
-                    //         profileImage:true,
-                    //         bio:true,
-                    //         gender:true,
-                    //         interests:true,
-
-                    //     }
-                    // }
                 },
             }),
         ]);
@@ -309,7 +298,7 @@ class TravelPlanService {
         const startDate = updateData.startDate ? new Date(updateData.startDate) : travelPlan.startDate;
         const endDate = updateData.endDate ? new Date(updateData.endDate) : travelPlan.endDate;
 
-        // ✅ Check for overlapping plans (excluding the current plan itself)
+        //  Check for overlapping plans (excluding the current plan itself)
         const conflictingPlan = await prisma.travelPlan.findFirst({
             where: {
                 userId,
@@ -388,7 +377,7 @@ class TravelPlanService {
                 },
             });
 
-            console.log(`✅ Updated ${upcomingPlans.count} plans to UPCOMING`);
+            console.log(` Updated ${upcomingPlans.count} plans to UPCOMING`);
 
             // Update UPCOMING/PLANNING -> ONGOING (start date has passed)
             const ongoingPlans = await prisma.travelPlan.updateMany({
@@ -409,7 +398,7 @@ class TravelPlanService {
                 },
             });
 
-            console.log(`✅ Updated ${ongoingPlans.count} plans to ONGOING`);
+            console.log(` Updated ${ongoingPlans.count} plans to ONGOING`);
 
             // Update ONGOING -> COMPLETED (end date has passed)
             const completedPlans = await prisma.travelPlan.updateMany({
@@ -425,7 +414,7 @@ class TravelPlanService {
                 },
             });
 
-            console.log(`✅ Updated ${completedPlans.count} plans to COMPLETED`);
+            console.log(` Updated ${completedPlans.count} plans to COMPLETED`);
 
             console.log(`[${now.toISOString()}] Travel plan status update completed successfully`);
 

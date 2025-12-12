@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
 import rateLimit from "express-rate-limit";
@@ -43,28 +44,6 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
-
-// startTestCronJob() {
-//   cron.schedule('* * * * *', async () => {
-//     await this.updateTravelPlanStatuses();
-//   }, {
-//     scheduled: true,
-//     timezone: "UTC"
-//   });
-
-//   console.log('🚀 Travel plan status cron job started (runs every minute - TEST MODE)');
-// }
-
-
-// cron.schedule('* * * * *', () => {
-//   try {
-//     console.log("Node cron called at:", new Date());
-//     travelPlanService.updateTravelPlanStatuses()
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
 
 
 // CRON JOB SETUP

@@ -9,27 +9,9 @@ import travelPlanService from "./travelPlan.service";
 
 class TravelPlanController {
     createTravelPlan = catchAsync(async (req: Request, res: Response) => {
-        // const file = req.file;
-        // // console.log({ file });
-
-        // if (file) {
-        //     // const updatedImage = await fileUploader.uploadToCloudinary(file);
-        //     req.body.image = file?.path;
-        //     // req.body.image = updatedImage?.secure_url;
-        // }
-
-        // console.log('req.file.path===>', req?.file?.buffer);
-
         if (req?.file) {
             req.body.image = req?.file?.path; // directly assign the URL
         }
-
-        // const file = req.file as Express.Multer.File | undefined;
-
-        // if (file && file.buffer) {
-        //     const uploaded = await streamUpload(file.buffer);
-        //     req.body.image = uploaded.secure_url;
-        // }
 
         const userId = (req as any).user.id;
         const result = await travelPlanService.createTravelPlan(userId, req.body);

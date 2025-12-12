@@ -125,29 +125,14 @@ class TravelRequestService {
                             profileImage: true,
                             isVerified: true,
                         },
-                        // include: {
-                        //     profile: {
-                        //         select: {
-                        //             fullName: true,
-                        //             profileImage: true,
-                        //             isVerified: true,
-                        //         },
-                        //     },
-                        // },
+
                     },
                     receiver: {
                         select: {
                             fullName: true,
                             profileImage: true,
                         },
-                        // include: {
-                        //     profile: {
-                        //         select: {
-                        //             fullName: true,
-                        //             profileImage: true,
-                        //         },
-                        //     },
-                        // },
+                  
                     },
                     travelPlan: {
                         select: {

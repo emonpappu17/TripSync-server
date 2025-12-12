@@ -1,10 +1,12 @@
-import { UserRole } from "@prisma/enums";
+// import { UserRole } from "@prisma/enums";
+
+import { Role } from "@prisma/enums";
 
 export interface IUser {
   id: string;
   name: string;
   email: string;
-  role: UserRole;
+  role: Role;
   password?: string;
   phone?: string;
   photo?: string;

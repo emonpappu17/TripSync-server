@@ -146,21 +146,15 @@ class AdminService {
 
     async getAllUsers(query: any, options: any) {
         const {
-            // page = 1,
-            // limit = 20,
             search,
             role,
             isActive,
             isVerified,
-            // sortBy = 'createdAt',
-            // sortOrder = 'desc',
         } = query;
 
-        // const skip = (page - 1) * limit;
         const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
         const where: any = {};
 
-        // console.log({ query });
 
         if (search) {
             where.OR = [
@@ -174,14 +168,6 @@ class AdminService {
         if (isActive !== undefined) where.isActive = isActive === 'true';
         if (isVerified !== undefined) where.isVerified = isVerified === 'true';
 
-        // if (isVerified !== undefined) {
-
-        //     // where.profile = {
-        //     //     ...where.profile,
-        //     //     isVerified: isVerified === 'true',
-        //     // };
-        // }
-
         const [total, users] = await Promise.all([
             prisma.user.count({ where }),
             prisma.user.findMany({
@@ -190,44 +176,14 @@ class AdminService {
                 take: limit,
                 orderBy: { [sortBy]: sortOrder },
                 include: {
-                    // profile: {
-                    //     select: {
-                    //         fullName: true,
-                    //         profileImage: true,
-                    //         isVerified: true,
-                    //         completionScore: true,
-                    //         currentLocation: true,
-                    //     },
-                    // },
-
                     _count: {
                         select: {
-                            // fullName: true,
-                            // profileImage: true,
-                            // isVerified: true,
-                            // // completionScore: true,
-                            // currentLocation: true,
                             travelPlans: true,
                             reviewsReceived: true,
                             payments: true,
                         },
                     },
                 },
-
-                // select: {
-                //     fullName: true,
-                //     profileImage: true,
-                //     isVerified: true,
-                //     // completionScore: true,
-                //     currentLocation: true,
-                // },
-                // _count: {
-                //     select: {
-                //         travelPlans: true,
-                //         reviewsReceived: true,
-                //         payments: true,
-                //     },
-                // },
             }),
         ]);
 
@@ -247,7 +203,6 @@ class AdminService {
 
         const user = await prisma.user.findUnique({
             where: { id: userId },
-            // include: { profile: true },
         });
 
         if (!user) {
@@ -592,15 +547,10 @@ class AdminService {
 
     async getAllTravelPlans(query: any, options: any) {
         const {
-            // page = 1,
-            // limit = 20,
             search,
             status,
-            // sortBy = 'createdAt',
-            // sortOrder = 'desc',
         } = query;
 
-        // const skip = (page - 1) * limit;
         const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
         const where: any = { isDeleted: false };
 
@@ -626,19 +576,12 @@ class AdminService {
                             fullName: true,
                             profileImage: true,
                         },
-                        // include: {
-                        //     profile: {
-                        //         select: {
-                        //             fullName: true,
-                        //             profileImage: true,
-                        //         },
-                        //     },
-                        // },
+                
                     },
                     _count: {
                         select: {
                             requests: true,
-                            // activities: true,
+                        
                         },
                     },
                 },

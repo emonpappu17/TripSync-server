@@ -10,19 +10,16 @@ import pick from "app/helper/pick";
 
 class UserController {
     updateMyProfile = catchAsync(async (req: Request, res: Response) => {
-        // req.body = JSON.parse(req.body.data);
+
 
         const file = req.file;
-        // console.log({ file });
+  
 
         if (file) {
             req.body.profileImage =  req?.file?.path;;
-            // const updatedImage = await fileUploader.uploadToCloudinary(file);
-            // req.body.profileImage = updatedImage?.secure_url;
         }
 
-        // console.log('req.body==>', req.body);
-
+    
         const userId = (req as any).user.id;
 
         const result = await userService.updateProfile(userId, req.body);
@@ -52,7 +49,6 @@ class UserController {
 
     getUserStats = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
-        // const id = req.params.id || (req as any).user.id;
 
         const result = await userService.getUserStats(id);
 

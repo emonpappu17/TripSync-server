@@ -49,20 +49,7 @@ class PaymentController {
             const startDate = new Date();
             const endDate = new Date();
             endDate.setDate(startDate.getDate() + durationDays);
-
-            console.log({ session });
-
-            // await prisma.subscription.create({
-            //     data: {
-            //         userId,
-            //         plan,
-            //         status: "ACTIVE",
-            //         startDate,
-            //         endDate,
-            //         stripeSubscriptionId: session.subscription,
-            //     },
-            // });
-
+    
             await prisma.$transaction([
                 prisma.subscription.create({
                     data: {
@@ -85,20 +72,9 @@ class PaymentController {
             statusCode: StatusCodes.CREATED,
             success: true,
             message: 'Webhook request send successfully!',
-            // data: result,
         });
     });
 
-    // handleWebhook = catchAsync(async (req: Request, res: Response) => {
-    //     await paymentService.handlePaymentWebhook(req.body);
-
-    //     sendResponse(res, {
-    //         statusCode: StatusCodes.OK,
-    //         success: true,
-    //         message: 'Webhook processed successfully',
-    //         data: null,
-    //     });
-    // });
 
     // getMySubscription = catchAsync(async (req: Request, res: Response) => {
     //     const userId = (req as any).user.id;

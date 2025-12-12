@@ -8,24 +8,6 @@ import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
 
 class PaymentService {
-    // private getPlanPrice(plan: SubscriptionPlan): number {
-    //     const prices = {
-    //         [SubscriptionPlan.MONTHLY]: 29.99,
-    //         [SubscriptionPlan.YEARLY]: 299.99,
-    //         [SubscriptionPlan.FREE]: 0,
-    //     };
-    //     return prices[plan];
-    // }
-
-    // private getPlanDuration(plan: SubscriptionPlan): number {
-    //     const durations = {
-    //         [SubscriptionPlan.MONTHLY]: 30,
-    //         [SubscriptionPlan.YEARLY]: 365,
-    //         [SubscriptionPlan.FREE]: 0,
-    //     };
-    //     return durations[plan];
-    // }
-
     private getStripePriceId(plan: SubscriptionPlan): string {
         const prices = {
             [SubscriptionPlan.MONTHLY]: envVars.STRIPE_PRICE_MONTHLY as string,
@@ -93,151 +75,11 @@ class PaymentService {
 
             success_url: `${envVars.FRONTEND_URL}/subscription/success`,
             cancel_url: `${envVars.FRONTEND_URL}/subscription/cancel`,
-
-            // success_url: `https://www.facebook.com`,
-            // cancel_url: `https://github.com`,
         });
 
         return { paymentUrl: session.url };
     }
 
-// import Stripe from "stripe";
-// const stripe = new Stripe(process.env.STRIPE_SECRET!, { apiVersion: "2023-10-16" });
-
-
-
-    // async createPaymentIntent(userId: string, paymentData: any) {
-    //     const { plan, paymentMethod } = paymentData;
-
-    //     // Check if user already has active subscription
-    //     const activeSubscription = await prisma.subscription.findFirst({
-    //         where: {
-    //             userId,
-    //             status: SubscriptionStatus.ACTIVE,
-    //             endDate: { gte: new Date() },
-    //         },
-    //     });
-
-    //     if (activeSubscription) {
-    //         throw new ApiError(
-    //             StatusCodes.BAD_REQUEST,
-    //             'You already have an active subscription'
-    //         );
-    //     }
-
-    //     const amount = this.getPlanPrice(plan);
-
-    //     if (amount === 0) {
-    //         throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot process payment for free plan');
-    //     }
-
-
-
-    //     const session = await stripe.checkout.sessions.create({
-    //         payment_method_types: ["card"],
-    //         mode: "subscription",
-    //         customer_email: user.email,
-
-    //         line_items: [
-    //             {
-    //                 price_data: {
-    //                     currency: "bdt",
-    //                     product_data: {
-    //                         name: `Appointment with ${doctorData.name}`,
-    //                         // description: `Appointment with Doctor ID: ${doctorId}`,
-    //                     },
-    //                     unit_amount: doctorData.appointmentFee * 100, // cents
-    //                 },
-    //                 quantity: 1,
-    //             },
-    //         ],
-    //         // metadata: {
-    //         //     appointmentId: appointmentData.id,
-    //         //     paymentId: paymentData.id
-    //         // },
-
-    //         metadata: {
-    //             userId,
-    //             plan,
-    //         },
-    //         success_url: `https://www.facebook.com`,
-    //         cancel_url: `https://github.com`,
-    //     });
-
-    //     // console.log({ session });
-
-    //     return { paymentUrl: session.url }
-
-    // }
-
-    // async handlePaymentWebhook(webhookData: any) {
-    //     const { transactionId, status, amount, metadata } = webhookData;
-
-    //     // Find payment
-    //     const payment = await prisma.payment.findUnique({
-    //         where: { transactionId },
-    //     });
-
-    //     if (!payment) {
-    //         throw new ApiError(StatusCodes.NOT_FOUND, 'Payment not found');
-    //     }
-
-    //     if (payment.status !== PaymentStatus.PENDING) {
-    //         return; // Already processed
-    //     }
-
-    //     // Update payment in transaction
-    //     await prisma.$transaction(async (tx) => {
-    //         // Update payment status
-    //         await tx.payment.update({
-    //             where: { id: payment.id },
-    //             data: {
-    //                 status,
-    //                 // paidAt: status === PaymentStatus.COMPLETED ? new Date() : null,
-    //             },
-    //         });
-
-    //         // If payment successful, create subscription
-    //         if (status === PaymentStatus.COMPLETED) {
-    //             const plan = "MONTHLY";
-    //             // const plan = payment.metadata.plan as SubscriptionPlan;
-    //             const duration = this.getPlanDuration(plan);
-    //             const endDate = new Date();
-    //             endDate.setDate(endDate.getDate() + duration);
-
-    //             await tx.subscription.create({
-    //                 data: {
-    //                     userId: payment.userId,
-    //                     paymentId: payment.id,
-    //                     plan,
-    //                     status: SubscriptionStatus.ACTIVE,
-    //                     startDate: new Date(),
-    //                     endDate,
-    //                 },
-    //             });
-
-    //             // Update profile verification
-    //             await tx.user.update({
-    //                 where: { id: payment.userId },
-    //                 data: { isVerified: true },
-    //             });
-    //             // await tx.profile.update({
-    //             //     where: { userId: payment.userId },
-    //             //     data: { isVerified: true },
-    //             // });
-
-    //             // Create notification
-    //             // await tx.notification.create({
-    //             //     data: {
-    //             //         userId: payment.userId,
-    //             //         title: 'Subscription Activated',
-    //             //         message: `Your ${plan.toLowerCase()} subscription has been activated successfully!`,
-    //             //         type: 'payment',
-    //             //     },
-    //             // });
-    //         }
-    //     });
-    // }
 
     // async getMySubscription(userId: string) {
     //     const subscription = await prisma.subscription.findFirst({

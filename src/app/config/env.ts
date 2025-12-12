@@ -11,7 +11,8 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default("7d"),
   CORS_ORIGIN: z.string().default("*"),
   JWT_REFRESH_SECRET: z.string().min(1),
-  JWT_REFRESH_EXPIRES_IN: z.string().default("30d"),
+  JWT_REFRESH_EXPIRES_IN: z.string().default("30d"), 
+  JWT_SALT_ROUND: z.string(), 
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),
@@ -31,9 +32,3 @@ if (!env.success) {
 const envVars = env.data;
 
 export default envVars;
-
-// declare global {
-//   namespace NodeJS {
-//     interface ProcessEnv extends z.infer<typeof envSchema> {}
-//   }
-// }
