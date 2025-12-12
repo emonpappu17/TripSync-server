@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.travelRequestRouters = void 0;
+// import { Role } from "prisma/generated/prisma/enums";
+// import { CheckAuth } from "app/middlewares/checkAuth";
+// import { validationRequest } from "app/middlewares/validationRequest";
+const express_1 = require("express");
+const travelRequest_validation_1 = require("./travelRequest.validation");
+const travelRequest_controller_1 = __importDefault(require("./travelRequest.controller"));
+// import { CheckAuth } from "src/app/middlewares/checkAuth";
+// import { validationRequest } from "src/app/middlewares/validationRequest";
+const checkAuth_1 = require("../../middlewares/checkAuth");
+const validationRequest_1 = require("../../middlewares/validationRequest");
+const client_1 = require("@prisma/client");
+const router = (0, express_1.Router)();
+router.post('/', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), (0, validationRequest_1.validationRequest)(travelRequest_validation_1.createTravelRequestValidation), travelRequest_controller_1.default.createRequest);
+router.get('/sent', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), travelRequest_controller_1.default.getSentRequests);
+router.get('/received', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), travelRequest_controller_1.default.getReceivedRequests);
+router.patch('/:id/status', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), (0, validationRequest_1.validationRequest)(travelRequest_validation_1.updateRequestStatusValidation), travelRequest_controller_1.default.updateRequestStatus);
+router.patch('/:id/cancel', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), travelRequest_controller_1.default.cancelRequest);
+exports.travelRequestRouters = router;

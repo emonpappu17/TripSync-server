@@ -1,8 +1,9 @@
-import { User } from "prisma/generated/prisma/client";
-import ApiError from "app/errors/ApiError";
-import { calculatePagination, IOptions } from "app/helper/paginationHelper";
-import { prisma } from "app/lib/prisma";
+
+import { User } from "@prisma/client";
 import { StatusCodes } from "http-status-codes";
+import { prisma } from "../../lib/prisma";
+import ApiError from "../../errors/ApiError";
+import { calculatePagination, IOptions } from "../../helper/paginationHelper";
 // import ApiError from "src/app/errors/ApiError";
 // import { calculatePagination, IOptions } from "src/app/helper/paginationHelper";
 // import { prisma } from "src/app/lib/prisma";

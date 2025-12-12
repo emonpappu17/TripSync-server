@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
+
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import travelRequestService from "./travelRequest.service";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
 // import catchAsync from "src/app/utils/catchAsync";
 // import sendResponse from "src/app/utils/sendResponse";
 
@@ -52,7 +53,7 @@ class TravelRequestController {
         const { id } = req.params;
         const receiverId = (req as any).user.id;
         const { status } = req.body;
-        const result = await travelRequestService.updateRequestStatus(id, receiverId, status);
+        const result = await travelRequestService.updateRequestStatus(id as string, receiverId, status);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -65,7 +66,7 @@ class TravelRequestController {
     cancelRequest = catchAsync(async (req: Request, res: Response) => {
         const { id } = req.params;
         const requesterId = (req as any).user.id;
-        await travelRequestService.cancelRequest(id, requesterId);
+        await travelRequestService.cancelRequest(id as string, requesterId);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,

@@ -1,6 +1,8 @@
 // import { UserRole } from "@prisma/enums";
 
-import { Role } from "../../../../prisma/generated/prisma/enums";
+import { Role } from "@prisma/client";
+
+
 
 // import { Role } from "prisma/generated/prisma/enums";
 

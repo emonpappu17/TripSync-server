@@ -1,7 +1,9 @@
-import { Role } from "prisma/generated/prisma/client";
-import { CheckAuth } from "app/middlewares/checkAuth";
+// import { Role } from "prisma/generated/prisma/client";
+// import { CheckAuth } from "app/middlewares/checkAuth";
 import { Router } from "express";
 import travelMatchController from "./travelMatch.controller";
+import { CheckAuth } from "../../middlewares/checkAuth";
+import { Role } from "@prisma/client";
 // import { CheckAuth } from "src/app/middlewares/checkAuth";
 
 const router = Router();

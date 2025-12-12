@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { TravelPlan } from "@prisma/client";
-import { TravelPlan, TripStatus } from "prisma/generated/prisma/client";
-import ApiError from "app/errors/ApiError";
-import { calculatePagination, IOptions } from "app/helper/paginationHelper";
-import { prisma } from "app/lib/prisma";
+
 import { StatusCodes } from "http-status-codes";
+import { prisma } from "../../lib/prisma";
+import { calculatePagination, IOptions } from "../../helper/paginationHelper";
+import ApiError from "../../errors/ApiError";
+import { TravelPlan, TripStatus } from "@prisma/client";
 // import ApiError from "src/app/errors/ApiError";
 // import { calculatePagination, IOptions } from "src/app/helper/paginationHelper";
 // import { prisma } from "src/app/lib/prisma";
@@ -23,8 +23,8 @@ class TravelPlanService {
                 isDeleted: false,
                 // Overlap condition:
                 AND: [
-                    { startDate: { lte: endDate } },   // existing plan starts before new plan ends
-                    { endDate: { gte: startDate } },   // existing plan ends after new plan starts
+                    { startDate: { lte: endDate as Date } },   // existing plan starts before new plan ends
+                    { endDate: { gte: startDate as Date } },   // existing plan ends after new plan starts
                 ],
             },
         });

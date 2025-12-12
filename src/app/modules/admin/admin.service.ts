@@ -6,12 +6,13 @@
 // import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../lib/prisma";
-import { RequestStatus, SubscriptionStatus, TripStatus } from "../../../../prisma/generated/prisma/enums";
+
 // import ApiError from "src/app/errors/ApiError";
 // import { calculatePagination } from "src/app/helper/paginationHelper";
 // import { prisma } from "src/app/lib/prisma";
 import {calculatePagination} from "../../helper/paginationHelper"
 import ApiError from "../../errors/ApiError";
+import { RequestStatus, SubscriptionStatus, TripStatus } from "@prisma/client";
 // import {ApiError} from "../../../app/errors"
 
 class AdminService {
@@ -480,11 +481,11 @@ class AdminService {
             let key: string;
 
             if (groupBy === 'DAY') {
-                key = date.toISOString().split('T')[0];
+                key = date.toISOString().split('T')[0] as string;
             } else if (groupBy === 'WEEK') {
                 const weekStart = new Date(date);
                 weekStart.setDate(date.getDate() - date.getDay());
-                key = weekStart.toISOString().split('T')[0];
+                key = weekStart.toISOString().split('T')[0] as string;
             } else {
                 key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
             }

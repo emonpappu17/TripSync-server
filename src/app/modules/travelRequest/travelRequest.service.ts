@@ -7,7 +7,8 @@ import { StatusCodes } from "http-status-codes";
 // import { prisma } from "src/app/lib/prisma";
 import ApiError from "../../../app/errors/ApiError"
 import {prisma} from "../../lib/prisma"
-import { RequestStatus } from "../../../../prisma/generated/prisma/enums";
+import { RequestStatus } from "@prisma/client";
+
 
 class TravelRequestService {
     async createRequest(requesterId: string, requestData: any) {

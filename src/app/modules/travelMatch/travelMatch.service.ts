@@ -1,11 +1,10 @@
 // app/modules/travelMatch/travelMatch.service.ts
-import { prisma } from "app/lib/prisma";
-import ApiError from "app/errors/ApiError";
+
 import { StatusCodes } from "http-status-codes";
-// import ApiError from "src/app/errors/ApiError";
-// import { calculatePagination, IOptions } from "src/app/helper/paginationHelper";
-// import { prisma } from "src/app/lib/prisma";
-import { calculatePagination, IOptions } from "app/helper/paginationHelper";
+import ApiError from "../../errors/ApiError";
+import { calculatePagination, IOptions } from "../../helper/paginationHelper";
+import { prisma } from "../../lib/prisma";
+
 
 class TravelMatchService {
     /**

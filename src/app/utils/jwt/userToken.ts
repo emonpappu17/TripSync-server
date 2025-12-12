@@ -3,10 +3,13 @@
 // import { UserStatus } from "@prisma/enums";
 // import { prisma } from "app/lib/prisma";
 
-import { User } from "prisma/generated/prisma/client";
-import envVars from "app/config/env";
+// import { User } from "prisma/generated/prisma/client";
+// import envVars from "app/config/env";
 // import ApiError from "app/errors/ApiError";
 // import { StatusCodes } from "http-status-codes";
+// import { User } from "../../../../prisma/generated/prisma/client";
+import { User } from "@prisma/client";
+import envVars from "../../config/env";
 import { generateToken } from "./jwt";
 // import envVars from "src/app/config/env";
 

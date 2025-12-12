@@ -4,9 +4,10 @@ import { Router } from "express";
 import adminController from "./admin.controller";
 // import { validationRequest } from "app/middlewares/validationRequest";
 import { userActionValidation } from "./admin.validation";
-import { Role } from "../../../../prisma/generated/prisma/enums";
+// import { Role } from "../../../../prisma/generated/prisma/enums";
 import { CheckAuth } from "../../middlewares/checkAuth";
 import { validationRequest } from "../../middlewares/validationRequest";
+import { Role } from "@prisma/client";
 // import { CheckAuth } from "src/app/middlewares/checkAuth";
 // import { validationRequest } from "src/app/middlewares/validationRequest";
 

@@ -6,13 +6,11 @@ import { Router } from "express";
 import travelPlanController from "./travelPlan.controller";
 import { createTravelPlanValidation, updateTravelPlanValidation } from "./travelPlan.validation";
 import { CheckAuth } from "../../middlewares/checkAuth";
-import { Role } from "../../../../prisma/generated/prisma/enums";
+
 import { fileUploader } from "../../helper/fileUploader";
 import { validationRequest } from "../../middlewares/validationRequest";
-// import { CheckAuth } from "src/app/middlewares/checkAuth";
-// import { fileUploader } from "src/app/helper/fileUploader";
-// import { validationRequest } from "src/app/middlewares/validationRequest";
-// import { fileUploader } from "app/helper/fileUploader";
+import { Role } from "@prisma/client";
+
 
 const router = Router();
 

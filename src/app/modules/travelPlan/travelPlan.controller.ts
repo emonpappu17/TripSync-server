@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { fileUploader } from "app/helper/fileUploader";
-import pick from "app/helper/pick";
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
+
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import travelPlanService from "./travelPlan.service";
+import catchAsync from "../../utils/catchAsync";
+import { fileUploader } from "../../helper/fileUploader";
+import sendResponse from "../../utils/sendResponse";
+import pick from "../../helper/pick";
 // import catchAsync from "src/app/utils/catchAsync";
 // import { fileUploader } from "src/app/helper/fileUploader";
 // import sendResponse from "src/app/utils/sendResponse";
@@ -21,6 +22,7 @@ class TravelPlanController {
         if (req?.file) {
             // req.body.profileImage =  req?.file?.path;;
             const updatedImage = await fileUploader.uploadToCloudinary(req?.file);
+
             req.body.image = updatedImage?.secure_url;
         }
 
@@ -52,7 +54,7 @@ class TravelPlanController {
 
     getTravelPlanById = catchAsync(async (req: Request, res: Response) => {
         const { id } = req.params;
-        const result = await travelPlanService.getTravelPlanById(id);
+        const result = await travelPlanService.getTravelPlanById(id as string);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -63,7 +65,7 @@ class TravelPlanController {
     });
     getTravelPlanByUserId = catchAsync(async (req: Request, res: Response) => {
         const { id } = req.params;
-        const result = await travelPlanService.getTravelPlanByUserId(id);
+        const result = await travelPlanService.getTravelPlanByUserId(id as string);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -99,7 +101,7 @@ class TravelPlanController {
 
         const { id } = req.params;
         const userId = (req as any).user.id;
-        const result = await travelPlanService.updateTravelPlan(id, userId, req.body);
+        const result = await travelPlanService.updateTravelPlan(id as string, userId, req.body);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -112,7 +114,7 @@ class TravelPlanController {
     deleteTravelPlan = catchAsync(async (req: Request, res: Response) => {
         const { id } = req.params;
         const userId = (req as any).user.id;
-        await travelPlanService.deleteTravelPlan(id, userId);
+        await travelPlanService.deleteTravelPlan(id as string, userId);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,

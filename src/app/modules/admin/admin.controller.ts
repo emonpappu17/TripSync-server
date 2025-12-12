@@ -4,10 +4,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import adminService from "./admin.service";
-// import catchAsync from "src/app/utils/catchAsync";
-// import sendResponse from "src/app/utils/sendResponse";
-// import pick from "src/app/helper/pick";
-// import pick from "app/helper/pick";
+
 import catchAsync from "../../utils/catchAsync"
 import sendResponse from "../../utils/sendResponse"
 import pick from '../../helper/pick'

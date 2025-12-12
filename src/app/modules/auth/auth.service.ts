@@ -1,21 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Role, User, } from "prisma/generated/prisma/client";
-import ApiError from "app/errors/ApiError";
-import { prisma } from "app/lib/prisma";
+
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcryptjs"
-// import { prisma } from "src/app/lib/prisma";
-// import ApiError from "src/app/errors/ApiError";
-// import envVars from "src/app/config/env";
-// import { generateToken } from "src/app/utils/jwt/jwt";
-import envVars from "app/config/env";
-import { generateToken } from "app/utils/jwt/jwt";
+import { Role, User } from "@prisma/client";
+import { prisma } from "../../lib/prisma";
+import ApiError from "../../errors/ApiError";
+import envVars from "../../config/env";
+import { generateToken } from "../../utils/jwt/jwt";
+
 
 class AuthService {
     async register(registerData: Partial<User>): Promise<any> {
         // Check if user already exists
         const existingUser = await prisma.user.findUnique({
-            where: { email: registerData.email },
+            where: { email: registerData.email  as string},
         });
 
         if (existingUser) {

@@ -5,8 +5,9 @@ import { Router } from "express";
 import paymentController from "./payment.controller";
 import { createPaymentValidation } from "./payment.validation";
 import { CheckAuth } from "../../middlewares/checkAuth";
-import { Role } from "../../../../prisma/generated/prisma/enums";
+// import { Role } from "../../../../prisma/generated/prisma/enums";
 import { validationRequest } from "../../middlewares/validationRequest";
+import { Role } from "@prisma/client";
 // import { CheckAuth } from "src/app/middlewares/checkAuth";
 // import { validationRequest } from "src/app/middlewares/validationRequest";
 

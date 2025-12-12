@@ -34,7 +34,7 @@ class TravelMatchController {
         const { planId } = req.params;
         const userId = (req as any).user.id;
 
-        const result = await travelMatchService.getMatchesByPlanId(planId, userId);
+        const result = await travelMatchService.getMatchesByPlanId(planId as  string, userId);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -49,7 +49,7 @@ class TravelMatchController {
         const { matchId } = req.params;
         const userId = (req as any).user.id;
 
-        const result = await travelMatchService.getMatchById(matchId, userId);
+        const result = await travelMatchService.getMatchById(matchId as string, userId);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -64,7 +64,7 @@ class TravelMatchController {
         const { matchId } = req.params;
         const userId = (req as any).user.id;
 
-        const result = await travelMatchService.deactivateMatch(matchId, userId);
+        const result = await travelMatchService.deactivateMatch(matchId as string, userId);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -79,7 +79,7 @@ class TravelMatchController {
         const { planId, otherUserId } = req.params;
         const userId = (req as any).user.id;
 
-        const result = await travelMatchService.checkMatch(planId, userId, otherUserId);
+        const result = await travelMatchService.checkMatch(planId as string, userId, otherUserId as string);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,

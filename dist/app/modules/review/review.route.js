@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.reviewRoutes = void 0;
+// import { Role } from "prisma/generated/prisma/enums";
+// import { CheckAuth } from "app/middlewares/checkAuth";
+// import { validationRequest } from "app/middlewares/validationRequest";
+const express_1 = require("express");
+const review_controller_1 = __importDefault(require("./review.controller"));
+const review_validation_1 = require("./review.validation");
+const checkAuth_1 = require("../../middlewares/checkAuth");
+// import { Role } from "../../../../prisma/generated/prisma/enums";
+const validationRequest_1 = require("../../middlewares/validationRequest");
+const client_1 = require("@prisma/client");
+// import { CheckAuth } from "src/app/middlewares/checkAuth";
+// import { validationRequest } from "src/app/middlewares/validationRequest";
+const router = (0, express_1.Router)();
+router.get('/my-reviews', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), review_controller_1.default.getMyReviews);
+router.get('/user/:userId', review_controller_1.default.getUserReviews);
+router.post('/', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), (0, validationRequest_1.validationRequest)(review_validation_1.createReviewValidation), review_controller_1.default.createReview);
+router.patch('/:id', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), (0, validationRequest_1.validationRequest)(review_validation_1.updateReviewValidation), review_controller_1.default.updateReview);
+router.delete('/:id', (0, checkAuth_1.CheckAuth)(client_1.Role.USER, client_1.Role.ADMIN), review_controller_1.default.deleteReview);
+exports.reviewRoutes = router;

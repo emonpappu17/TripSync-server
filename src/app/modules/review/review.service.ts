@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ApiError from "app/errors/ApiError";
-import { prisma } from "app/lib/prisma";
+// import ApiError from "app/errors/ApiError";
+// import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
+import { prisma } from "../../lib/prisma";
+import ApiError from "../../errors/ApiError";
 // import ApiError from "src/app/errors/ApiError";
 // import { prisma } from "src/app/lib/prisma";
 
@@ -127,7 +129,7 @@ class ReviewService {
         };
     }
 
-    async updateReview(reviewId: string, reviewerId: string, updateData: any) {
+    async updateReview(reviewId: string , reviewerId: string, updateData: any) {
         const review = await prisma.review.findFirst({
             where: {
                 id: reviewId,

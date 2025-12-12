@@ -1,16 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
+// import catchAsync from "app/utils/catchAsync";
+// import sendResponse from "app/utils/sendResponse";
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import authService from "./auth.service";
 import { STATUS_CODES } from "http";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
+import { convertToMilliseconds } from "../../utils/convertToMilliseconds ";
+import envVars from "../../config/env";
 // import catchAsync from "src/app/utils/catchAsync";
 // import sendResponse from "src/app/utils/sendResponse";
 // import { convertToMilliseconds } from "src/app/utils/convertToMilliseconds ";
 // import envVars from "src/app/config/env";
-import { convertToMilliseconds } from "app/utils/convertToMilliseconds ";
-import envVars from "app/config/env";
+// import { convertToMilliseconds } from "app/utils/convertToMilliseconds ";
+// import envVars from "app/config/env";
 
 
 class AuthController {

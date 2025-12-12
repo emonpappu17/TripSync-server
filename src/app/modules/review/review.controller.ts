@@ -39,7 +39,7 @@ class ReviewController {
 
     getUserReviews = catchAsync(async (req: Request, res: Response) => {
         const { userId } = req.params;
-        const result = await reviewService.getUserReviews(userId, req.query);
+        const result = await reviewService.getUserReviews(userId as string, req.query);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -53,7 +53,7 @@ class ReviewController {
     updateReview = catchAsync(async (req: Request, res: Response) => {
         const { id } = req.params;
         const reviewerId = (req as any).user.id;
-        const result = await reviewService.updateReview(id, reviewerId, req.body);
+        const result = await reviewService.updateReview(id as string, reviewerId, req.body);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -66,7 +66,7 @@ class ReviewController {
     deleteReview = catchAsync(async (req: Request, res: Response) => {
         const { id } = req.params;
         const reviewerId = (req as any).user.id;
-        await reviewService.deleteReview(id, reviewerId);
+        await reviewService.deleteReview(id as string, reviewerId);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,

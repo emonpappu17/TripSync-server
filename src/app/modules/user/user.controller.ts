@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
+
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import userService from "./user.service";
-// import catchAsync from "src/app/utils/catchAsync";
-// import { fileUploader } from "src/app/helper/fileUploader";
-// import sendResponse from "src/app/utils/sendResponse";
-// import pick from "src/app/helper/pick";
-import { fileUploader } from "app/helper/fileUploader";
-import pick from "app/helper/pick";
+import catchAsync from "../../utils/catchAsync";
+import { fileUploader } from "../../helper/fileUploader";
+import sendResponse from "../../utils/sendResponse";
+import pick from "../../helper/pick";
+
 // import { fileUploader } from "app/helper/fileUploader";
 
 class UserController {
@@ -59,7 +57,7 @@ class UserController {
         const { id } = req.params;
         // const id = req.params.id || (req as any).user.id;
 
-        const result = await userService.getUserStats(id);
+        const result = await userService.getUserStats(id as string);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -71,7 +69,7 @@ class UserController {
 
     getUserById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
-        const result = await userService.getUserById(id);
+        const result = await userService.getUserById(id as string) ;
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -96,7 +94,7 @@ class UserController {
     changeUserStatus = catchAsync(async (req: Request, res: Response) => {
         const { id } = req.params;
 
-        const result = await userService.changeUserStatus(id, req.body);
+        const result = await userService.changeUserStatus(id as string, req.body);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,
@@ -108,7 +106,7 @@ class UserController {
 
     deleteUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
-        await userService.deleteUser(id);
+        await userService.deleteUser(id as string);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,

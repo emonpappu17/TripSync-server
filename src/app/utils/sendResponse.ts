@@ -11,7 +11,7 @@ interface IApiResponse<T> {
   statusCode: number;
   success: boolean;
   message: string;
-  data?: T;
+  data?: T | null | undefined;
   meta?: IMEta;
   err?: any;
 }

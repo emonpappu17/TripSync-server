@@ -10,10 +10,11 @@ import userController from "./user.controller";
 // import { validationRequest } from "app/middlewares/validationRequest";
 import { userValidation } from "./user.validation";
 import { CheckAuth } from "../../middlewares/checkAuth";
-import { Role } from "../../../../prisma/generated/prisma/enums";
+
 import { validationRequest } from "../../middlewares/validationRequest";
 // import { fileUploader } from "app/helper/fileUploader";
 import { fileUploader } from "../../../app/helper/fileUploader"
+import { Role } from "@prisma/client";
 
 const router = Router();
 
