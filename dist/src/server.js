@@ -1,0 +1,43 @@
+import app from "./app";
+import envVars from "./app/config/env";
+import { prisma } from "./app/lib/prisma";
+import { seedAdmin } from "./app/utils/seedAdmin";
+// import { seedAdmin } from "app/utils/seedAdmin";
+let server;
+const bootstrap = async () => {
+    try {
+        // Test Database connection
+        await prisma.$connect();
+        console.log("✅ Database connected successfully");
+        server = app.listen(envVars.PORT, () => {
+            console.log(`🚀 Server running on port ${envVars.PORT}`);
+            console.log(`📍 Environment: ${envVars.NODE_ENV}`);
+            console.log(`🔗 Health check: http://localhost:${envVars.PORT}/health`);
+        });
+    }
+    catch (err) {
+        console.error("❌ Failed to start server:", err);
+        process.exit(1);
+    }
+};
+bootstrap();
+seedAdmin();
+// Graceful shutdown
+process.on("SIGTERM", () => {
+    console.log("SIGTERM received");
+    if (server) {
+        server.close(() => {
+            console.log("Process terminated");
+            prisma.$disconnect();
+        });
+    }
+});
+process.on("SIGINT", () => {
+    console.log("SIGINT received");
+    if (server) {
+        server.close(() => {
+            console.log("Process terminated");
+            prisma.$disconnect();
+        });
+    }
+});
