@@ -1,5 +1,6 @@
-import { RequestStatus } from "@prisma/enums";
+// import { RequestStatus } from "prisma/generated/prisma/enums";
 import z from "zod";
+import { RequestStatus } from "../../../../prisma/generated/prisma/enums";
 
 export const createTravelRequestValidation = z.object({
     travelPlanId: z.string({

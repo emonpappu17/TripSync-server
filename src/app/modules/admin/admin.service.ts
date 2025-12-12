@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RequestStatus, SubscriptionStatus, TripStatus } from "@prisma/enums";
-import ApiError from "app/errors/ApiError";
-import { calculatePagination } from "app/helper/paginationHelper";
-import { prisma } from "app/lib/prisma";
+// import { RequestStatus, SubscriptionStatus, TripStatus } from "prisma/generated/prisma/enums";
+// import ApiError from "app/errors/ApiError";
+// import { calculatePagination } from "app/helper/paginationHelper";
+// import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
+import { prisma } from "../../lib/prisma";
+import { RequestStatus, SubscriptionStatus, TripStatus } from "../../../../prisma/generated/prisma/enums";
 // import ApiError from "src/app/errors/ApiError";
 // import { calculatePagination } from "src/app/helper/paginationHelper";
 // import { prisma } from "src/app/lib/prisma";
+import {calculatePagination} from "../../helper/paginationHelper"
+import ApiError from "../../errors/ApiError";
+// import {ApiError} from "../../../app/errors"
 
 class AdminService {
     async getDashboardStats() {

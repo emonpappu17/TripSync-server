@@ -3,7 +3,7 @@
 // import { UserStatus } from "@prisma/enums";
 // import { prisma } from "app/lib/prisma";
 
-import { User } from "@prisma/client";
+import { User } from "prisma/generated/prisma/client";
 import envVars from "app/config/env";
 // import ApiError from "app/errors/ApiError";
 // import { StatusCodes } from "http-status-codes";

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Role, User, } from "@prisma/client";
+import { Role, User, } from "prisma/generated/prisma/client";
 import ApiError from "app/errors/ApiError";
 import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";

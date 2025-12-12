@@ -1,7 +1,8 @@
 // import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "./ApiError";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../../../prisma/generated/prisma/client";
+// import { Prisma } from "prisma/generated/prisma/client";
 
 const handlePrismaError = (error: Prisma.PrismaClientKnownRequestError) => {
   let message = "Database Error";

@@ -1,15 +1,19 @@
 import { Router } from "express";
 import userController from "./user.controller";
-import { CheckAuth } from "app/middlewares/checkAuth";
-import { Role } from "@prisma/enums";
+// import { CheckAuth } from "app/middlewares/checkAuth";
+// import { Role } from "prisma/generated/prisma/enums";
 // import { CheckAuth } from "src/app/middlewares/checkAuth";
 // import { fileUploader } from "src/app/helper/fileUploader";
 // import { validationRequest } from "src/app/middlewares/validationRequest";
 // import { userValidation } from "./user.validation";
 // import { fileUploader } from "app/helper/fileUploader";
-import { validationRequest } from "app/middlewares/validationRequest";
+// import { validationRequest } from "app/middlewares/validationRequest";
 import { userValidation } from "./user.validation";
-import { fileUploader } from "app/helper/fileUploader";
+import { CheckAuth } from "../../middlewares/checkAuth";
+import { Role } from "../../../../prisma/generated/prisma/enums";
+import { validationRequest } from "../../middlewares/validationRequest";
+// import { fileUploader } from "app/helper/fileUploader";
+import { fileUploader } from "../../../app/helper/fileUploader"
 
 const router = Router();
 

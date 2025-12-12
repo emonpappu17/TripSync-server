@@ -1,5 +1,6 @@
-import { SubscriptionPlan } from "@prisma/enums";
+// import { SubscriptionPlan } from "prisma/generated/prisma/enums";
 import z from "zod";
+import { SubscriptionPlan } from "../../../../prisma/generated/prisma/enums";
 
 export const createPaymentValidation = z.object({
     plan: z.enum(SubscriptionPlan, {

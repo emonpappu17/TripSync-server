@@ -1,11 +1,14 @@
-import { Role } from "@prisma/enums";
-import { CheckAuth } from "app/middlewares/checkAuth";
-import { validationRequest } from "app/middlewares/validationRequest";
+// import { Role } from "prisma/generated/prisma/enums";
+// import { CheckAuth } from "app/middlewares/checkAuth";
+// import { validationRequest } from "app/middlewares/validationRequest";
 import { Router } from "express";
 import { createTravelRequestValidation, updateRequestStatusValidation } from "./travelRequest.validation";
 import travelRequestController from "./travelRequest.controller";
+import { Role } from "../../../../prisma/generated/prisma/enums";
 // import { CheckAuth } from "src/app/middlewares/checkAuth";
 // import { validationRequest } from "src/app/middlewares/validationRequest";
+import { CheckAuth } from "../../middlewares/checkAuth"
+import { validationRequest } from "../../middlewares/validationRequest"
 
 const router = Router();
 

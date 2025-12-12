@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { User } from "prisma/generated/prisma/client";
 import ApiError from "app/errors/ApiError";
 import { calculatePagination, IOptions } from "app/helper/paginationHelper";
 import { prisma } from "app/lib/prisma";

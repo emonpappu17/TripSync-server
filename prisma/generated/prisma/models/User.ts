@@ -611,34 +611,6 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type UserCreateNestedOneWithoutPaymentsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutPaymentsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentsInput
-  upsert?: Prisma.UserUpsertWithoutPaymentsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentsInput, Prisma.UserUpdateWithoutPaymentsInput>, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
-}
-
-export type UserCreateNestedOneWithoutSubscriptionsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutSubscriptionsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionsInput
-  upsert?: Prisma.UserUpsertWithoutSubscriptionsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.UserUpdateWithoutSubscriptionsInput>, Prisma.UserUncheckedUpdateWithoutSubscriptionsInput>
-}
-
 export type UserCreateNestedOneWithoutTravelPlansInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutTravelPlansInput, Prisma.UserUncheckedCreateWithoutTravelPlansInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutTravelPlansInput
@@ -679,6 +651,34 @@ export type UserUpdateOneRequiredWithoutReceivedRequestsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutReceivedRequestsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReceivedRequestsInput, Prisma.UserUpdateWithoutReceivedRequestsInput>, Prisma.UserUncheckedUpdateWithoutReceivedRequestsInput>
+}
+
+export type UserCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.UserUpsertWithoutPaymentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentsInput, Prisma.UserUpdateWithoutPaymentsInput>, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type UserCreateNestedOneWithoutSubscriptionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSubscriptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscriptionsInput
+  upsert?: Prisma.UserUpsertWithoutSubscriptionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.UserUpdateWithoutSubscriptionsInput>, Prisma.UserUncheckedUpdateWithoutSubscriptionsInput>
 }
 
 export type UserCreateinterestsInput = {
@@ -733,246 +733,6 @@ export type UserUpdateOneRequiredWithoutReviewsReceivedNestedInput = {
   upsert?: Prisma.UserUpsertWithoutReviewsReceivedInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewsReceivedInput, Prisma.UserUpdateWithoutReviewsReceivedInput>, Prisma.UserUncheckedUpdateWithoutReviewsReceivedInput>
-}
-
-export type UserCreateWithoutPaymentsInput = {
-  id?: string
-  email: string
-  password: string
-  role?: $Enums.Role
-  isActive?: boolean
-  isDeleted?: boolean
-  fullName: string
-  profileImage?: string | null
-  bio?: string | null
-  phone?: string | null
-  currentLocation?: string | null
-  gender?: $Enums.Gender | null
-  isVerified?: boolean
-  interests?: Prisma.UserCreateinterestsInput | string[]
-  visitedCountries?: Prisma.UserCreatevisitedCountriesInput | string[]
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  sentRequests?: Prisma.TravelRequestCreateNestedManyWithoutRequesterInput
-  receivedRequests?: Prisma.TravelRequestCreateNestedManyWithoutReceiverInput
-  travelPlans?: Prisma.TravelPlanCreateNestedManyWithoutUserInput
-  reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutFormReviewerInput
-  reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutToReviewerInput
-  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutPaymentsInput = {
-  id?: string
-  email: string
-  password: string
-  role?: $Enums.Role
-  isActive?: boolean
-  isDeleted?: boolean
-  fullName: string
-  profileImage?: string | null
-  bio?: string | null
-  phone?: string | null
-  currentLocation?: string | null
-  gender?: $Enums.Gender | null
-  isVerified?: boolean
-  interests?: Prisma.UserCreateinterestsInput | string[]
-  visitedCountries?: Prisma.UserCreatevisitedCountriesInput | string[]
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  sentRequests?: Prisma.TravelRequestUncheckedCreateNestedManyWithoutRequesterInput
-  receivedRequests?: Prisma.TravelRequestUncheckedCreateNestedManyWithoutReceiverInput
-  travelPlans?: Prisma.TravelPlanUncheckedCreateNestedManyWithoutUserInput
-  reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutFormReviewerInput
-  reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutToReviewerInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutPaymentsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
-}
-
-export type UserUpsertWithoutPaymentsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutPaymentsInput, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutPaymentsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutPaymentsInput, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
-}
-
-export type UserUpdateWithoutPaymentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  interests?: Prisma.UserUpdateinterestsInput | string[]
-  visitedCountries?: Prisma.UserUpdatevisitedCountriesInput | string[]
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sentRequests?: Prisma.TravelRequestUpdateManyWithoutRequesterNestedInput
-  receivedRequests?: Prisma.TravelRequestUpdateManyWithoutReceiverNestedInput
-  travelPlans?: Prisma.TravelPlanUpdateManyWithoutUserNestedInput
-  reviewsGiven?: Prisma.ReviewUpdateManyWithoutFormReviewerNestedInput
-  reviewsReceived?: Prisma.ReviewUpdateManyWithoutToReviewerNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutPaymentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  interests?: Prisma.UserUpdateinterestsInput | string[]
-  visitedCountries?: Prisma.UserUpdatevisitedCountriesInput | string[]
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sentRequests?: Prisma.TravelRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  receivedRequests?: Prisma.TravelRequestUncheckedUpdateManyWithoutReceiverNestedInput
-  travelPlans?: Prisma.TravelPlanUncheckedUpdateManyWithoutUserNestedInput
-  reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutFormReviewerNestedInput
-  reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutToReviewerNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutSubscriptionsInput = {
-  id?: string
-  email: string
-  password: string
-  role?: $Enums.Role
-  isActive?: boolean
-  isDeleted?: boolean
-  fullName: string
-  profileImage?: string | null
-  bio?: string | null
-  phone?: string | null
-  currentLocation?: string | null
-  gender?: $Enums.Gender | null
-  isVerified?: boolean
-  interests?: Prisma.UserCreateinterestsInput | string[]
-  visitedCountries?: Prisma.UserCreatevisitedCountriesInput | string[]
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
-  sentRequests?: Prisma.TravelRequestCreateNestedManyWithoutRequesterInput
-  receivedRequests?: Prisma.TravelRequestCreateNestedManyWithoutReceiverInput
-  travelPlans?: Prisma.TravelPlanCreateNestedManyWithoutUserInput
-  reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutFormReviewerInput
-  reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutToReviewerInput
-}
-
-export type UserUncheckedCreateWithoutSubscriptionsInput = {
-  id?: string
-  email: string
-  password: string
-  role?: $Enums.Role
-  isActive?: boolean
-  isDeleted?: boolean
-  fullName: string
-  profileImage?: string | null
-  bio?: string | null
-  phone?: string | null
-  currentLocation?: string | null
-  gender?: $Enums.Gender | null
-  isVerified?: boolean
-  interests?: Prisma.UserCreateinterestsInput | string[]
-  visitedCountries?: Prisma.UserCreatevisitedCountriesInput | string[]
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
-  sentRequests?: Prisma.TravelRequestUncheckedCreateNestedManyWithoutRequesterInput
-  receivedRequests?: Prisma.TravelRequestUncheckedCreateNestedManyWithoutReceiverInput
-  travelPlans?: Prisma.TravelPlanUncheckedCreateNestedManyWithoutUserInput
-  reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutFormReviewerInput
-  reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutToReviewerInput
-}
-
-export type UserCreateOrConnectWithoutSubscriptionsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
-}
-
-export type UserUpsertWithoutSubscriptionsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutSubscriptionsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutSubscriptionsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutSubscriptionsInput>
-}
-
-export type UserUpdateWithoutSubscriptionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  interests?: Prisma.UserUpdateinterestsInput | string[]
-  visitedCountries?: Prisma.UserUpdatevisitedCountriesInput | string[]
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
-  sentRequests?: Prisma.TravelRequestUpdateManyWithoutRequesterNestedInput
-  receivedRequests?: Prisma.TravelRequestUpdateManyWithoutReceiverNestedInput
-  travelPlans?: Prisma.TravelPlanUpdateManyWithoutUserNestedInput
-  reviewsGiven?: Prisma.ReviewUpdateManyWithoutFormReviewerNestedInput
-  reviewsReceived?: Prisma.ReviewUpdateManyWithoutToReviewerNestedInput
-}
-
-export type UserUncheckedUpdateWithoutSubscriptionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  interests?: Prisma.UserUpdateinterestsInput | string[]
-  visitedCountries?: Prisma.UserUpdatevisitedCountriesInput | string[]
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
-  sentRequests?: Prisma.TravelRequestUncheckedUpdateManyWithoutRequesterNestedInput
-  receivedRequests?: Prisma.TravelRequestUncheckedUpdateManyWithoutReceiverNestedInput
-  travelPlans?: Prisma.TravelPlanUncheckedUpdateManyWithoutUserNestedInput
-  reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutFormReviewerNestedInput
-  reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutToReviewerNestedInput
 }
 
 export type UserCreateWithoutTravelPlansInput = {
@@ -1333,6 +1093,246 @@ export type UserUncheckedUpdateWithoutReceivedRequestsInput = {
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutFormReviewerNestedInput
   reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutToReviewerNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPaymentsInput = {
+  id?: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  isActive?: boolean
+  isDeleted?: boolean
+  fullName: string
+  profileImage?: string | null
+  bio?: string | null
+  phone?: string | null
+  currentLocation?: string | null
+  gender?: $Enums.Gender | null
+  isVerified?: boolean
+  interests?: Prisma.UserCreateinterestsInput | string[]
+  visitedCountries?: Prisma.UserCreatevisitedCountriesInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sentRequests?: Prisma.TravelRequestCreateNestedManyWithoutRequesterInput
+  receivedRequests?: Prisma.TravelRequestCreateNestedManyWithoutReceiverInput
+  travelPlans?: Prisma.TravelPlanCreateNestedManyWithoutUserInput
+  reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutFormReviewerInput
+  reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutToReviewerInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  isActive?: boolean
+  isDeleted?: boolean
+  fullName: string
+  profileImage?: string | null
+  bio?: string | null
+  phone?: string | null
+  currentLocation?: string | null
+  gender?: $Enums.Gender | null
+  isVerified?: boolean
+  interests?: Prisma.UserCreateinterestsInput | string[]
+  visitedCountries?: Prisma.UserCreatevisitedCountriesInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sentRequests?: Prisma.TravelRequestUncheckedCreateNestedManyWithoutRequesterInput
+  receivedRequests?: Prisma.TravelRequestUncheckedCreateNestedManyWithoutReceiverInput
+  travelPlans?: Prisma.TravelPlanUncheckedCreateNestedManyWithoutUserInput
+  reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutFormReviewerInput
+  reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutToReviewerInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
+}
+
+export type UserUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPaymentsInput, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPaymentsInput, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type UserUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  interests?: Prisma.UserUpdateinterestsInput | string[]
+  visitedCountries?: Prisma.UserUpdatevisitedCountriesInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sentRequests?: Prisma.TravelRequestUpdateManyWithoutRequesterNestedInput
+  receivedRequests?: Prisma.TravelRequestUpdateManyWithoutReceiverNestedInput
+  travelPlans?: Prisma.TravelPlanUpdateManyWithoutUserNestedInput
+  reviewsGiven?: Prisma.ReviewUpdateManyWithoutFormReviewerNestedInput
+  reviewsReceived?: Prisma.ReviewUpdateManyWithoutToReviewerNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  interests?: Prisma.UserUpdateinterestsInput | string[]
+  visitedCountries?: Prisma.UserUpdatevisitedCountriesInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sentRequests?: Prisma.TravelRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  receivedRequests?: Prisma.TravelRequestUncheckedUpdateManyWithoutReceiverNestedInput
+  travelPlans?: Prisma.TravelPlanUncheckedUpdateManyWithoutUserNestedInput
+  reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutFormReviewerNestedInput
+  reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutToReviewerNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSubscriptionsInput = {
+  id?: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  isActive?: boolean
+  isDeleted?: boolean
+  fullName: string
+  profileImage?: string | null
+  bio?: string | null
+  phone?: string | null
+  currentLocation?: string | null
+  gender?: $Enums.Gender | null
+  isVerified?: boolean
+  interests?: Prisma.UserCreateinterestsInput | string[]
+  visitedCountries?: Prisma.UserCreatevisitedCountriesInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  sentRequests?: Prisma.TravelRequestCreateNestedManyWithoutRequesterInput
+  receivedRequests?: Prisma.TravelRequestCreateNestedManyWithoutReceiverInput
+  travelPlans?: Prisma.TravelPlanCreateNestedManyWithoutUserInput
+  reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutFormReviewerInput
+  reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutToReviewerInput
+}
+
+export type UserUncheckedCreateWithoutSubscriptionsInput = {
+  id?: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  isActive?: boolean
+  isDeleted?: boolean
+  fullName: string
+  profileImage?: string | null
+  bio?: string | null
+  phone?: string | null
+  currentLocation?: string | null
+  gender?: $Enums.Gender | null
+  isVerified?: boolean
+  interests?: Prisma.UserCreateinterestsInput | string[]
+  visitedCountries?: Prisma.UserCreatevisitedCountriesInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  sentRequests?: Prisma.TravelRequestUncheckedCreateNestedManyWithoutRequesterInput
+  receivedRequests?: Prisma.TravelRequestUncheckedCreateNestedManyWithoutReceiverInput
+  travelPlans?: Prisma.TravelPlanUncheckedCreateNestedManyWithoutUserInput
+  reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutFormReviewerInput
+  reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutToReviewerInput
+}
+
+export type UserCreateOrConnectWithoutSubscriptionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
+}
+
+export type UserUpsertWithoutSubscriptionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutSubscriptionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubscriptionsInput, Prisma.UserUncheckedCreateWithoutSubscriptionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSubscriptionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutSubscriptionsInput>
+}
+
+export type UserUpdateWithoutSubscriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  interests?: Prisma.UserUpdateinterestsInput | string[]
+  visitedCountries?: Prisma.UserUpdatevisitedCountriesInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  sentRequests?: Prisma.TravelRequestUpdateManyWithoutRequesterNestedInput
+  receivedRequests?: Prisma.TravelRequestUpdateManyWithoutReceiverNestedInput
+  travelPlans?: Prisma.TravelPlanUpdateManyWithoutUserNestedInput
+  reviewsGiven?: Prisma.ReviewUpdateManyWithoutFormReviewerNestedInput
+  reviewsReceived?: Prisma.ReviewUpdateManyWithoutToReviewerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSubscriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  profileImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentLocation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  interests?: Prisma.UserUpdateinterestsInput | string[]
+  visitedCountries?: Prisma.UserUpdatevisitedCountriesInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  sentRequests?: Prisma.TravelRequestUncheckedUpdateManyWithoutRequesterNestedInput
+  receivedRequests?: Prisma.TravelRequestUncheckedUpdateManyWithoutReceiverNestedInput
+  travelPlans?: Prisma.TravelPlanUncheckedUpdateManyWithoutUserNestedInput
+  reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutFormReviewerNestedInput
+  reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutToReviewerNestedInput
 }
 
 export type UserCreateWithoutReviewsGivenInput = {

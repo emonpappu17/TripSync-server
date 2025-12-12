@@ -10,7 +10,8 @@ import { IErrorResponse } from "./error.interface";
 import envVars from "../config/env";
 import handlePrismaError from "./handlePrismaErrors";
 import handleZodError from "./handleZodError";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../../../prisma/generated/prisma/client";
+// import { Prisma } from "prisma/generated/prisma/client";
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;

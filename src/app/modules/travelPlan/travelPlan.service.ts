@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { TravelPlan } from "@prisma/client";
-import { TravelPlan, TripStatus } from "@prisma/client";
+import { TravelPlan, TripStatus } from "prisma/generated/prisma/client";
 import ApiError from "app/errors/ApiError";
 import { calculatePagination, IOptions } from "app/helper/paginationHelper";
 import { prisma } from "app/lib/prisma";

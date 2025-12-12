@@ -1,9 +1,12 @@
-import { Role } from "@prisma/enums";
-import { CheckAuth } from "app/middlewares/checkAuth";
-import { validationRequest } from "app/middlewares/validationRequest";
+// import { Role } from "prisma/generated/prisma/enums";
+// import { CheckAuth } from "app/middlewares/checkAuth";
+// import { validationRequest } from "app/middlewares/validationRequest";
 import { Router } from "express";
 import reviewController from "./review.controller";
 import { createReviewValidation, updateReviewValidation } from "./review.validation";
+import { CheckAuth } from "../../middlewares/checkAuth";
+import { Role } from "../../../../prisma/generated/prisma/enums";
+import { validationRequest } from "../../middlewares/validationRequest";
 // import { CheckAuth } from "src/app/middlewares/checkAuth";
 // import { validationRequest } from "src/app/middlewares/validationRequest";
 

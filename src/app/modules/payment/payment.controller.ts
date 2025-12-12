@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
+
+
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import paymentService from "./payment.service";
-import { stripe } from "app/config/stripe";
-import envVars from "app/config/env";
+// import { stripe } from "app/config/stripe";
+// import envVars from "app/config/env";
 import Stripe from "stripe";
 // import catchAsync from "app/utils/catchAsync";
 // import catchAsync from "src/app/utils/catchAsync";
@@ -14,7 +14,14 @@ import Stripe from "stripe";
 // import { stripe } from "src/app/config/stripe";
 // import envVars from "src/app/config/env";
 // import { prisma } from "src/app/lib/prisma";
-import { prisma } from "app/lib/prisma";
+// import { prisma } from "app/lib/prisma";
+// import catchAsync from "app/utils/catchAsync";
+// import sendResponse from "app/utils/sendResponse";
+import catchAsync from "../../utils/catchAsync"
+import sendResponse from "../../utils/sendResponse"
+import {stripe}from "../../config/stripe"
+import envVars from "../../config/env";
+import { prisma } from "../../lib/prisma";
 
 class PaymentController {
     createCheckoutSession = catchAsync(async (req: Request, res: Response) => {
