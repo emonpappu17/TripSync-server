@@ -41,7 +41,7 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@prisma/adapter-pg": "^7.0.1",
+    "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.0.1",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",

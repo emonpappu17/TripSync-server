@@ -1,3 +1,4 @@
+// import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "./ApiError";
 const handlePrismaError = (error) => {

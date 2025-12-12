@@ -1,10 +1,11 @@
 import { StatusCodes } from "http-status-codes";
 import { ZodError } from "zod";
 import ApiError from "./ApiError";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
+// import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import envVars from "../config/env";
 import handlePrismaError from "./handlePrismaErrors";
 import handleZodError from "./handleZodError";
+import { Prisma } from "@prisma/client";
 const globalErrorHandler = (error, req, res, next) => {
     let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     let message = "Something went wrong!";
@@ -17,7 +18,7 @@ const globalErrorHandler = (error, req, res, next) => {
         errorMessages = simplifiedError.errorMessages;
     }
     // 🔹 Prisma client known errors (P2002, P2025, etc.)
-    else if (error instanceof PrismaClientKnownRequestError) {
+    else if (error instanceof Prisma.PrismaClientKnownRequestError) {
         const simplifiedError = handlePrismaError(error);
         statusCode = simplifiedError.statusCode;
         message = simplifiedError.message;
