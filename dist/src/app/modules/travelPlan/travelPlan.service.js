@@ -293,6 +293,10 @@ class TravelPlanService {
             where: { id },
             data: { isDeleted: true },
         });
+        await prisma.travelMatch.updateMany({
+            where: { travelPlanId: id },
+            data: { isActive: false },
+        });
     }
     async updateTravelPlanStatuses() {
         try {

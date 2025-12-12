@@ -17,7 +17,7 @@
   },
   "keywords": [],
   "author": "Emon Howlader",
-  "type": "module",
+
   "dependencies": {
     "@eslint/js": "^9.39.1",
     "@types/multer": "^2.0.0",
