@@ -1,0 +1,13 @@
+import { Role } from "@prisma/enums";
+import { CheckAuth } from "app/middlewares/checkAuth";
+import { validationRequest } from "app/middlewares/validationRequest";
+import { Router } from "express";
+import { createTravelRequestValidation, updateRequestStatusValidation } from "./travelRequest.validation";
+import travelRequestController from "./travelRequest.controller";
+const router = Router();
+router.post('/', CheckAuth(Role.USER, Role.ADMIN), validationRequest(createTravelRequestValidation), travelRequestController.createRequest);
+router.get('/sent', CheckAuth(Role.USER, Role.ADMIN), travelRequestController.getSentRequests);
+router.get('/received', CheckAuth(Role.USER, Role.ADMIN), travelRequestController.getReceivedRequests);
+router.patch('/:id/status', CheckAuth(Role.USER, Role.ADMIN), validationRequest(updateRequestStatusValidation), travelRequestController.updateRequestStatus);
+router.patch('/:id/cancel', CheckAuth(Role.USER, Role.ADMIN), travelRequestController.cancelRequest);
+export const travelRequestRouters = router;

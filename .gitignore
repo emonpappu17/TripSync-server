@@ -1,13 +1,33 @@
+# node_modules
+# # Keep environment variables out of version control
+# .env
+
+# /generated/prisma
+# # /prisma/generated
+
+# dist/
+# .env
+# .env.local
+# # .prisma/client
+# uploads/*
+# !uploads/.gitkeep
+# *.log
+# # .prisma
+# # .vscode
+# # .DS_Store
+
+
 node_modules
 # Keep environment variables out of version control
 .env
 
 /generated/prisma
-/prisma/generated
 
-dist
+.vercel
+
+dist/
+.env
 .env.local
-.prisma/client
-.prisma
-.vscode
-.DS_Store
+uploads/*
+!uploads/.gitkeep
+*.log
