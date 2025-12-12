@@ -1,11 +1,16 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { TravelPlan } from "@prisma/client";
-import { TripStatus } from "@prisma/client";
-import ApiError from "app/errors/ApiError";
-import { calculatePagination } from "app/helper/paginationHelper";
-import { prisma } from "app/lib/prisma";
-import { StatusCodes } from "http-status-codes";
+const client_1 = require("@prisma/client");
+const ApiError_1 = __importDefault(require("app/errors/ApiError"));
+const paginationHelper_1 = require("app/helper/paginationHelper");
+const prisma_1 = require("app/lib/prisma");
+const http_status_codes_1 = require("http-status-codes");
 // import ApiError from "src/app/errors/ApiError";
 // import { calculatePagination, IOptions } from "src/app/helper/paginationHelper";
 // import { prisma } from "src/app/lib/prisma";
@@ -15,7 +20,7 @@ class TravelPlanService {
         const startDate = planData.startDate ? new Date(planData.startDate) : undefined;
         const endDate = planData.endDate ? new Date(planData.endDate) : undefined;
         // Check if user already has a plan overlapping with this date range
-        const existingPlan = await prisma.travelPlan.findFirst({
+        const existingPlan = await prisma_1.prisma.travelPlan.findFirst({
             where: {
                 userId,
                 isDeleted: false,
@@ -30,7 +35,7 @@ class TravelPlanService {
             throw new Error("You already have a planned trip during these dates.");
         }
         // If no conflict, create the plan
-        const travelPlan = await prisma.travelPlan.create({
+        const travelPlan = await prisma_1.prisma.travelPlan.create({
             data: {
                 userId,
                 ...planData,
@@ -42,7 +47,7 @@ class TravelPlanService {
     }
     async getTravelPlans(query, options) {
         const { search, country, destination, startDate, endDate, budgetMin, budgetMax, travelType, status, userId, } = query;
-        const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationHelper_1.calculatePagination)(options);
         const where = {
             isDeleted: false,
             isPublic: true,
@@ -78,8 +83,8 @@ class TravelPlanService {
             where.userId = userId;
         }
         const [total, travelPlans] = await Promise.all([
-            prisma.travelPlan.count({ where }),
-            prisma.travelPlan.findMany({
+            prisma_1.prisma.travelPlan.count({ where }),
+            prisma_1.prisma.travelPlan.findMany({
                 where,
                 skip,
                 take: limit,
@@ -104,7 +109,7 @@ class TravelPlanService {
         };
     }
     async getTravelPlanById(id) {
-        const travelPlan = await prisma.travelPlan.findFirst({
+        const travelPlan = await prisma_1.prisma.travelPlan.findFirst({
             where: {
                 id,
                 isDeleted: false,
@@ -151,12 +156,12 @@ class TravelPlanService {
             },
         });
         if (!travelPlan) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Travel plan not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Travel plan not found');
         }
         return travelPlan;
     }
     async getTravelPlanByUserId(id) {
-        const travelPlan = await prisma.travelPlan.findMany({
+        const travelPlan = await prisma_1.prisma.travelPlan.findMany({
             where: {
                 userId: id,
                 isDeleted: false,
@@ -193,7 +198,7 @@ class TravelPlanService {
             },
         });
         if (!travelPlan) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Travel plan not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Travel plan not found');
         }
         return travelPlan;
     }
@@ -210,8 +215,8 @@ class TravelPlanService {
             where.status = status;
         }
         const [total, travelPlans] = await Promise.all([
-            prisma.travelPlan.count({ where }),
-            prisma.travelPlan.findMany({
+            prisma_1.prisma.travelPlan.count({ where }),
+            prisma_1.prisma.travelPlan.findMany({
                 where,
                 skip,
                 take: convertedLimit,
@@ -239,7 +244,7 @@ class TravelPlanService {
         };
     }
     async updateTravelPlan(id, userId, updateData) {
-        const travelPlan = await prisma.travelPlan.findFirst({
+        const travelPlan = await prisma_1.prisma.travelPlan.findFirst({
             where: {
                 id,
                 userId,
@@ -247,13 +252,13 @@ class TravelPlanService {
             },
         });
         if (!travelPlan) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Travel plan not found or you do not have permission to update it');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Travel plan not found or you do not have permission to update it');
         }
         // Convert dates if provided in updateData
         const startDate = updateData.startDate ? new Date(updateData.startDate) : travelPlan.startDate;
         const endDate = updateData.endDate ? new Date(updateData.endDate) : travelPlan.endDate;
         //  Check for overlapping plans (excluding the current plan itself)
-        const conflictingPlan = await prisma.travelPlan.findFirst({
+        const conflictingPlan = await prisma_1.prisma.travelPlan.findFirst({
             where: {
                 userId,
                 isDeleted: false,
@@ -265,9 +270,9 @@ class TravelPlanService {
             },
         });
         if (conflictingPlan) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'You already have another trip planned during these dates');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'You already have another trip planned during these dates');
         }
-        const updated = await prisma.travelPlan.update({
+        const updated = await prisma_1.prisma.travelPlan.update({
             where: { id },
             data: {
                 ...updateData,
@@ -278,7 +283,7 @@ class TravelPlanService {
         return updated;
     }
     async deleteTravelPlan(id, userId) {
-        const travelPlan = await prisma.travelPlan.findFirst({
+        const travelPlan = await prisma_1.prisma.travelPlan.findFirst({
             where: {
                 id,
                 userId,
@@ -286,14 +291,14 @@ class TravelPlanService {
             },
         });
         if (!travelPlan) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Travel plan not found or you do not have permission to delete it');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Travel plan not found or you do not have permission to delete it');
         }
         // Soft delete
-        await prisma.travelPlan.update({
+        await prisma_1.prisma.travelPlan.update({
             where: { id },
             data: { isDeleted: true },
         });
-        await prisma.travelMatch.updateMany({
+        await prisma_1.prisma.travelMatch.updateMany({
             where: { travelPlanId: id },
             data: { isActive: false },
         });
@@ -305,9 +310,9 @@ class TravelPlanService {
             sevenDaysFromNow.setDate(now.getDate() + 7);
             console.log(`[${now.toISOString()}] Running travel plan status update job...`);
             // Update PLANNING -> UPCOMING (within 7 days of start date)
-            const upcomingPlans = await prisma.travelPlan.updateMany({
+            const upcomingPlans = await prisma_1.prisma.travelPlan.updateMany({
                 where: {
-                    status: TripStatus.PLANNING,
+                    status: client_1.TripStatus.PLANNING,
                     startDate: {
                         gte: now,
                         lte: sevenDaysFromNow,
@@ -315,15 +320,15 @@ class TravelPlanService {
                     isDeleted: false,
                 },
                 data: {
-                    status: TripStatus.UPCOMING,
+                    status: client_1.TripStatus.UPCOMING,
                 },
             });
             console.log(` Updated ${upcomingPlans.count} plans to UPCOMING`);
             // Update UPCOMING/PLANNING -> ONGOING (start date has passed)
-            const ongoingPlans = await prisma.travelPlan.updateMany({
+            const ongoingPlans = await prisma_1.prisma.travelPlan.updateMany({
                 where: {
                     status: {
-                        in: [TripStatus.PLANNING, TripStatus.UPCOMING],
+                        in: [client_1.TripStatus.PLANNING, client_1.TripStatus.UPCOMING],
                     },
                     startDate: {
                         lte: now,
@@ -334,21 +339,21 @@ class TravelPlanService {
                     isDeleted: false,
                 },
                 data: {
-                    status: TripStatus.ONGOING,
+                    status: client_1.TripStatus.ONGOING,
                 },
             });
             console.log(` Updated ${ongoingPlans.count} plans to ONGOING`);
             // Update ONGOING -> COMPLETED (end date has passed)
-            const completedPlans = await prisma.travelPlan.updateMany({
+            const completedPlans = await prisma_1.prisma.travelPlan.updateMany({
                 where: {
-                    status: TripStatus.ONGOING,
+                    status: client_1.TripStatus.ONGOING,
                     endDate: {
                         lt: now,
                     },
                     isDeleted: false,
                 },
                 data: {
-                    status: TripStatus.COMPLETED,
+                    status: client_1.TripStatus.COMPLETED,
                 },
             });
             console.log(` Updated ${completedPlans.count} plans to COMPLETED`);
@@ -371,4 +376,4 @@ class TravelPlanService {
         }
     }
 }
-export default new TravelPlanService();
+exports.default = new TravelPlanService();

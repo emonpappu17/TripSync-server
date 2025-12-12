@@ -1,106 +1,111 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { fileUploader } from "app/helper/fileUploader";
-import pick from "app/helper/pick";
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
-import { StatusCodes } from "http-status-codes";
-import travelPlanService from "./travelPlan.service";
+const fileUploader_1 = require("app/helper/fileUploader");
+const pick_1 = __importDefault(require("app/helper/pick"));
+const catchAsync_1 = __importDefault(require("app/utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("app/utils/sendResponse"));
+const http_status_codes_1 = require("http-status-codes");
+const travelPlan_service_1 = __importDefault(require("./travelPlan.service"));
 // import catchAsync from "src/app/utils/catchAsync";
 // import { fileUploader } from "src/app/helper/fileUploader";
 // import sendResponse from "src/app/utils/sendResponse";
 // import pick from "src/app/helper/pick";
 // import { fileUploader } from "app/helper/fileUploader";
 class TravelPlanController {
-    createTravelPlan = catchAsync(async (req, res) => {
+    createTravelPlan = (0, catchAsync_1.default)(async (req, res) => {
         // if (req?.file) {
         //     req.body.image = req?.file?.path; // directly assign the URL
         // }
         if (req?.file) {
             // req.body.profileImage =  req?.file?.path;;
-            const updatedImage = await fileUploader.uploadToCloudinary(req?.file);
+            const updatedImage = await fileUploader_1.fileUploader.uploadToCloudinary(req?.file);
             req.body.image = updatedImage?.secure_url;
         }
         const userId = req.user.id;
-        const result = await travelPlanService.createTravelPlan(userId, req.body);
-        sendResponse(res, {
-            statusCode: StatusCodes.CREATED,
+        const result = await travelPlan_service_1.default.createTravelPlan(userId, req.body);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.CREATED,
             success: true,
             message: 'Travel plan created successfully',
             data: result,
         });
     });
-    getTravelPlans = catchAsync(async (req, res) => {
-        const filters = pick(req.query, ["search", "destination", "country", "startDate", "endDate", "budgetMin", "budgetMax", "travelType", "status", "userId"]);
-        const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);
-        const result = await travelPlanService.getTravelPlans(filters, options);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+    getTravelPlans = (0, catchAsync_1.default)(async (req, res) => {
+        const filters = (0, pick_1.default)(req.query, ["search", "destination", "country", "startDate", "endDate", "budgetMin", "budgetMax", "travelType", "status", "userId"]);
+        const options = (0, pick_1.default)(req.query, ["page", "limit", "sortBy", "sortOrder"]);
+        const result = await travelPlan_service_1.default.getTravelPlans(filters, options);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Travel plans retrieved successfully',
             data: result.data,
             meta: result.meta,
         });
     });
-    getTravelPlanById = catchAsync(async (req, res) => {
+    getTravelPlanById = (0, catchAsync_1.default)(async (req, res) => {
         const { id } = req.params;
-        const result = await travelPlanService.getTravelPlanById(id);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+        const result = await travelPlan_service_1.default.getTravelPlanById(id);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Travel plan retrieved successfully',
             data: result,
         });
     });
-    getTravelPlanByUserId = catchAsync(async (req, res) => {
+    getTravelPlanByUserId = (0, catchAsync_1.default)(async (req, res) => {
         const { id } = req.params;
-        const result = await travelPlanService.getTravelPlanByUserId(id);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+        const result = await travelPlan_service_1.default.getTravelPlanByUserId(id);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Travel plan retrieved successfully',
             data: result,
         });
     });
-    getMyTravelPlans = catchAsync(async (req, res) => {
+    getMyTravelPlans = (0, catchAsync_1.default)(async (req, res) => {
         const userId = req.user.id;
-        const result = await travelPlanService.getMyTravelPlans(userId, req.query);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+        const result = await travelPlan_service_1.default.getMyTravelPlans(userId, req.query);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Your travel plans retrieved successfully',
             data: result.data,
             meta: result.meta,
         });
     });
-    updateTravelPlan = catchAsync(async (req, res) => {
+    updateTravelPlan = (0, catchAsync_1.default)(async (req, res) => {
         // if (req?.file) {
         //     req.body.image = req?.file?.path; // directly assign the URL
         // }
         if (req?.file) {
             // req.body.profileImage =  req?.file?.path;;
-            const updatedImage = await fileUploader.uploadToCloudinary(req?.file);
+            const updatedImage = await fileUploader_1.fileUploader.uploadToCloudinary(req?.file);
             req.body.image = updatedImage?.secure_url;
         }
         const { id } = req.params;
         const userId = req.user.id;
-        const result = await travelPlanService.updateTravelPlan(id, userId, req.body);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+        const result = await travelPlan_service_1.default.updateTravelPlan(id, userId, req.body);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Travel plan updated successfully',
             data: result,
         });
     });
-    deleteTravelPlan = catchAsync(async (req, res) => {
+    deleteTravelPlan = (0, catchAsync_1.default)(async (req, res) => {
         const { id } = req.params;
         const userId = req.user.id;
-        await travelPlanService.deleteTravelPlan(id, userId);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+        await travelPlan_service_1.default.deleteTravelPlan(id, userId);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Travel plan deleted successfully',
             data: null,
         });
     });
 }
-export default new TravelPlanController();
+exports.default = new TravelPlanController();

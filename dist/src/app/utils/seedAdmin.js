@@ -1,14 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.seedAdmin = seedAdmin;
 /* eslint-disable no-console */
 // import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
-import { prisma } from '../lib/prisma';
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const prisma_1 = require("../lib/prisma");
 // import { prisma } from "app/lib/prisma";
 //
-export async function seedAdmin() {
+async function seedAdmin() {
     console.log('🌱 Seeding admin user...');
     const adminEmail = 'admin@tripSync.com';
     // Check if admin already exists
-    const existingAdmin = await prisma.user.findUnique({
+    const existingAdmin = await prisma_1.prisma.user.findUnique({
         where: { email: adminEmail },
     });
     if (existingAdmin) {
@@ -16,9 +22,9 @@ export async function seedAdmin() {
         return;
     }
     // Hash password
-    const hashedPassword = await bcrypt.hash('Admin123!', 10);
+    const hashedPassword = await bcryptjs_1.default.hash('Admin123!', 10);
     // Create admin user
-    const admin = await prisma.user.create({
+    const admin = await prisma_1.prisma.user.create({
         data: {
             fullName: 'Admin User',
             email: adminEmail,

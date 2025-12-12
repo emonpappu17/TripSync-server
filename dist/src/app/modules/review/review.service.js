@@ -1,25 +1,30 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ApiError from "app/errors/ApiError";
-import { prisma } from "app/lib/prisma";
-import { StatusCodes } from "http-status-codes";
+const ApiError_1 = __importDefault(require("app/errors/ApiError"));
+const prisma_1 = require("app/lib/prisma");
+const http_status_codes_1 = require("http-status-codes");
 // import ApiError from "src/app/errors/ApiError";
 // import { prisma } from "src/app/lib/prisma";
 class ReviewService {
     async createReview(fromReviewerId, reviewData) {
         // Check if users exist
         const [fromReviewer, toReviewer] = await Promise.all([
-            prisma.user.findUnique({ where: { id: fromReviewerId } }),
-            prisma.user.findUnique({ where: { id: reviewData.toReviewerId } }),
+            prisma_1.prisma.user.findUnique({ where: { id: fromReviewerId } }),
+            prisma_1.prisma.user.findUnique({ where: { id: reviewData.toReviewerId } }),
         ]);
         if (!fromReviewer || !toReviewer) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
         }
         // Cannot review yourself
         if (fromReviewerId === reviewData.fromReviewerId) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot review yourself');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'Cannot review yourself');
         }
         // Check if review already exists
-        const existingReview = await prisma.review.findUnique({
+        const existingReview = await prisma_1.prisma.review.findUnique({
             where: {
                 fromReviewerId_toReviewerId: {
                     fromReviewerId,
@@ -28,9 +33,9 @@ class ReviewService {
             },
         });
         if (existingReview) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'You have already reviewed this user. You can update your existing review.');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'You have already reviewed this user. You can update your existing review.');
         }
-        const review = await prisma.review.create({
+        const review = await prisma_1.prisma.review.create({
             data: {
                 fromReviewerId,
                 ...reviewData,
@@ -53,13 +58,13 @@ class ReviewService {
         const skip = (convertedPage - 1) * convertedLimit;
         // console.log({ userId });
         const [total, reviews] = await Promise.all([
-            prisma.review.count({
+            prisma_1.prisma.review.count({
                 where: {
                     toReviewerId: userId,
                     isPublic: true,
                 },
             }),
-            prisma.review.findMany({
+            prisma_1.prisma.review.findMany({
                 where: {
                     toReviewerId: userId,
                     isPublic: true,
@@ -94,7 +99,7 @@ class ReviewService {
             }),
         ]);
         // Calculate average rating
-        const avgRating = await prisma.review.aggregate({
+        const avgRating = await prisma_1.prisma.review.aggregate({
             where: { toReviewerId: userId },
             _avg: { rating: true },
         });
@@ -110,34 +115,34 @@ class ReviewService {
         };
     }
     async updateReview(reviewId, reviewerId, updateData) {
-        const review = await prisma.review.findFirst({
+        const review = await prisma_1.prisma.review.findFirst({
             where: {
                 id: reviewId,
                 fromReviewerId: reviewerId,
             },
         });
         if (!review) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Review not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Review not found');
         }
-        const updated = await prisma.review.update({
+        const updated = await prisma_1.prisma.review.update({
             where: { id: reviewId },
             data: updateData,
         });
         return updated;
     }
     async deleteReview(reviewId, reviewerId) {
-        const review = await prisma.review.findFirst({
+        const review = await prisma_1.prisma.review.findFirst({
             where: {
                 id: reviewId,
                 fromReviewerId: reviewerId,
             },
         });
         if (!review) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Review not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Review not found');
         }
-        await prisma.review.delete({
+        await prisma_1.prisma.review.delete({
             where: { id: reviewId },
         });
     }
 }
-export default new ReviewService();
+exports.default = new ReviewService();

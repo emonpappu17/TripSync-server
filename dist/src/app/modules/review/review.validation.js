@@ -1,15 +1,18 @@
-import { z } from "zod";
-export const createReviewValidation = z.object({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateReviewValidation = exports.createReviewValidation = void 0;
+const zod_1 = require("zod");
+exports.createReviewValidation = zod_1.z.object({
     // fromReviewerId: z
     //     .string({ error: "fromReviewerId is required" })
     //     .uuid("Invalid UUID format"),
-    toReviewerId: z
+    toReviewerId: zod_1.z
         .string({ error: "toReviewerId is required" })
         .uuid("Invalid UUID format"),
-    tourPlanId: z
+    tourPlanId: zod_1.z
         .string({ error: "tourPlanId is required" })
         .uuid("Invalid UUID format"),
-    rating: z
+    rating: zod_1.z
         .number({
         error: "Rating is required",
         // : "Rating must be a number",
@@ -17,17 +20,17 @@ export const createReviewValidation = z.object({
         .int("Rating must be an integer")
         .min(1, "Rating must be between 1 and 5")
         .max(5, "Rating must be between 1 and 5"),
-    comment: z
+    comment: zod_1.z
         .string()
         .max(1000, "Comment too long")
         .optional()
         .nullable(),
-    isPublic: z
+    isPublic: zod_1.z
         .boolean()
         .default(true),
 });
-export const updateReviewValidation = z.object({
-    rating: z
+exports.updateReviewValidation = zod_1.z.object({
+    rating: zod_1.z
         .number({
         error: "Rating must be a number",
     })
@@ -35,10 +38,10 @@ export const updateReviewValidation = z.object({
         .min(1, "Rating must be between 1 and 5")
         .max(5, "Rating must be between 1 and 5")
         .optional(),
-    comment: z
+    comment: zod_1.z
         .string()
         .max(1000, "Comment too long")
         .optional()
         .nullable(),
-    isPublic: z.boolean().optional(),
+    isPublic: zod_1.z.boolean().optional(),
 });

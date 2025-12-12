@@ -1,4 +1,7 @@
-export const setCookie = (res, tokenInfo) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.setCookie = void 0;
+const setCookie = (res, tokenInfo) => {
     if (tokenInfo.accessToken) {
         res.cookie("accessToken", tokenInfo.accessToken, {
             httpOnly: true,
@@ -14,3 +17,4 @@ export const setCookie = (res, tokenInfo) => {
         });
     }
 };
+exports.setCookie = setCookie;

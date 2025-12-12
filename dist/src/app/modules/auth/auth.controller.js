@@ -1,28 +1,33 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
-import { StatusCodes } from "http-status-codes";
-import authService from "./auth.service";
+const catchAsync_1 = __importDefault(require("app/utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("app/utils/sendResponse"));
+const http_status_codes_1 = require("http-status-codes");
+const auth_service_1 = __importDefault(require("./auth.service"));
 // import catchAsync from "src/app/utils/catchAsync";
 // import sendResponse from "src/app/utils/sendResponse";
 // import { convertToMilliseconds } from "src/app/utils/convertToMilliseconds ";
 // import envVars from "src/app/config/env";
-import { convertToMilliseconds } from "app/utils/convertToMilliseconds ";
-import envVars from "app/config/env";
+const convertToMilliseconds_1 = require("app/utils/convertToMilliseconds ");
+const env_1 = __importDefault(require("app/config/env"));
 class AuthController {
-    register = catchAsync(async (req, res, next) => {
-        const result = await authService.register(req.body);
-        sendResponse(res, {
-            statusCode: StatusCodes.CREATED,
+    register = (0, catchAsync_1.default)(async (req, res, next) => {
+        const result = await auth_service_1.default.register(req.body);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.CREATED,
             success: true,
             message: 'User registered successfully',
             data: result,
         });
     });
-    login = catchAsync(async (req, res, next) => {
-        const accessTokenMaxAge = convertToMilliseconds(envVars.JWT_EXPIRES_IN);
-        const refreshTokenMaxAge = convertToMilliseconds(envVars.JWT_REFRESH_EXPIRES_IN);
-        const result = await authService.login(req.body);
+    login = (0, catchAsync_1.default)(async (req, res, next) => {
+        const accessTokenMaxAge = (0, convertToMilliseconds_1.convertToMilliseconds)(env_1.default.JWT_EXPIRES_IN);
+        const refreshTokenMaxAge = (0, convertToMilliseconds_1.convertToMilliseconds)(env_1.default.JWT_REFRESH_EXPIRES_IN);
+        const result = await auth_service_1.default.login(req.body);
         const { refreshToken, accessToken } = result;
         res.cookie("accessToken", accessToken, {
             secure: true,
@@ -36,12 +41,12 @@ class AuthController {
             sameSite: "none",
             maxAge: refreshTokenMaxAge,
         });
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Login successful',
             data: result,
         });
     });
 }
-export default new AuthController();
+exports.default = new AuthController();

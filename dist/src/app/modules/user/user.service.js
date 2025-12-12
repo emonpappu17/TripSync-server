@@ -1,20 +1,25 @@
-import ApiError from "app/errors/ApiError";
-import { calculatePagination } from "app/helper/paginationHelper";
-import { prisma } from "app/lib/prisma";
-import { StatusCodes } from "http-status-codes";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const ApiError_1 = __importDefault(require("app/errors/ApiError"));
+const paginationHelper_1 = require("app/helper/paginationHelper");
+const prisma_1 = require("app/lib/prisma");
+const http_status_codes_1 = require("http-status-codes");
 // import ApiError from "src/app/errors/ApiError";
 // import { calculatePagination, IOptions } from "src/app/helper/paginationHelper";
 // import { prisma } from "src/app/lib/prisma";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class UserService {
     async updateProfile(userId, updateData) {
-        const user = await prisma.user.findUnique({
+        const user = await prisma_1.prisma.user.findUnique({
             where: { id: userId },
         });
         if (!user) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
         }
-        const updatedUser = await prisma.user.update({
+        const updatedUser = await prisma_1.prisma.user.update({
             where: { id: userId },
             data: {
                 ...updateData,
@@ -30,7 +35,7 @@ class UserService {
     }
     async getAllUsers(query, options) {
         const { search, role, isActive, } = query;
-        const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationHelper_1.calculatePagination)(options);
         // Build where clause
         const where = {};
         if (search) {
@@ -46,9 +51,9 @@ class UserService {
             where.isActive = query.isActive === "true";
         }
         // Get total count
-        const total = await prisma.user.count({ where });
+        const total = await prisma_1.prisma.user.count({ where });
         // Get users
-        const users = await prisma.user.findMany({
+        const users = await prisma_1.prisma.user.findMany({
             where,
             skip,
             take: limit,
@@ -65,7 +70,7 @@ class UserService {
         };
     }
     async getUserById(id) {
-        const user = await prisma.user.findUnique({
+        const user = await prisma_1.prisma.user.findUnique({
             where: { id },
             select: {
                 id: true,
@@ -99,7 +104,7 @@ class UserService {
             },
         });
         if (!user) {
-            throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "User not found");
         }
         // Calculate average rating
         const avgRating = user.reviewsReceived.length > 0
@@ -118,7 +123,7 @@ class UserService {
         };
     }
     async getUserStats(userId) {
-        const stats = await prisma.user.findUnique({
+        const stats = await prisma_1.prisma.user.findUnique({
             where: { id: userId },
             include: {
                 _count: {
@@ -135,7 +140,7 @@ class UserService {
             },
         });
         if (!stats) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
         }
         // Calculate average rating
         const avgRating = stats.reviewsReceived.length > 0
@@ -151,14 +156,14 @@ class UserService {
         };
     }
     async deleteUser(id) {
-        const user = await prisma.user.findUnique({
+        const user = await prisma_1.prisma.user.findUnique({
             where: { id },
         });
         if (!user) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
         }
         // Soft delete - just deactivate
-        await prisma.user.update({
+        await prisma_1.prisma.user.update({
             where: { id },
             data: { isDeleted: true },
         });
@@ -166,13 +171,13 @@ class UserService {
         // await prisma.user.delete({ where: { id } });
     }
     async changeUserStatus(id, updateData) {
-        const user = await prisma.user.findUnique({
+        const user = await prisma_1.prisma.user.findUnique({
             where: { id: id },
         });
         if (!user) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
         }
-        const updatedUser = await prisma.user.update({
+        const updatedUser = await prisma_1.prisma.user.update({
             where: { id: id },
             data: {
                 ...updateData,
@@ -188,4 +193,4 @@ class UserService {
         return updatedUser;
     }
 }
-export default new UserService();
+exports.default = new UserService();

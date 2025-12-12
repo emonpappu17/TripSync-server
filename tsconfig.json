@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "node20",
     // "module": "commonjs", /* Specify what module code is generated. */
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "resolveJsonModule": false,
+    // "allowImportingTsExtensions": true,
     "target": "ES2023",
     "strict": true,
     "esModuleInterop": true,

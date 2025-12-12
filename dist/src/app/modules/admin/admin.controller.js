@@ -1,49 +1,54 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
-import { StatusCodes } from "http-status-codes";
-import adminService from "./admin.service";
+const catchAsync_1 = __importDefault(require("app/utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("app/utils/sendResponse"));
+const http_status_codes_1 = require("http-status-codes");
+const admin_service_1 = __importDefault(require("./admin.service"));
 // import catchAsync from "src/app/utils/catchAsync";
 // import sendResponse from "src/app/utils/sendResponse";
 // import pick from "src/app/helper/pick";
-import pick from "app/helper/pick";
+const pick_1 = __importDefault(require("app/helper/pick"));
 class AdminController {
-    getDashboardStats = catchAsync(async (req, res) => {
-        const result = await adminService.getDashboardStats();
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+    getDashboardStats = (0, catchAsync_1.default)(async (req, res) => {
+        const result = await admin_service_1.default.getDashboardStats();
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Dashboard statistics retrieved successfully',
             data: result,
         });
     });
-    getAnalytics = catchAsync(async (req, res) => {
-        const filters = pick(req.query, ["startDate", "endDate", "type", "groupBy"]);
-        const result = await adminService.getAnalytics(filters);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+    getAnalytics = (0, catchAsync_1.default)(async (req, res) => {
+        const filters = (0, pick_1.default)(req.query, ["startDate", "endDate", "type", "groupBy"]);
+        const result = await admin_service_1.default.getAnalytics(filters);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Analytics data retrieved successfully',
             data: result,
         });
     });
-    getAllUsers = catchAsync(async (req, res) => {
-        const filters = pick(req.query, ["search", "role", "isActive", "isVerified"]);
-        const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);
-        const result = await adminService.getAllUsers(filters, options);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+    getAllUsers = (0, catchAsync_1.default)(async (req, res) => {
+        const filters = (0, pick_1.default)(req.query, ["search", "role", "isActive", "isVerified"]);
+        const options = (0, pick_1.default)(req.query, ["page", "limit", "sortBy", "sortOrder"]);
+        const result = await admin_service_1.default.getAllUsers(filters, options);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Users retrieved successfully',
             data: result.data,
             meta: result.meta,
         });
     });
-    manageUser = catchAsync(async (req, res) => {
+    manageUser = (0, catchAsync_1.default)(async (req, res) => {
         const adminId = req.user.id;
-        const result = await adminService.manageUser(adminId, req.body);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+        const result = await admin_service_1.default.manageUser(adminId, req.body);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'User action completed successfully',
             data: result,
@@ -69,12 +74,12 @@ class AdminController {
     //         meta: result.meta,
     //     });
     // });
-    getAllTravelPlans = catchAsync(async (req, res) => {
-        const filters = pick(req.query, ["search", "status"]);
-        const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);
-        const result = await adminService.getAllTravelPlans(filters, options);
-        sendResponse(res, {
-            statusCode: StatusCodes.OK,
+    getAllTravelPlans = (0, catchAsync_1.default)(async (req, res) => {
+        const filters = (0, pick_1.default)(req.query, ["search", "status"]);
+        const options = (0, pick_1.default)(req.query, ["page", "limit", "sortBy", "sortOrder"]);
+        const result = await admin_service_1.default.getAllTravelPlans(filters, options);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.OK,
             success: true,
             message: 'Travel plans retrieved successfully',
             data: result.data,
@@ -82,4 +87,4 @@ class AdminController {
         });
     });
 }
-export default new AdminController();
+exports.default = new AdminController();

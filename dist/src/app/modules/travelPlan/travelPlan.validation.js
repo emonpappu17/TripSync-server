@@ -1,34 +1,37 @@
-import { z } from "zod";
-export const TravelTypeEnum = z.enum(["SOLO", "FAMILY", "COUPLE", "FRIENDS"]);
-export const TripStatusEnum = z.enum([
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateTravelPlanValidation = exports.createTravelPlanValidation = exports.TripStatusEnum = exports.TravelTypeEnum = void 0;
+const zod_1 = require("zod");
+exports.TravelTypeEnum = zod_1.z.enum(["SOLO", "FAMILY", "COUPLE", "FRIENDS"]);
+exports.TripStatusEnum = zod_1.z.enum([
     "PLANNING",
     "ONGOING",
     "UPCOMING",
     "COMPLETED",
     "CANCELLED"
 ]);
-export const createTravelPlanValidation = z
+exports.createTravelPlanValidation = zod_1.z
     .object({
-    title: z.string().min(3, "Title must be at least 3 characters"),
-    description: z.string().optional(),
-    destination: z.string().min(2),
-    country: z.string().optional(),
-    startDate: z.string().refine((val) => {
+    title: zod_1.z.string().min(3, "Title must be at least 3 characters"),
+    description: zod_1.z.string().optional(),
+    destination: zod_1.z.string().min(2),
+    country: zod_1.z.string().optional(),
+    startDate: zod_1.z.string().refine((val) => {
         const d = new Date(val);
         return !isNaN(d.getTime()) && d > new Date();
     }, { message: "Start date must be a valid future date" }),
-    endDate: z.string().refine((val) => {
+    endDate: zod_1.z.string().refine((val) => {
         const d = new Date(val);
         return !isNaN(d.getTime()) && d > new Date();
     }, { message: "End date must be a valid future date" }),
-    budgetMin: z.number().positive().optional(),
-    budgetMax: z.number().positive().optional(),
-    travelType: TravelTypeEnum.default("SOLO"),
-    maxTravelers: z.number().optional(),
+    budgetMin: zod_1.z.number().positive().optional(),
+    budgetMax: zod_1.z.number().positive().optional(),
+    travelType: exports.TravelTypeEnum.default("SOLO"),
+    maxTravelers: zod_1.z.number().optional(),
     // status: TripStatusEnum.default("PLANNING"),
-    isPublic: z.boolean().default(true),
-    image: z.string().url().optional(),
-    activities: z.array(z.string()).optional().default([]),
+    isPublic: zod_1.z.boolean().default(true),
+    image: zod_1.z.string().url().optional(),
+    activities: zod_1.z.array(zod_1.z.string()).optional().default([]),
     // isDeleted: z.boolean().optional()
 })
     .refine((data) => {
@@ -39,23 +42,23 @@ export const createTravelPlanValidation = z
     path: ["endDate"],
     message: "End date must be after start date"
 });
-export const updateTravelPlanValidation = z
+exports.updateTravelPlanValidation = zod_1.z
     .object({
-    title: z.string().optional(),
-    description: z.string().optional(),
-    destination: z.string().optional(),
-    country: z.string().optional(),
-    startDate: z.string().optional(),
-    endDate: z.string().optional(),
-    budgetMin: z.number().positive().optional(),
-    budgetMax: z.number().positive().optional(),
-    travelType: TravelTypeEnum.optional(),
-    maxTravelers: z.number().optional(),
-    status: TripStatusEnum.optional(),
-    isPublic: z.boolean().optional(),
-    image: z.string().url().optional(),
-    activities: z.array(z.string()).optional(),
-    isDeleted: z.boolean().optional()
+    title: zod_1.z.string().optional(),
+    description: zod_1.z.string().optional(),
+    destination: zod_1.z.string().optional(),
+    country: zod_1.z.string().optional(),
+    startDate: zod_1.z.string().optional(),
+    endDate: zod_1.z.string().optional(),
+    budgetMin: zod_1.z.number().positive().optional(),
+    budgetMax: zod_1.z.number().positive().optional(),
+    travelType: exports.TravelTypeEnum.optional(),
+    maxTravelers: zod_1.z.number().optional(),
+    status: exports.TripStatusEnum.optional(),
+    isPublic: zod_1.z.boolean().optional(),
+    image: zod_1.z.string().url().optional(),
+    activities: zod_1.z.array(zod_1.z.string()).optional(),
+    isDeleted: zod_1.z.boolean().optional()
 })
     .refine((data) => {
     if (!data.startDate || !data.endDate)

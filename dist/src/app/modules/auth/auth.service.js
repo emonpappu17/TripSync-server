@@ -1,31 +1,36 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Role, } from "@prisma/client";
-import ApiError from "app/errors/ApiError";
-import { prisma } from "app/lib/prisma";
-import { StatusCodes } from "http-status-codes";
-import bcrypt from "bcryptjs";
+const client_1 = require("@prisma/client");
+const ApiError_1 = __importDefault(require("app/errors/ApiError"));
+const prisma_1 = require("app/lib/prisma");
+const http_status_codes_1 = require("http-status-codes");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 // import { prisma } from "src/app/lib/prisma";
 // import ApiError from "src/app/errors/ApiError";
 // import envVars from "src/app/config/env";
 // import { generateToken } from "src/app/utils/jwt/jwt";
-import envVars from "app/config/env";
-import { generateToken } from "app/utils/jwt/jwt";
+const env_1 = __importDefault(require("app/config/env"));
+const jwt_1 = require("app/utils/jwt/jwt");
 class AuthService {
     async register(registerData) {
         // Check if user already exists
-        const existingUser = await prisma.user.findUnique({
+        const existingUser = await prisma_1.prisma.user.findUnique({
             where: { email: registerData.email },
         });
         if (existingUser) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'Email already exists');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'Email already exists');
         }
         // Hash password
-        const hashedPassword = await bcrypt.hash(registerData.password, Number(envVars.JWT_SALT_ROUND));
-        const newUser = await prisma.user.create({
+        const hashedPassword = await bcryptjs_1.default.hash(registerData.password, Number(env_1.default.JWT_SALT_ROUND));
+        const newUser = await prisma_1.prisma.user.create({
             data: {
                 email: registerData?.email,
                 password: hashedPassword,
-                role: Role.USER,
+                role: client_1.Role.USER,
                 fullName: registerData.fullName,
             },
         });
@@ -35,32 +40,32 @@ class AuthService {
     }
     async login(credentials) {
         // Find user
-        const user = await prisma.user.findUnique({
+        const user = await prisma_1.prisma.user.findUnique({
             where: { email: credentials.email },
         });
         if (!user) {
-            throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid email');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'Invalid email');
         }
         // Check if user is active
         if (!user.isActive) {
-            throw new ApiError(StatusCodes.FORBIDDEN, 'Your account has been deactivated. Please contact support.');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.FORBIDDEN, 'Your account has been deactivated. Please contact support.');
         }
         // Compare password
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+        const isPasswordValid = await bcryptjs_1.default.compare(credentials.password, user.password);
         if (!isPasswordValid) {
-            throw new ApiError(StatusCodes.UNAUTHORIZED, 'Invalid password');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'Invalid password');
         }
         // Generate tokens
-        const accessToken = generateToken({
+        const accessToken = (0, jwt_1.generateToken)({
             id: user.id,
             email: user.email,
             role: user.role,
-        }, envVars.JWT_SECRET, envVars.JWT_EXPIRES_IN);
-        const refreshToken = generateToken({
+        }, env_1.default.JWT_SECRET, env_1.default.JWT_EXPIRES_IN);
+        const refreshToken = (0, jwt_1.generateToken)({
             id: user.id,
             email: user.email,
             role: user.role,
-        }, envVars.JWT_REFRESH_SECRET, envVars.JWT_REFRESH_EXPIRES_IN);
+        }, env_1.default.JWT_REFRESH_SECRET, env_1.default.JWT_REFRESH_EXPIRES_IN);
         return {
             // user,
             accessToken,
@@ -68,4 +73,4 @@ class AuthService {
         };
     }
 }
-export default new AuthService();
+exports.default = new AuthService();

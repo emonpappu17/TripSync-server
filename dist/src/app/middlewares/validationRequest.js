@@ -1,4 +1,7 @@
-export const validationRequest = (zodSchema) => async (req, res, next) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validationRequest = void 0;
+const validationRequest = (zodSchema) => async (req, res, next) => {
     try {
         // console.log('req.body.data==>', req?.body?.data);
         if (req?.body?.data) {
@@ -15,3 +18,4 @@ export const validationRequest = (zodSchema) => async (req, res, next) => {
         next(err);
     }
 };
+exports.validationRequest = validationRequest;

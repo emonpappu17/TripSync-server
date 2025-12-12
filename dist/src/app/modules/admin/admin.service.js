@@ -1,10 +1,15 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RequestStatus, SubscriptionStatus, TripStatus } from "@prisma/enums";
-import ApiError from "app/errors/ApiError";
-import { calculatePagination } from "app/helper/paginationHelper";
-import { prisma } from "app/lib/prisma";
-import { StatusCodes } from "http-status-codes";
+const enums_1 = require("@prisma/enums");
+const ApiError_1 = __importDefault(require("app/errors/ApiError"));
+const paginationHelper_1 = require("app/helper/paginationHelper");
+const prisma_1 = require("app/lib/prisma");
+const http_status_codes_1 = require("http-status-codes");
 // import ApiError from "src/app/errors/ApiError";
 // import { calculatePagination } from "src/app/helper/paginationHelper";
 // import { prisma } from "src/app/lib/prisma";
@@ -18,36 +23,36 @@ class AdminService {
         const [totalUsers, activeUsers, 
         // newUsersThisMonth,
         premiumUsers] = await Promise.all([
-            prisma.user.count(),
-            prisma.user.count({ where: { isActive: true } }),
+            prisma_1.prisma.user.count(),
+            prisma_1.prisma.user.count({ where: { isActive: true } }),
             // prisma.user.count({
             //     where: {
             //         createdAt: { gte: firstDayOfMonth },
             //     },
             // }),
-            prisma.subscription.count({
+            prisma_1.prisma.subscription.count({
                 where: {
-                    status: SubscriptionStatus.ACTIVE,
+                    status: enums_1.SubscriptionStatus.ACTIVE,
                     endDate: { gte: now },
                 },
             }),
         ]);
         // Travel plans stats
         const [totalPlans, activePlans, completedPlans, plansThisMonth] = await Promise.all([
-            prisma.travelPlan.count({ where: { isDeleted: false } }),
-            prisma.travelPlan.count({
+            prisma_1.prisma.travelPlan.count({ where: { isDeleted: false } }),
+            prisma_1.prisma.travelPlan.count({
                 where: {
                     isDeleted: false,
-                    status: { in: [TripStatus.PLANNING, TripStatus.UPCOMING, TripStatus.ONGOING] },
+                    status: { in: [enums_1.TripStatus.PLANNING, enums_1.TripStatus.UPCOMING, enums_1.TripStatus.ONGOING] },
                 },
             }),
-            prisma.travelPlan.count({
+            prisma_1.prisma.travelPlan.count({
                 where: {
                     isDeleted: false,
-                    status: TripStatus.COMPLETED,
+                    status: enums_1.TripStatus.COMPLETED,
                 },
             }),
-            prisma.travelPlan.count({
+            prisma_1.prisma.travelPlan.count({
                 where: {
                     isDeleted: false,
                     createdAt: { gte: firstDayOfMonth },
@@ -56,7 +61,7 @@ class AdminService {
         ]);
         // Revenue stats
         const [revenueThisMonth, revenueLastMonth] = await Promise.all([
-            prisma.payment.aggregate({
+            prisma_1.prisma.payment.aggregate({
                 where: {
                     status: 'COMPLETED',
                     createdAt: {
@@ -66,7 +71,7 @@ class AdminService {
                 },
                 _sum: { amount: true },
             }),
-            prisma.payment.aggregate({
+            prisma_1.prisma.payment.aggregate({
                 where: {
                     status: 'COMPLETED',
                     createdAt: {
@@ -77,7 +82,7 @@ class AdminService {
                 _sum: { amount: true },
             }),
         ]);
-        const totalRevenue = await prisma.payment.aggregate({
+        const totalRevenue = await prisma_1.prisma.payment.aggregate({
             where: { status: 'COMPLETED' },
             _sum: { amount: true },
         });
@@ -88,21 +93,21 @@ class AdminService {
             : 0;
         // Reviews stats
         const [totalReviews, reviewsThisMonth, avgRating] = await Promise.all([
-            prisma.review.count(),
-            prisma.review.count({
+            prisma_1.prisma.review.count(),
+            prisma_1.prisma.review.count({
                 where: {
                     createdAt: { gte: firstDayOfMonth },
                 },
             }),
-            prisma.review.aggregate({
+            prisma_1.prisma.review.aggregate({
                 _avg: { rating: true },
             }),
         ]);
         // Requests stats
         const [pendingRequests, acceptedRequests, rejectedRequests] = await Promise.all([
-            prisma.travelRequest.count({ where: { status: RequestStatus.PENDING } }),
-            prisma.travelRequest.count({ where: { status: RequestStatus.ACCEPTED } }),
-            prisma.travelRequest.count({ where: { status: RequestStatus.REJECTED } }),
+            prisma_1.prisma.travelRequest.count({ where: { status: enums_1.RequestStatus.PENDING } }),
+            prisma_1.prisma.travelRequest.count({ where: { status: enums_1.RequestStatus.ACCEPTED } }),
+            prisma_1.prisma.travelRequest.count({ where: { status: enums_1.RequestStatus.REJECTED } }),
         ]);
         return {
             users: {
@@ -137,7 +142,7 @@ class AdminService {
     }
     async getAllUsers(query, options) {
         const { search, role, isActive, isVerified, } = query;
-        const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationHelper_1.calculatePagination)(options);
         const where = {};
         if (search) {
             where.OR = [
@@ -153,8 +158,8 @@ class AdminService {
         if (isVerified !== undefined)
             where.isVerified = isVerified === 'true';
         const [total, users] = await Promise.all([
-            prisma.user.count({ where }),
-            prisma.user.findMany({
+            prisma_1.prisma.user.count({ where }),
+            prisma_1.prisma.user.findMany({
                 where,
                 skip,
                 take: limit,
@@ -182,47 +187,47 @@ class AdminService {
     }
     async manageUser(adminId, actionData) {
         const { userId, action, reason } = actionData;
-        const user = await prisma.user.findUnique({
+        const user = await prisma_1.prisma.user.findUnique({
             where: { id: userId },
         });
         if (!user) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
         }
         // Cannot perform action on yourself
         if (userId === adminId) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'Cannot perform action on yourself');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'Cannot perform action on yourself');
         }
         // Cannot manage other admins
         if (user.role === 'ADMIN') {
-            throw new ApiError(StatusCodes.FORBIDDEN, 'Cannot manage admin users');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.FORBIDDEN, 'Cannot manage admin users');
         }
         let result;
         switch (action) {
             case 'BLOCK':
-                result = await prisma.user.update({
+                result = await prisma_1.prisma.user.update({
                     where: { id: userId },
                     data: { isActive: false },
                 });
                 break;
             case 'UNBLOCK':
-                result = await prisma.user.update({
+                result = await prisma_1.prisma.user.update({
                     where: { id: userId },
                     data: { isActive: true },
                 });
                 break;
             case 'DELETE':
                 // Soft delete by deactivating
-                result = await prisma.user.update({
+                result = await prisma_1.prisma.user.update({
                     where: { id: userId },
                     data: { isDeleted: false },
                 });
                 break;
             case 'VERIFY':
-                await prisma.user.update({
+                await prisma_1.prisma.user.update({
                     where: { id: userId },
                     data: { isVerified: true },
                 });
-                result = await prisma.user.findUnique({
+                result = await prisma_1.prisma.user.findUnique({
                     where: { id: userId },
                     // include: { profile: true },
                 });
@@ -343,11 +348,11 @@ class AdminService {
             case 'REVIEWS':
                 return this.getReviewAnalytics(start, end, groupBy);
             default:
-                throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid analytics type');
+                throw new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'Invalid analytics type');
         }
     }
     async getUserAnalytics(startDate, endDate, groupBy) {
-        const users = await prisma.user.findMany({
+        const users = await prisma_1.prisma.user.findMany({
             where: {
                 createdAt: {
                     gte: startDate,
@@ -378,7 +383,7 @@ class AdminService {
     //     return this.groupByDate(payments, 'paidAt', groupBy, true);
     // }
     async getTravelPlanAnalytics(startDate, endDate, groupBy) {
-        const plans = await prisma.travelPlan.findMany({
+        const plans = await prisma_1.prisma.travelPlan.findMany({
             where: {
                 createdAt: {
                     gte: startDate,
@@ -394,7 +399,7 @@ class AdminService {
         return this.groupByDate(plans, 'createdAt', groupBy);
     }
     async getReviewAnalytics(startDate, endDate, groupBy) {
-        const reviews = await prisma.review.findMany({
+        const reviews = await prisma_1.prisma.review.findMany({
             where: {
                 createdAt: {
                     gte: startDate,
@@ -483,7 +488,7 @@ class AdminService {
     // }
     async getAllTravelPlans(query, options) {
         const { search, status, } = query;
-        const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationHelper_1.calculatePagination)(options);
         const where = { isDeleted: false };
         if (search) {
             where.OR = [
@@ -494,8 +499,8 @@ class AdminService {
         if (status)
             where.status = status;
         const [total, plans] = await Promise.all([
-            prisma.travelPlan.count({ where }),
-            prisma.travelPlan.findMany({
+            prisma_1.prisma.travelPlan.count({ where }),
+            prisma_1.prisma.travelPlan.findMany({
                 where,
                 skip,
                 take: limit,
@@ -526,4 +531,4 @@ class AdminService {
         };
     }
 }
-export default new AdminService();
+exports.default = new AdminService();
