@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { fileUploader } from "app/helper/fileUploader";
 import pick from "app/helper/pick";
 import catchAsync from "app/utils/catchAsync";
 import sendResponse from "app/utils/sendResponse";
@@ -7,8 +8,13 @@ import travelPlanService from "./travelPlan.service";
 // import { fileUploader } from "app/helper/fileUploader";
 class TravelPlanController {
     createTravelPlan = catchAsync(async (req, res) => {
+        // if (req?.file) {
+        //     req.body.image = req?.file?.path; // directly assign the URL
+        // }
         if (req?.file) {
-            req.body.image = req?.file?.path; // directly assign the URL
+            // req.body.profileImage =  req?.file?.path;;
+            const updatedImage = await fileUploader.uploadToCloudinary(req?.file);
+            req.body.image = updatedImage?.secure_url;
         }
         const userId = req.user.id;
         const result = await travelPlanService.createTravelPlan(userId, req.body);
@@ -63,8 +69,13 @@ class TravelPlanController {
         });
     });
     updateTravelPlan = catchAsync(async (req, res) => {
+        // if (req?.file) {
+        //     req.body.image = req?.file?.path; // directly assign the URL
+        // }
         if (req?.file) {
-            req.body.image = req?.file?.path; // directly assign the URL
+            // req.body.profileImage =  req?.file?.path;;
+            const updatedImage = await fileUploader.uploadToCloudinary(req?.file);
+            req.body.image = updatedImage?.secure_url;
         }
         const { id } = req.params;
         const userId = req.user.id;

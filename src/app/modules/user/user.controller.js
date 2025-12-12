@@ -6,13 +6,18 @@ import { StatusCodes } from "http-status-codes";
 import userService from "./user.service";
 // import { fileUploader } from "app/helper/fileUploader";
 import pick from "app/helper/pick";
+import { fileUploader } from "app/helper/fileUploader";
 class UserController {
     updateMyProfile = catchAsync(async (req, res) => {
+        // req.body = JSON.parse(req.body.data);
         const file = req.file;
+        // console.log({ file });
         if (file) {
-            req.body.profileImage = req?.file?.path;
-            ;
+            // req.body.profileImage =  req?.file?.path;;
+            const updatedImage = await fileUploader.uploadToCloudinary(file);
+            req.body.profileImage = updatedImage?.secure_url;
         }
+        // console.log('req.body==>', req.body);
         const userId = req.user.id;
         const result = await userService.updateProfile(userId, req.body);
         sendResponse(res, {
@@ -36,6 +41,7 @@ class UserController {
     });
     getUserStats = catchAsync(async (req, res, next) => {
         const { id } = req.params;
+        // const id = req.params.id || (req as any).user.id;
         const result = await userService.getUserStats(id);
         sendResponse(res, {
             statusCode: StatusCodes.OK,
