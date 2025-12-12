@@ -1,9 +1,9 @@
 // import { JwtPayload } from "jsonwebtoken";
-// import envVars from "app/config/env";
+import envVars from "app/config/env";
 // import ApiError from "app/errors/ApiError";
 // import { StatusCodes } from "http-status-codes";
 import { generateToken } from "./jwt";
-import envVars from "src/app/config/env";
+// import envVars from "src/app/config/env";
 export const generateUserTokens = (user) => {
     const jwtPayload = { userId: user.id, email: user.email, role: user.role };
     const accessToken = generateToken(jwtPayload, envVars.JWT_SECRET, envVars.JWT_EXPIRES_IN);

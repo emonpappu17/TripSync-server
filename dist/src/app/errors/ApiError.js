@@ -1,4 +1,7 @@
 class ApiError extends Error {
+    statusCode;
+    success;
+    errorMessages;
     constructor(statusCode, message, errorMessages = [], stack = "") {
         super(message);
         this.statusCode = statusCode;
