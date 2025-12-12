@@ -5,12 +5,18 @@ import sendResponse from "app/utils/sendResponse";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import travelPlanService from "./travelPlan.service";
+import { fileUploader } from "app/helper/fileUploader";
 // import { fileUploader } from "app/helper/fileUploader";
 
 class TravelPlanController {
     createTravelPlan = catchAsync(async (req: Request, res: Response) => {
+        // if (req?.file) {
+        //     req.body.image = req?.file?.path; // directly assign the URL
+        // }
+
         if (req?.file) {
-            req.body.image = req?.file?.path; // directly assign the URL
+            const uploadToCloudinary = await fileUploader.uploadToCloudinary(req?.file);
+            req.body.image = uploadToCloudinary?.secure_url;
         }
 
         const userId = (req as any).user.id;
@@ -76,9 +82,16 @@ class TravelPlanController {
     });
 
     updateTravelPlan = catchAsync(async (req: Request, res: Response) => {
+        // if (req?.file) {
+        //     req.body.image = req?.file?.path; // directly assign the URL
+        // }
+
         if (req?.file) {
-            req.body.image = req?.file?.path; // directly assign the URL
+            const uploadToCloudinary = await fileUploader.uploadToCloudinary(req?.file);
+            req.body.image = uploadToCloudinary?.secure_url;
         }
+
+
         const { id } = req.params;
         const userId = (req as any).user.id;
         const result = await travelPlanService.updateTravelPlan(id, userId, req.body);

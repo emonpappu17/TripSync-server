@@ -7,19 +7,26 @@ import { StatusCodes } from "http-status-codes";
 import userService from "./user.service";
 // import { fileUploader } from "app/helper/fileUploader";
 import pick from "app/helper/pick";
+import { fileUploader } from "app/helper/fileUploader";
 
 class UserController {
     updateMyProfile = catchAsync(async (req: Request, res: Response) => {
 
 
         const file = req.file;
-  
+
+
+        // if (file) {
+        //     req.body.profileImage = req?.file?.path;;
+        // }
 
         if (file) {
-            req.body.profileImage =  req?.file?.path;;
+            const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
+            req.body.profileImage = uploadToCloudinary?.secure_url;
         }
 
-    
+
+
         const userId = (req as any).user.id;
 
         const result = await userService.updateProfile(userId, req.body);

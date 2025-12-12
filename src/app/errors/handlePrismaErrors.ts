@@ -1,16 +1,17 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
+// import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "./ApiError";
+import { Prisma } from "@prisma/client";
 
-const handlePrismaError = (error: PrismaClientKnownRequestError) => {
+const handlePrismaError = (error: Prisma.PrismaClientKnownRequestError) => {
   let message = "Database Error";
   let errorMessages: { path: string; message: string }[] = [];
 
   const target = Array.isArray(error.meta?.target)
     ? error.meta.target.join(", ")
     : typeof error.meta?.target === "string"
-    ? error.meta.target
-    : "";
+      ? error.meta.target
+      : "";
 
   switch (error.code) {
     case "P2002": {
