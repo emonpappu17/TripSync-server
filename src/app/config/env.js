@@ -1,30 +1,35 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable no-console */
-import z from "zod";
-const envSchema = z.object({
-    NODE_ENV: z
+const zod_1 = __importDefault(require("zod"));
+const envSchema = zod_1.default.object({
+    NODE_ENV: zod_1.default
         .enum(["development", "production", "test"])
         .default("development"),
-    PORT: z.coerce.number().default(5000),
-    DATABASE_URL: z.string().min(1),
-    JWT_SECRET: z.string().min(1),
-    JWT_EXPIRES_IN: z.string().default("7d"),
-    CORS_ORIGIN: z.string().default("*"),
-    JWT_REFRESH_SECRET: z.string().min(1),
-    JWT_REFRESH_EXPIRES_IN: z.string().default("30d"),
-    JWT_SALT_ROUND: z.string(),
-    CLOUDINARY_CLOUD_NAME: z.string(),
-    CLOUDINARY_API_KEY: z.string(),
-    CLOUDINARY_API_SECRET: z.string(),
-    STRIPE_SECRET_KEY: z.string(),
-    STRIPE_WEBHOOK_SECRET: z.string(),
-    STRIPE_PRICE_MONTHLY: z.string(),
-    STRIPE_PRICE_YEARLY: z.string(),
-    FRONTEND_URL: z.string(),
+    PORT: zod_1.default.coerce.number().default(5000),
+    DATABASE_URL: zod_1.default.string().min(1),
+    JWT_SECRET: zod_1.default.string().min(1),
+    JWT_EXPIRES_IN: zod_1.default.string().default("7d"),
+    CORS_ORIGIN: zod_1.default.string().default("*"),
+    JWT_REFRESH_SECRET: zod_1.default.string().min(1),
+    JWT_REFRESH_EXPIRES_IN: zod_1.default.string().default("30d"),
+    JWT_SALT_ROUND: zod_1.default.string(),
+    CLOUDINARY_CLOUD_NAME: zod_1.default.string(),
+    CLOUDINARY_API_KEY: zod_1.default.string(),
+    CLOUDINARY_API_SECRET: zod_1.default.string(),
+    STRIPE_SECRET_KEY: zod_1.default.string(),
+    STRIPE_WEBHOOK_SECRET: zod_1.default.string(),
+    STRIPE_PRICE_MONTHLY: zod_1.default.string(),
+    STRIPE_PRICE_YEARLY: zod_1.default.string(),
+    FRONTEND_URL: zod_1.default.string(),
 });
 const env = envSchema.safeParse(process.env);
 if (!env.success) {
-    console.error("❌ Invalid environment variables:", z.treeifyError(env.error));
+    console.error("❌ Invalid environment variables:", zod_1.default.treeifyError(env.error));
     throw new Error("Invalid environment variables");
 }
 const envVars = env.data;
-export default envVars;
+exports.default = envVars;

@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.convertToMilliseconds = void 0;
 // Convert "1d" | "2h" | "30m" | "1M" | "1y" etc. → milliseconds
-export const convertToMilliseconds = (value) => {
+const convertToMilliseconds = (value) => {
     const unit = value.slice(-1); // last character (d, h, m, s, M, y, w)
     const number = parseInt(value.slice(0, -1)); // the numeric part
     switch (unit) {
@@ -21,3 +24,4 @@ export const convertToMilliseconds = (value) => {
             return 60 * 60 * 1000; // default 1 hour
     }
 };
+exports.convertToMilliseconds = convertToMilliseconds;

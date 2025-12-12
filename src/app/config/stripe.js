@@ -1,3 +1,9 @@
-import Stripe from "stripe";
-import envVars from "./env";
-export const stripe = new Stripe(envVars.STRIPE_SECRET_KEY);
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.stripe = void 0;
+const stripe_1 = __importDefault(require("stripe"));
+const env_1 = __importDefault(require("./env"));
+exports.stripe = new stripe_1.default(env_1.default.STRIPE_SECRET_KEY);

@@ -1,14 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 // app/modules/travelMatch/travelMatch.service.ts
-import { prisma } from "app/lib/prisma";
-import ApiError from "app/errors/ApiError";
-import { StatusCodes } from "http-status-codes";
-import { calculatePagination } from "app/helper/paginationHelper";
+const prisma_1 = require("app/lib/prisma");
+const ApiError_1 = __importDefault(require("app/errors/ApiError"));
+const http_status_codes_1 = require("http-status-codes");
+// import ApiError from "src/app/errors/ApiError";
+// import { calculatePagination, IOptions } from "src/app/helper/paginationHelper";
+// import { prisma } from "src/app/lib/prisma";
+const paginationHelper_1 = require("app/helper/paginationHelper");
 class TravelMatchService {
     /**
      * Get all matches for a user (as either user1 or user2)
      */
     async getMyMatches(userId, options) {
-        const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options);
+        const { page, limit, skip, sortBy, sortOrder } = (0, paginationHelper_1.calculatePagination)(options);
         const where = {
             OR: [
                 { user1Id: userId },
@@ -17,8 +25,8 @@ class TravelMatchService {
             isActive: true,
         };
         const [total, matches] = await Promise.all([
-            prisma.travelMatch.count({ where }),
-            prisma.travelMatch.findMany({
+            prisma_1.prisma.travelMatch.count({ where }),
+            prisma_1.prisma.travelMatch.findMany({
                 where,
                 skip,
                 take: limit,
@@ -46,7 +54,7 @@ class TravelMatchService {
             // Determine who the buddy is (the other user)
             const buddyId = match.user1Id === userId ? match.user2Id : match.user1Id;
             // Fetch buddy details
-            const buddy = await prisma.user.findUnique({
+            const buddy = await prisma_1.prisma.user.findUnique({
                 where: { id: buddyId },
                 select: {
                     id: true,
@@ -79,17 +87,17 @@ class TravelMatchService {
      */
     async getMatchesByPlanId(planId, userId) {
         // Verify user has access to this plan (must be plan owner or a matched user)
-        const plan = await prisma.travelPlan.findFirst({
+        const plan = await prisma_1.prisma.travelPlan.findFirst({
             where: {
                 id: planId,
                 isDeleted: false,
             },
         });
         if (!plan) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Travel plan not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Travel plan not found');
         }
         // Check if user is plan owner or has a match for this plan
-        const hasAccess = plan.userId === userId || await prisma.travelMatch.findFirst({
+        const hasAccess = plan.userId === userId || await prisma_1.prisma.travelMatch.findFirst({
             where: {
                 travelPlanId: planId,
                 OR: [
@@ -100,9 +108,9 @@ class TravelMatchService {
             }
         });
         if (!hasAccess) {
-            throw new ApiError(StatusCodes.FORBIDDEN, 'You do not have access to view these matches');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.FORBIDDEN, 'You do not have access to view these matches');
         }
-        const matches = await prisma.travelMatch.findMany({
+        const matches = await prisma_1.prisma.travelMatch.findMany({
             where: {
                 travelPlanId: planId,
                 isActive: true,
@@ -121,7 +129,7 @@ class TravelMatchService {
         // Fetch user details for all matched users
         const enhancedMatches = await Promise.all(matches.map(async (match) => {
             const [user1, user2] = await Promise.all([
-                prisma.user.findUnique({
+                prisma_1.prisma.user.findUnique({
                     where: { id: match.user1Id },
                     select: {
                         id: true,
@@ -133,7 +141,7 @@ class TravelMatchService {
                         interests: true,
                     }
                 }),
-                prisma.user.findUnique({
+                prisma_1.prisma.user.findUnique({
                     where: { id: match.user2Id },
                     select: {
                         id: true,
@@ -157,7 +165,7 @@ class TravelMatchService {
      * Get a specific match by ID
      */
     async getMatchById(matchId, userId) {
-        const match = await prisma.travelMatch.findUnique({
+        const match = await prisma_1.prisma.travelMatch.findUnique({
             where: { id: matchId },
             include: {
                 travelPlan: {
@@ -175,15 +183,15 @@ class TravelMatchService {
             },
         });
         if (!match) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Match not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Match not found');
         }
         // Verify user is part of this match
         if (match.user1Id !== userId && match.user2Id !== userId) {
-            throw new ApiError(StatusCodes.FORBIDDEN, 'You do not have access to this match');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.FORBIDDEN, 'You do not have access to this match');
         }
         // Get buddy information
         const buddyId = match.user1Id === userId ? match.user2Id : match.user1Id;
-        const buddy = await prisma.user.findUnique({
+        const buddy = await prisma_1.prisma.user.findUnique({
             where: { id: buddyId },
             select: {
                 id: true,
@@ -205,17 +213,17 @@ class TravelMatchService {
      * Deactivate a match (soft delete)
      */
     async deactivateMatch(matchId, userId) {
-        const match = await prisma.travelMatch.findUnique({
+        const match = await prisma_1.prisma.travelMatch.findUnique({
             where: { id: matchId },
         });
         if (!match) {
-            throw new ApiError(StatusCodes.NOT_FOUND, 'Match not found');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Match not found');
         }
         // Verify user is part of this match
         if (match.user1Id !== userId && match.user2Id !== userId) {
-            throw new ApiError(StatusCodes.FORBIDDEN, 'You do not have permission to deactivate this match');
+            throw new ApiError_1.default(http_status_codes_1.StatusCodes.FORBIDDEN, 'You do not have permission to deactivate this match');
         }
-        await prisma.travelMatch.update({
+        await prisma_1.prisma.travelMatch.update({
             where: { id: matchId },
             data: { isActive: false },
         });
@@ -225,7 +233,7 @@ class TravelMatchService {
      * Check if two users are matched for a specific plan
      */
     async checkMatch(planId, userId, otherUserId) {
-        const match = await prisma.travelMatch.findFirst({
+        const match = await prisma_1.prisma.travelMatch.findFirst({
             where: {
                 travelPlanId: planId,
                 OR: [
@@ -246,7 +254,7 @@ class TravelMatchService {
     async getMatchStatistics(userId) {
         const [totalMatches, activeMatches, matchesByPlan] = await Promise.all([
             // Total matches
-            prisma.travelMatch.count({
+            prisma_1.prisma.travelMatch.count({
                 where: {
                     OR: [
                         { user1Id: userId },
@@ -255,7 +263,7 @@ class TravelMatchService {
                 }
             }),
             // Active matches
-            prisma.travelMatch.count({
+            prisma_1.prisma.travelMatch.count({
                 where: {
                     OR: [
                         { user1Id: userId },
@@ -265,7 +273,7 @@ class TravelMatchService {
                 }
             }),
             // Matches grouped by plan
-            prisma.travelMatch.groupBy({
+            prisma_1.prisma.travelMatch.groupBy({
                 by: ['travelPlanId'],
                 where: {
                     OR: [
@@ -285,4 +293,4 @@ class TravelMatchService {
         };
     }
 }
-export default new TravelMatchService();
+exports.default = new TravelMatchService();

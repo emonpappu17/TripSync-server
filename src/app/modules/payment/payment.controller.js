@@ -1,27 +1,38 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import catchAsync from "app/utils/catchAsync";
-import sendResponse from "app/utils/sendResponse";
-import { StatusCodes } from "http-status-codes";
-import paymentService from "./payment.service";
-import { stripe } from "app/config/stripe";
-import envVars from "app/config/env";
-import { prisma } from "app/lib/prisma";
+const catchAsync_1 = __importDefault(require("app/utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("app/utils/sendResponse"));
+const http_status_codes_1 = require("http-status-codes");
+const payment_service_1 = __importDefault(require("./payment.service"));
+const stripe_1 = require("app/config/stripe");
+const env_1 = __importDefault(require("app/config/env"));
+// import catchAsync from "app/utils/catchAsync";
+// import catchAsync from "src/app/utils/catchAsync";
+// import sendResponse from "src/app/utils/sendResponse";
+// import { stripe } from "src/app/config/stripe";
+// import envVars from "src/app/config/env";
+// import { prisma } from "src/app/lib/prisma";
+const prisma_1 = require("app/lib/prisma");
 class PaymentController {
-    createCheckoutSession = catchAsync(async (req, res) => {
+    createCheckoutSession = (0, catchAsync_1.default)(async (req, res) => {
         const userId = req.user.id;
-        const result = await paymentService.createCheckoutSession(userId, req.body);
-        sendResponse(res, {
-            statusCode: StatusCodes.CREATED,
+        const result = await payment_service_1.default.createCheckoutSession(userId, req.body);
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.CREATED,
             success: true,
             message: 'createCheckoutSession created successfully',
             data: result,
         });
     });
-    stripeWebhook = catchAsync(async (req, res) => {
+    stripeWebhook = (0, catchAsync_1.default)(async (req, res) => {
         let event;
         try {
-            event = await stripe.webhooks.constructEventAsync(req.body, req.headers["stripe-signature"], envVars.STRIPE_WEBHOOK_SECRET);
+            event = await stripe_1.stripe.webhooks.constructEventAsync(req.body, req.headers["stripe-signature"], env_1.default.STRIPE_WEBHOOK_SECRET);
         }
         catch (err) {
             console.log(`Webhook Error: ${err.message}`);
@@ -35,8 +46,8 @@ class PaymentController {
             const startDate = new Date();
             const endDate = new Date();
             endDate.setDate(startDate.getDate() + durationDays);
-            await prisma.$transaction([
-                prisma.subscription.create({
+            await prisma_1.prisma.$transaction([
+                prisma_1.prisma.subscription.create({
                     data: {
                         userId,
                         plan,
@@ -46,17 +57,17 @@ class PaymentController {
                         stripeSubscriptionId: session.subscription,
                     },
                 }),
-                prisma.user.update({
+                prisma_1.prisma.user.update({
                     where: { id: userId },
                     data: { isVerified: true },
                 }),
             ]);
         }
-        sendResponse(res, {
-            statusCode: StatusCodes.CREATED,
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_codes_1.StatusCodes.CREATED,
             success: true,
             message: 'Webhook request send successfully!',
         });
     });
 }
-export default new PaymentController();
+exports.default = new PaymentController();

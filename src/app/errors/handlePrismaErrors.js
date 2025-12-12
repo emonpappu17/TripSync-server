@@ -1,6 +1,11 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 // import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
-import { StatusCodes } from "http-status-codes";
-import ApiError from "./ApiError";
+const http_status_codes_1 = require("http-status-codes");
+const ApiError_1 = __importDefault(require("./ApiError"));
 const handlePrismaError = (error) => {
     let message = "Database Error";
     let errorMessages = [];
@@ -44,6 +49,6 @@ const handlePrismaError = (error) => {
                 },
             ];
     }
-    return new ApiError(StatusCodes.BAD_REQUEST, message, errorMessages);
+    return new ApiError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, message, errorMessages);
 };
-export default handlePrismaError;
+exports.default = handlePrismaError;

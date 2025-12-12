@@ -1,14 +1,22 @@
+"use strict";
 // import { JwtPayload } from "jsonwebtoken";
-import envVars from "app/config/env";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateUserTokens = void 0;
+const env_1 = __importDefault(require("app/config/env"));
 // import ApiError from "app/errors/ApiError";
 // import { StatusCodes } from "http-status-codes";
-import { generateToken } from "./jwt";
-export const generateUserTokens = (user) => {
+const jwt_1 = require("./jwt");
+// import envVars from "src/app/config/env";
+const generateUserTokens = (user) => {
     const jwtPayload = { userId: user.id, email: user.email, role: user.role };
-    const accessToken = generateToken(jwtPayload, envVars.JWT_SECRET, envVars.JWT_EXPIRES_IN);
-    const refreshToken = generateToken(jwtPayload, envVars.JWT_REFRESH_SECRET, envVars.JWT_REFRESH_EXPIRES_IN);
+    const accessToken = (0, jwt_1.generateToken)(jwtPayload, env_1.default.JWT_SECRET, env_1.default.JWT_EXPIRES_IN);
+    const refreshToken = (0, jwt_1.generateToken)(jwtPayload, env_1.default.JWT_REFRESH_SECRET, env_1.default.JWT_REFRESH_EXPIRES_IN);
     return { accessToken, refreshToken };
 };
+exports.generateUserTokens = generateUserTokens;
 // export const createNewAccessTokenWithRefreshToken = async (
 //   refreshToken: string
 // ) => {

@@ -1,2 +1,3 @@
+"use strict";
 // import { UserRole } from "@prisma/enums";
-export {};
+Object.defineProperty(exports, "__esModule", { value: true });

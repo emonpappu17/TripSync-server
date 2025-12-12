@@ -37,29 +37,56 @@
 //     "node_modules"
 //   ]
 // }
+// {
+//   "compilerOptions": {
+//     "module": "ESNext",
+//     "moduleResolution": "node",
+//     "target": "ES2020",
+//     "strict": true,
+//     "esModuleInterop": true,
+//     "resolveJsonModule": true,
+//     "rootDir": ".",
+//     // "outDir": "dist",
+//     "outDir": "./dist",
+//     "baseUrl": ".",
+//     "paths": {
+//       "@prisma/*": [
+//         "prisma/generated/prisma/*"
+//       ]
+//     }
+//   },
+//   "include": [
+//     "src",
+//     "prisma/generated/prisma"
+//   ],
+//   "exclude": [
+//     "node_modules"
+//   ]
+// }
 {
   "compilerOptions": {
-    "module": "ESNext",
+    // "module": "ESNext",
+    "module": "commonjs",                                /* Specify what module code is generated. */
+
     "moduleResolution": "node",
-    "target": "ES2020",
+    "target": "ES2023",
     "strict": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "rootDir": ".",
-    // "outDir": "dist",
-    "outDir": "./dist",
-    "baseUrl": ".",
+    // "ignoreDeprecations": "6.0",
+    "baseUrl": "src",
     "paths": {
       "@prisma/*": [
-        "prisma/generated/prisma/*"
+        "../prisma/generated/prisma/*"
       ]
     }
   },
   "include": [
     "src",
-    "prisma/generated/prisma"
+    "src/types"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "prisma.config.ts",
+    "prisma"
   ]
 }

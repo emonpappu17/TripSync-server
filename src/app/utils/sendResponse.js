@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const sendResponse = (res, response) => {
     const { statusCode, success, message, data, meta, err } = response;
     const responsePayload = {
@@ -14,4 +16,4 @@ const sendResponse = (res, response) => {
     }
     res.status(statusCode).json(responsePayload);
 };
-export default sendResponse;
+exports.default = sendResponse;
