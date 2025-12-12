@@ -1,7 +1,8 @@
 import { Role } from "@prisma/client";
-import { CheckAuth } from "app/middlewares/checkAuth";
+// import { CheckAuth } from "app/middlewares/checkAuth";
 import { Router } from "express";
 import travelMatchController from "./travelMatch.controller";
+import { CheckAuth } from "src/app/middlewares/checkAuth";
 
 const router = Router();
 

@@ -1,17 +1,37 @@
 /* eslint-disable no-console */
 import cors from "cors";
+// import express, { Application, Request, Response } from "express";
+// import rateLimit from "express-rate-limit";
+// import helmet from "helmet";
+// import { StatusCodes } from "http-status-codes";
+// import envVars from "./app/config/env";
+// import globalErrorHandler from "./app/errors/globalErrorHandler";
+// import NotFoundError from "./app/errors/notFoundError";
+// import { router } from "./app/routes";
+// import cookieParser from "cookie-parser";
+import cron from 'node-cron';
+// import travelPlanService from "app/modules/travelPlan/travelPlan.service";
+// import paymentController from "app/modules/payment/payment.controller";
+
+// import paymentController from "app/modules/payment/payment.controller";
 import express, { Application, Request, Response } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
-import { StatusCodes } from "http-status-codes";
+import paymentController from "./app/modules/payment/payment.controller";
 import envVars from "./app/config/env";
-import globalErrorHandler from "./app/errors/globalErrorHandler";
-import NotFoundError from "./app/errors/notFoundError";
-import { router } from "./app/routes";
 import cookieParser from "cookie-parser";
-import cron from 'node-cron';
-import travelPlanService from "app/modules/travelPlan/travelPlan.service";
-import paymentController from "app/modules/payment/payment.controller";
+import travelPlanService from "./app/modules/travelPlan/travelPlan.service";
+import { StatusCodes } from "http-status-codes";
+import { router } from "./app/routes";
+import NotFoundError from "./app/errors/notFoundError";
+import globalErrorHandler from "./app/errors/globalErrorHandler";
+// import envVars from "app/config/env";
+// import cookieParser from "cookie-parser";
+// import travelPlanService from "app/modules/travelPlan/travelPlan.service";
+// import { StatusCodes } from "http-status-codes";
+// import { router } from "app/routes";
+// import NotFoundError from "app/errors/notFoundError";
+// import globalErrorHandler from "app/errors/globalErrorHandler";
 
 const app: Application = express();
 // Security middleware

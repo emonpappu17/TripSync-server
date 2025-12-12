@@ -4,7 +4,8 @@ import app from "./app";
 
 import envVars from "./app/config/env";
 import { prisma } from "./app/lib/prisma";
-import { seedAdmin } from "app/utils/seedAdmin";
+import { seedAdmin } from "./app/utils/seedAdmin";
+// import { seedAdmin } from "app/utils/seedAdmin";
 
 let server: Server;
 

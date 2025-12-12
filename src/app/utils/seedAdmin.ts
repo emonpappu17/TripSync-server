@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 // import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { prisma } from '../lib/prisma';
 
-import { prisma } from "app/lib/prisma";
+// import { prisma } from "app/lib/prisma";
 
 export async function seedAdmin() {
     console.log('🌱 Seeding admin user...');

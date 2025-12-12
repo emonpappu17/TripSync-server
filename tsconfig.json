@@ -1,16 +1,64 @@
+// {
+//   "compilerOptions": {
+//     "module": "ESNext",
+//     "moduleResolution": "node",
+//     "target": "ES2023",
+//     "strict": true,
+//     "esModuleInterop": true,
+//     // "ignoreDeprecations": "6.0",
+//     "baseUrl": "src",
+//     "paths": {
+//       "@prisma/*": ["../prisma/generated/prisma/*"]
+//     }
+//   },
+//   "include": ["src"],
+//   "exclude": ["node_modules", "prisma.config.ts", "prisma"]
+// }
+// {
+//   "compilerOptions": {
+//     "module": "ESNext",
+//     "moduleResolution": "node",
+//     "target": "ES2020",
+//     "strict": true,
+//     "esModuleInterop": true,
+//     "baseUrl": "src",
+//     "rootDir": "src",
+//     "outDir": "dist",
+//     "paths": {
+//       "@prisma/*": [
+//         "../prisma/generated/prisma/*"
+//       ]
+//     }
+//   },
+//   "include": [
+//     "src"
+//   ],
+//   "exclude": [
+//     "node_modules"
+//   ]
+// }
 {
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "node",
-    "target": "ES2023",
+    "target": "ES2020",
     "strict": true,
     "esModuleInterop": true,
-    // "ignoreDeprecations": "6.0",
-    "baseUrl": "src",
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "baseUrl": ".",
     "paths": {
-      "@prisma/*": ["../prisma/generated/prisma/*"]
+      "@prisma/*": [
+        "prisma/generated/prisma/*"
+      ]
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", ]
+  "include": [
+    "src",
+    "prisma/generated/prisma"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

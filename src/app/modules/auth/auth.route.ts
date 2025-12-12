@@ -1,7 +1,8 @@
-import { validationRequest } from "app/middlewares/validationRequest";
+// import { validationRequest } from "app/middlewares/validationRequest";
 import { Router } from "express";
 import authController from "./auth.controller";
 import { loginValidation, registerValidation } from "./auth.validation";
+import { validationRequest } from "src/app/middlewares/validationRequest";
 
 const router = Router();
 

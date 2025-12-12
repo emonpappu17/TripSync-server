@@ -39,7 +39,8 @@
 import multer from 'multer'
 import path from 'path'
 import { v2 as cloudinary } from "cloudinary"
-import envVars from 'app/config/env'
+import envVars from '../config/env'
+// import envVars from 'app/config/env'
 // import config from '../../config'
 
 // Set up multer for file uploads
