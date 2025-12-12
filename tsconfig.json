@@ -66,14 +66,17 @@
 {
   "compilerOptions": {
     // "module": "ESNext",
-    "module": "commonjs",                                /* Specify what module code is generated. */
-
+    "module": "commonjs", /* Specify what module code is generated. */
     "moduleResolution": "node",
     "target": "ES2023",
     "strict": true,
     "esModuleInterop": true,
     // "ignoreDeprecations": "6.0",
-    "baseUrl": "src",
+    // "baseUrl": "src",
+    "rootDir": ".",
+    // "outDir": "dist",
+    "outDir": "./dist",
+    "baseUrl": ".",
     "paths": {
       "@prisma/*": [
         "../prisma/generated/prisma/*"
