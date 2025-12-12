@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
 import { Server } from "http";
-// import app from "./app";
+import app from "./app";
 
 import envVars from "./app/config/env";
 import { prisma } from "./app/lib/prisma";
 import { seedAdmin } from "./app/utils/seedAdmin";
-import app from "app";
-// import app from "app";
 // import { seedAdmin } from "app/utils/seedAdmin";
 
 let server: Server;
