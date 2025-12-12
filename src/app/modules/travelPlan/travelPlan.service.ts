@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { TravelPlan } from "@prisma/client";
@@ -332,10 +333,11 @@ class TravelPlanService {
 
 
     async deleteTravelPlan(id: string, userId: string) {
+        // console.log({});
         const travelPlan = await prisma.travelPlan.findFirst({
             where: {
                 id,
-                userId,
+                // userId,
                 isDeleted: false,
             },
         });
@@ -352,6 +354,11 @@ class TravelPlanService {
             where: { id },
             data: { isDeleted: true },
         });
+
+        await prisma.travelMatch.updateMany({
+            where: { travelPlanId: id },
+            data: { isActive: false },
+        })
     }
 
     async updateTravelPlanStatuses() {

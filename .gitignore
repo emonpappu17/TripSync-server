@@ -3,11 +3,12 @@ node_modules
 .env
 
 /generated/prisma
-/prisma/generated
 
-dist
+.vercel
+
+dist/
+.env
 .env.local
-.prisma/client
-.prisma
-.vscode
-.DS_Store
+uploads/*
+!uploads/.gitkeep
+*.log

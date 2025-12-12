@@ -19,6 +19,8 @@ class TravelMatchService {
             isActive: true,
         };
 
+        // console.log({ userId });
+
         const [total, matches] = await Promise.all([
             prisma.travelMatch.count({ where }),
             prisma.travelMatch.findMany({
