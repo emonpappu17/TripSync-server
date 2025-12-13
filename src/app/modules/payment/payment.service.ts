@@ -1,20 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
-// import envVars from "app/config/env";
-// import { stripe } from "app/config/stripe";
-// import ApiError from "app/errors/ApiError";
-// import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
-// import { SubscriptionPlan, SubscriptionStatus } from "../../../../prisma/generated/prisma/enums";
 import envVars from "../../config/env";
 import { prisma } from "../../lib/prisma";
 import ApiError from "../../errors/ApiError";
-// import envVars from "src/app/config/env";
-// import { stripe } from "src/app/config/stripe";
-// import ApiError from "src/app/errors/ApiError";
-// import { prisma } from "src/app/lib/prisma";
 import {stripe} from "../../../app/config/stripe"
 import { SubscriptionPlan, SubscriptionStatus } from "@prisma/client";
 

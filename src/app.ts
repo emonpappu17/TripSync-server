@@ -55,7 +55,7 @@ app.post(
 // CORS
 app.use(
   cors({
-    origin: envVars.CORS_ORIGIN,
+    origin: [envVars.CORS_ORIGIN, 'http://localhost:3000'],
     credentials: true,
   })
 );
