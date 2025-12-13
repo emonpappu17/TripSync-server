@@ -1,12 +1,3 @@
-// import { adminRoutes } from "app/modules/admin/admin.route";
-// import { authRoutes } from "app/modules/auth/auth.route";
-// import { paymentRoutes } from "app/modules/payment/payment.route";
-// import { reviewRoutes } from "app/modules/review/review.route";
-// import { travelMatchRoutes } from "app/modules/travelMatch/travelMatch.routes";
-// import { travelPlanRoutes } from "app/modules/travelPlan/travelPlan.route";
-// import { travelRequestRouters } from "app/modules/travelRequest/travelRequest.route";
-// import { userRoutes } from "app/modules/user/user.route";
-
 import { Router } from "express";
 import { authRoutes } from "../modules/auth/auth.route";
 import { userRoutes } from "../modules/user/user.route";
