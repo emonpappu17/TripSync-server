@@ -19,7 +19,7 @@ import Stripe from "stripe";
 // import sendResponse from "app/utils/sendResponse";
 import catchAsync from "../../utils/catchAsync"
 import sendResponse from "../../utils/sendResponse"
-import {stripe}from "../../config/stripe"
+import { stripe } from "../../config/stripe"
 import envVars from "../../config/env";
 import { prisma } from "../../lib/prisma";
 
@@ -51,8 +51,9 @@ class PaymentController {
             return res.status(400).send(`Webhook Error: ${err.message}`);
         }
 
-
+        console.log('event?.type===>', event?.type);
         if (event?.type === "checkout.session.completed") {
+            console.log('<<<<<Inside completed>>>>>');
             const session = event.data.object as any;
 
             const userId = session.metadata.userId;
@@ -63,7 +64,7 @@ class PaymentController {
             const startDate = new Date();
             const endDate = new Date();
             endDate.setDate(startDate.getDate() + durationDays);
-    
+
             await prisma.$transaction([
                 prisma.subscription.create({
                     data: {
