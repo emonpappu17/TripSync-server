@@ -1,19 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { RequestStatus, SubscriptionStatus, TripStatus } from "prisma/generated/prisma/enums";
-// import ApiError from "app/errors/ApiError";
-// import { calculatePagination } from "app/helper/paginationHelper";
-// import { prisma } from "app/lib/prisma";
+
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../lib/prisma";
-
-// import ApiError from "src/app/errors/ApiError";
-// import { calculatePagination } from "src/app/helper/paginationHelper";
-// import { prisma } from "src/app/lib/prisma";
 import {calculatePagination} from "../../helper/paginationHelper"
 import ApiError from "../../errors/ApiError";
 import { RequestStatus, SubscriptionStatus, TripStatus } from "@prisma/client";
-// import {ApiError} from "../../../app/errors"
 
 class AdminService {
     async getDashboardStats() {
@@ -68,9 +60,9 @@ class AdminService {
 
         // Revenue stats
         const [revenueThisMonth, revenueLastMonth] = await Promise.all([
-            prisma.payment.aggregate({
+            prisma.subscription.aggregate({
                 where: {
-                    status: 'COMPLETED',
+                    // status: 'COMPLETED',
                     createdAt: {
                         gte: firstDayOfMonth,
                         lte: now,
@@ -78,20 +70,20 @@ class AdminService {
                 },
                 _sum: { amount: true },
             }),
-            prisma.payment.aggregate({
+            prisma.subscription.aggregate({
                 where: {
-                    status: 'COMPLETED',
+                    // status: 'COMPLETED',
                     createdAt: {
                         gte: lastMonth,
-                        lte: endOfLastMonth,
+                        lte: endOfLastMonth, 
                     },
                 },
                 _sum: { amount: true },
             }),
         ]);
 
-        const totalRevenue = await prisma.payment.aggregate({
-            where: { status: 'COMPLETED' },
+        const totalRevenue = await prisma.subscription.aggregate({
+            // where: { status: 'COMPLETED' },
             _sum: { amount: true },
         });
 

@@ -99,7 +99,8 @@ model Subscription {
   userId               String
   stripeSubscriptionId String
   // paymentId String             @unique
-  amount               String?
+  // amount               String?
+  amount               Decimal?            @db.Decimal(10, 2)
   plan                 SubscriptionPlan
   status               SubscriptionStatus @default(ACTIVE)
   startDate            DateTime           @default(now())

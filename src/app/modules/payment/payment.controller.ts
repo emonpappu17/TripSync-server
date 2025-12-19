@@ -10,6 +10,7 @@ import sendResponse from "../../utils/sendResponse"
 import { stripe } from "../../config/stripe"
 import envVars from "../../config/env";
 import { prisma } from "../../lib/prisma";
+import { Prisma } from "@prisma/client";
 
 class PaymentController {
     createCheckoutSession = catchAsync(async (req: Request, res: Response) => {
@@ -49,7 +50,11 @@ class PaymentController {
             const plan = session.metadata.plan;
 
             const durationDays = plan === "MONTHLY" ? 30 : 365;
-            const amount = plan === "MONTHLY" ? '9.99' : '99.00';
+            // const amount = plan === "MONTHLY" ? '9.99' : '99.00';
+            const amount =
+                plan === "MONTHLY"
+                    ? new Prisma.Decimal(9.99)
+                    : new Prisma.Decimal(99.0);
 
             const startDate = new Date();
             const endDate = new Date();
