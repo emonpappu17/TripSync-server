@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-
 }
 
 datasource db {
@@ -100,6 +99,7 @@ model Subscription {
   userId               String
   stripeSubscriptionId String
   // paymentId String             @unique
+  amount               String?
   plan                 SubscriptionPlan
   status               SubscriptionStatus @default(ACTIVE)
   startDate            DateTime           @default(now())

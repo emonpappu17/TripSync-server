@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import envVars from "../../config/env";
 import { prisma } from "../../lib/prisma";
 import ApiError from "../../errors/ApiError";
-import {stripe} from "../../../app/config/stripe"
+import { stripe } from "../../../app/config/stripe"
 import { SubscriptionPlan, SubscriptionStatus } from "@prisma/client";
 
 class PaymentService {
@@ -82,24 +82,24 @@ class PaymentService {
     }
 
 
-    // async getMySubscription(userId: string) {
-    //     const subscription = await prisma.subscription.findFirst({
-    //         where: { userId },
-    //         orderBy: { createdAt: 'desc' },
-    //         include: {
-    //             payment: {
-    //                 select: {
-    //                     amount: true,
-    //                     currency: true,
-    //                     paidAt: true,
-    //                     transactionId: true,
-    //                 },
-    //             },
-    //         },
-    //     });
+    async getMySubscription(userId: string) {
+        const subscription = await prisma.subscription.findFirst({
+            where: { userId, status: SubscriptionStatus.ACTIVE },
+            orderBy: { createdAt: 'desc' },
+            // include: {
+            //     payment: {
+            //         select: {
+            //             amount: true,
+            //             currency: true,
+            //             paidAt: true,
+            //             transactionId: true,
+            //         },
+            //     },
+            // },
+        });
 
-    //     return subscription;
-    // }
+        return subscription;
+    }
 
     // async cancelSubscription(userId: string, reason?: string) {
     //     const subscription = await prisma.subscription.findFirst({

@@ -1,15 +1,9 @@
-// import { Role } from "prisma/generated/prisma/enums";
-// import { CheckAuth } from "app/middlewares/checkAuth";
-// import { validationRequest } from "app/middlewares/validationRequest";
 import { Router } from "express";
 import paymentController from "./payment.controller";
 import { createPaymentValidation } from "./payment.validation";
 import { CheckAuth } from "../../middlewares/checkAuth";
-// import { Role } from "../../../../prisma/generated/prisma/enums";
 import { validationRequest } from "../../middlewares/validationRequest";
 import { Role } from "@prisma/client";
-// import { CheckAuth } from "src/app/middlewares/checkAuth";
-// import { validationRequest } from "src/app/middlewares/validationRequest";
 
 const router = Router();
 
@@ -19,20 +13,15 @@ router.post(
     validationRequest(createPaymentValidation),
     paymentController.createCheckoutSession
 );
-// router.post(
-//     '/create-intent',
-//     CheckAuth(Role.USER, Role.ADMIN),
-//     validationRequest(createPaymentValidation),
-//     paymentController.createPaymentIntent
-// );
+
 
 // router.post('/webhook', paymentController.handleWebhook);
 
-// router.get(
-//     '/subscription',
-//     CheckAuth(Role.USER, Role.ADMIN),
-//     paymentController.getMySubscription
-// );
+router.get(
+    '/subscription',
+    CheckAuth(Role.USER, Role.ADMIN),
+    paymentController.getMySubscription
+);
 
 // router.post(
 //     '/subscription/cancel',

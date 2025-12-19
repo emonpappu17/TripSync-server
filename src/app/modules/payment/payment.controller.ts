@@ -40,6 +40,7 @@ class PaymentController {
         }
 
         console.log('event?.type===>', event?.type);
+        console.log('event?.data?.object==>', event?.data?.object);
         if (event?.type === "checkout.session.completed") {
             console.log('<<<<<Inside completed>>>>>');
             const session = event.data.object as any;
@@ -48,6 +49,7 @@ class PaymentController {
             const plan = session.metadata.plan;
 
             const durationDays = plan === "MONTHLY" ? 30 : 365;
+            const amount = plan === "MONTHLY" ? '9.99' : '99.00';
 
             const startDate = new Date();
             const endDate = new Date();
@@ -59,6 +61,7 @@ class PaymentController {
                         userId,
                         plan,
                         status: "ACTIVE",
+                        amount,
                         startDate,
                         endDate,
                         stripeSubscriptionId: session.subscription,
@@ -79,17 +82,17 @@ class PaymentController {
     });
 
 
-    // getMySubscription = catchAsync(async (req: Request, res: Response) => {
-    //     const userId = (req as any).user.id;
-    //     const result = await paymentService.getMySubscription(userId);
+    getMySubscription = catchAsync(async (req: Request, res: Response) => {
+        const userId = (req as any).user.id;
+        const result = await paymentService.getMySubscription(userId);
 
-    //     sendResponse(res, {
-    //         statusCode: httpStatus.OK,
-    //         success: true,
-    //         message: 'Subscription retrieved successfully',
-    //         data: result,
-    //     });
-    // });
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: 'Subscription retrieved successfully',
+            data: result,
+        });
+    });
 
     // cancelSubscription = catchAsync(async (req: Request, res: Response) => {
     //     const userId = (req as any).user.id;
