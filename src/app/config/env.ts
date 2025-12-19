@@ -11,8 +11,8 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default("7d"),
   CORS_ORIGIN: z.string().default("*"),
   JWT_REFRESH_SECRET: z.string().min(1),
-  JWT_REFRESH_EXPIRES_IN: z.string().default("30d"), 
-  JWT_SALT_ROUND: z.string(), 
+  JWT_REFRESH_EXPIRES_IN: z.string().default("30d"),
+  JWT_SALT_ROUND: z.string(),
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),
@@ -25,6 +25,10 @@ const envSchema = z.object({
 
 const env = envSchema.safeParse(process.env);
 
+// console.log("process.env==>", process.env);
+
+// console.log({ env });
+
 if (!env.success) {
   console.error("❌ Invalid environment variables:", z.treeifyError(env.error));
   throw new Error("Invalid environment variables");
@@ -32,3 +36,8 @@ if (!env.success) {
 const envVars = env.data;
 
 export default envVars;
+
+
+//    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
+ 
+//    "dev": "bun --watch src/server.ts",

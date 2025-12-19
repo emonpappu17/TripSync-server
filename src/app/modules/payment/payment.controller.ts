@@ -38,6 +38,7 @@ class PaymentController {
 
 
     stripeWebhook = catchAsync(async (req: Request, res: Response) => {
+        console.log('<<<<<<<Called Webhook>>>>>>>');
         let event: Stripe.Event;
         try {
             event = await stripe.webhooks.constructEventAsync(
