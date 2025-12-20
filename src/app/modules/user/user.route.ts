@@ -1,18 +1,8 @@
 import { Router } from "express";
 import userController from "./user.controller";
-// import { CheckAuth } from "app/middlewares/checkAuth";
-// import { Role } from "prisma/generated/prisma/enums";
-// import { CheckAuth } from "src/app/middlewares/checkAuth";
-// import { fileUploader } from "src/app/helper/fileUploader";
-// import { validationRequest } from "src/app/middlewares/validationRequest";
-// import { userValidation } from "./user.validation";
-// import { fileUploader } from "app/helper/fileUploader";
-// import { validationRequest } from "app/middlewares/validationRequest";
 import { userValidation } from "./user.validation";
 import { CheckAuth } from "../../middlewares/checkAuth";
-
 import { validationRequest } from "../../middlewares/validationRequest";
-// import { fileUploader } from "app/helper/fileUploader";
 import { fileUploader } from "../../../app/helper/fileUploader"
 import { Role } from "@prisma/client";
 
@@ -21,7 +11,7 @@ const router = Router();
 
 router.get(
     '/',
-    CheckAuth(Role.ADMIN),
+    // CheckAuth(Role.ADMIN),
     userController.getAllUsers
 );
 

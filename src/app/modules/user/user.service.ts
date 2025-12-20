@@ -4,9 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../lib/prisma";
 import ApiError from "../../errors/ApiError";
 import { calculatePagination, IOptions } from "../../helper/paginationHelper";
-// import ApiError from "src/app/errors/ApiError";
-// import { calculatePagination, IOptions } from "src/app/helper/paginationHelper";
-// import { prisma } from "src/app/lib/prisma";
+
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class UserService {
@@ -45,7 +43,9 @@ class UserService {
     const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
 
     // Build where clause
-    const where: any = {};
+    // const where: any = {};
+    const where: any = { isDeleted: false };
+
 
     if (search) {
       where.OR = [
@@ -83,7 +83,7 @@ class UserService {
       },
     };
   }
-  
+
   async getUserById(id: string): Promise<any> {
     const user = await prisma.user.findUnique({
       where: { id },
