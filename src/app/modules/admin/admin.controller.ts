@@ -88,7 +88,7 @@ class AdminController {
     // });
 
     getAllTravelPlans = catchAsync(async (req: Request, res: Response) => {
-        const filters = pick(req.query, ["search", "status"])
+        const filters = pick(req.query, ["search", "status", "isPublic"])
         const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"])
 
         const result = await adminService.getAllTravelPlans(filters, options);

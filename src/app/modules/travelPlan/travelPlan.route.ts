@@ -1,7 +1,3 @@
-// import { Role } from "prisma/generated/prisma/enums";
-// import { fileUploader } from "app/helper/fileUploader";
-// import { CheckAuth } from "app/middlewares/checkAuth";
-// import { validationRequest } from "app/middlewares/validationRequest";
 import { Router } from "express";
 import travelPlanController from "./travelPlan.controller";
 import { createTravelPlanValidation, updateTravelPlanValidation } from "./travelPlan.validation";

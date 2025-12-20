@@ -3,7 +3,7 @@
 
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../lib/prisma";
-import {calculatePagination} from "../../helper/paginationHelper"
+import { calculatePagination } from "../../helper/paginationHelper"
 import ApiError from "../../errors/ApiError";
 import { RequestStatus, SubscriptionStatus, TripStatus } from "@prisma/client";
 
@@ -75,7 +75,7 @@ class AdminService {
                     // status: 'COMPLETED',
                     createdAt: {
                         gte: lastMonth,
-                        lte: endOfLastMonth, 
+                        lte: endOfLastMonth,
                     },
                 },
                 _sum: { amount: true },
@@ -154,7 +154,7 @@ class AdminService {
         } = query;
 
         const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
-        const where: any = {};
+        const where: any = { isDeleted: false };
 
 
         if (search) {
@@ -241,7 +241,7 @@ class AdminService {
                 // Soft delete by deactivating
                 result = await prisma.user.update({
                     where: { id: userId },
-                    data: { isDeleted: false },
+                    data: { isDeleted: true },
                 });
                 break;
 
@@ -550,6 +550,7 @@ class AdminService {
         const {
             search,
             status,
+            isPublic
         } = query;
 
         const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
@@ -563,6 +564,7 @@ class AdminService {
         }
 
         if (status) where.status = status;
+        if (isPublic) where.isPublic = isPublic === 'true' ? true : false;
 
         const [total, plans] = await Promise.all([
             prisma.travelPlan.count({ where }),
@@ -577,12 +579,12 @@ class AdminService {
                             fullName: true,
                             profileImage: true,
                         },
-                
+
                     },
                     _count: {
                         select: {
                             requests: true,
-                        
+
                         },
                     },
                 },

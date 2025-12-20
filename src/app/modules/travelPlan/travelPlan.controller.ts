@@ -7,11 +7,6 @@ import catchAsync from "../../utils/catchAsync";
 import { fileUploader } from "../../helper/fileUploader";
 import sendResponse from "../../utils/sendResponse";
 import pick from "../../helper/pick";
-// import catchAsync from "src/app/utils/catchAsync";
-// import { fileUploader } from "src/app/helper/fileUploader";
-// import sendResponse from "src/app/utils/sendResponse";
-// import pick from "src/app/helper/pick";
-// import { fileUploader } from "app/helper/fileUploader";
 
 class TravelPlanController {
     createTravelPlan = catchAsync(async (req: Request, res: Response) => {
@@ -113,8 +108,8 @@ class TravelPlanController {
 
     deleteTravelPlan = catchAsync(async (req: Request, res: Response) => {
         const { id } = req.params;
-        const userId = (req as any).user.id;
-        await travelPlanService.deleteTravelPlan(id as string, userId);
+        const user = (req as any).user;
+        await travelPlanService.deleteTravelPlan(id as string, user);
 
         sendResponse(res, {
             statusCode: StatusCodes.OK,

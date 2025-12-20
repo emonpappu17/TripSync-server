@@ -13,7 +13,7 @@ class AuthService {
     async register(registerData: Partial<User>): Promise<any> {
         // Check if user already exists
         const existingUser = await prisma.user.findUnique({
-            where: { email: registerData.email  as string},
+            where: { email: registerData.email as string },
         });
 
         if (existingUser) {
@@ -52,6 +52,12 @@ class AuthService {
             throw new ApiError(
                 StatusCodes.FORBIDDEN,
                 'Your account has been deactivated. Please contact support.'
+            );
+        }
+        if (user.isDeleted) {
+            throw new ApiError(
+                StatusCodes.NOT_FOUND,
+                'User not found!.'
             );
         }
 

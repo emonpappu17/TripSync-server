@@ -334,20 +334,25 @@ class TravelPlanService {
     }
 
 
-    async deleteTravelPlan(id: string, userId: string) {
-        const travelPlan = await prisma.travelPlan.findFirst({
-            where: {
-                id,
-                userId,
-                isDeleted: false,
-            },
-        });
+    async deleteTravelPlan(id: string, user: { role: string, id: string }) {
+        const role = user.role;
+        
+        if (role !== 'ADMIN') {
+            const travelPlan = await prisma.travelPlan.findFirst({
+                where: {
+                    id,
+                    userId: user.id,
+                    isDeleted: false,
+                },
+            });
 
-        if (!travelPlan) {
-            throw new ApiError(
-                StatusCodes.NOT_FOUND,
-                'Travel plan not found or you do not have permission to delete it'
-            );
+            if (!travelPlan) {
+                throw new ApiError(
+                    StatusCodes.NOT_FOUND,
+                    'Travel plan not found or you do not have permission to delete it'
+                );
+            }
+
         }
 
         // Soft delete
