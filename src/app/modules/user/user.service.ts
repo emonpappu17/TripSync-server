@@ -92,7 +92,7 @@ class UserService {
         },
       },
       skip,
-      take: 6,
+      take: limit,
       orderBy: { [sortBy]: sortOrder },
     });
 
@@ -114,9 +114,9 @@ class UserService {
       data: usersWithRating,
       meta: {
         page,
-        limit: 6,
+        limit: limit,
         total,
-        totalPages: Math.ceil(total / 6),
+        totalPages: Math.ceil(total / limit),
       },
     };
   }
