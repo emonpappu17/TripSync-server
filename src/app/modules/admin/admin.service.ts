@@ -18,8 +18,8 @@ class AdminService {
         const [totalUsers, activeUsers,
             // newUsersThisMonth,
             premiumUsers] = await Promise.all([
-                prisma.user.count(),
-                prisma.user.count({ where: { isActive: true } }),
+                prisma.user.count({ where: { isDeleted: false } }),
+                prisma.user.count({ where: { isActive: true, isDeleted: false } }),
                 // prisma.user.count({
                 //     where: {
                 //         createdAt: { gte: firstDayOfMonth },

@@ -2,13 +2,15 @@
 // import ApiError from "app/errors/ApiError";
 // import { prisma } from "app/lib/prisma";
 import { StatusCodes } from "http-status-codes";
-import { prisma } from "../../lib/prisma";
 import ApiError from "../../errors/ApiError";
+import { prisma } from "../../lib/prisma";
 // import ApiError from "src/app/errors/ApiError";
 // import { prisma } from "src/app/lib/prisma";
 
 class ReviewService {
     async createReview(fromReviewerId: string, reviewData: any) {
+
+        console.log({ fromReviewerId, reviewData });
         // Check if users exist
         const [fromReviewer, toReviewer] = await Promise.all([
             prisma.user.findUnique({ where: { id: fromReviewerId } }),
@@ -129,7 +131,7 @@ class ReviewService {
         };
     }
 
-    async updateReview(reviewId: string , reviewerId: string, updateData: any) {
+    async updateReview(reviewId: string, reviewerId: string, updateData: any) {
         const review = await prisma.review.findFirst({
             where: {
                 id: reviewId,

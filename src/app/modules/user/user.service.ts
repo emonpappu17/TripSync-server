@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../lib/prisma";
 import ApiError from "../../errors/ApiError";
@@ -34,23 +35,20 @@ class UserService {
   }
 
   async getAllUsers(query: any, options: IOptions) {
-    const {
-      search,
-      role,
-      isActive,
-    } = query;
+    const { search, role, isActive } = query;
+    const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options);
 
-    const { page, limit, skip, sortBy, sortOrder } = calculatePagination(options)
-
-    // Build where clause
-    // const where: any = {};
-    const where: any = { isDeleted: false };
-
+    const where: any = {
+      isDeleted: false,
+      role: {
+        not: Role.ADMIN,
+      },
+    };
 
     if (search) {
       where.OR = [
-        { email: { contains: search, mode: 'insensitive' } },
-        { fullName: { contains: search, mode: 'insensitive' } },
+        { fullName: { contains: search, mode: "insensitive" } },
+        { currentLocation: { contains: search, mode: "insensitive" } },
       ];
     }
 
@@ -62,27 +60,67 @@ class UserService {
       where.isActive = query.isActive === "true";
     }
 
-    // Get total count
     const total = await prisma.user.count({ where });
 
-    // Get users
     const users = await prisma.user.findMany({
       where,
+      select: {
+        id: true,
+        fullName: true,
+        profileImage: true,
+        bio: true,
+        phone: true,
+        role: true,
+        isVerified: true,
+        currentLocation: true,
+        gender: true,
+        interests: true,
+        visitedCountries: true,
+        email: true,
+        _count: {
+          select: {
+            travelPlans: {
+              where: { status: "COMPLETED" },
+            },
+            reviewsGiven: true,
+            reviewsReceived: true,
+            sentRequests: true,
+          },
+        },
+        reviewsReceived: {
+          select: { rating: true },
+        },
+      },
       skip,
-      take: limit,
+      take: 6,
       orderBy: { [sortBy]: sortOrder },
     });
 
+    // Add avgRating per user
+    const usersWithRating = users.map((user) => {
+      const ratings = user.reviewsReceived.map((r) => r.rating);
+      const avgRating =
+        ratings.length > 0
+          ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length
+          : 0;
+
+      return {
+        ...user,
+        avgRating,
+      };
+    });
+
     return {
-      data: users,
+      data: usersWithRating,
       meta: {
         page,
-        limit,
+        limit: 6,
         total,
-        totalPages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / 6),
       },
     };
   }
+
 
   async getUserById(id: string): Promise<any> {
     const user = await prisma.user.findUnique({

@@ -30,7 +30,12 @@ class TravelMatchService {
                 orderBy: { [sortBy]: sortOrder },
                 include: {
                     travelPlan: {
+                        // select: {
+                        //     status: true
+                        // },
+
                         include: {
+                            
                             user: {
                                 select: {
                                     id: true,
@@ -46,6 +51,8 @@ class TravelMatchService {
                 },
             }),
         ]);
+
+        console.log({ matches });
 
         // Enhance data with buddy information
         const enhancedMatches = await Promise.all(
